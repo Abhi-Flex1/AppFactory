@@ -2,22 +2,22 @@
   {
     "id": "opengmaps",
     "glyph": "◈",
-    "accent": "linear-gradient(135deg,#0A59F7,#00D0FF)",
-    "name": "OpenGMaps",
-    "tagline": "Google Maps for OpenHarmony & HarmonyOS",
-    "category": "Maps & Navigation",
+    "accent": "linear-gradient(135deg,#0077B6,#00B4D8)",
+    "name": "OpenGMaps SDK",
+    "tagline": "Google Maps SDK for OpenHarmony & HarmonyOS",
+    "category": "Maps & Navigation · SDK",
     "status": "Beta",
     "statusClass": "is-beta",
     "stack": ["Flutter", "ArkTS", "ArkWeb"],
     "filterTags": ["Flutter"],
-    "repo": "https://github.com/Abhi-Flex1/OpenGMaps",
+    "repo": "https://github.com/HarmoniProductions/opengmaps-sdk",
     "maintainers": ["abhi-flex1"],
     "bundle": "io.opengmaps.open_gmaps",
     "api": "OpenHarmony 5.0.1 · API 12",
     "license": "Apache-2.0",
-    "description": "Complete Google Maps app on stock google_maps_flutter 2.12.3. No GMS binary ships on OHOS, so it carries an in-house backport (google_maps_flutter_ohos) over the Maps JS API in ArkWeb, plus Places / Geocoding / Directions clients and native Location Kit.",
+    "description": "Google Maps as a reusable SDK for the HarmonyOS ecosystem. A Flutter backport by HarmoniProductions that wraps Google Maps (GMaps) for OpenHarmony & HarmonyOS — no GMS binary ships on OHOS, so it carries an in-house platform interface over the Maps JS API in ArkWeb, plus Places / Geocoding / Directions clients and native Location Kit.",
     "features": [
-      "Vector tiles, 4 map types, markers and routes via the stock GoogleMap API",
+      "Google Maps vector tiles, 4 map types, markers and routes via stock GoogleMap API",
       "Debounced Places Autocomplete + text search + POI-tap place cards",
       "Driving / walking / cycling / transit routes with polyline + steps",
       "Saved places + recents in OHOS preferences, my-location dot",
@@ -30,7 +30,7 @@
       "Permissions: INTERNET + LOCATION / APPROXIMATELY_LOCATION"
     ],
     "install": "fvm flutter run -d <ohos-device> --dart-define=GOOGLE_MAPS_API_KEY=KEY\n# or: fvm flutter build hap --debug … && hdc install …hap",
-    "disclaimer": "Maps data © Google. Key use subject to Google terms + billing."
+    "disclaimer": "GMaps data © Google. Key use subject to Google terms + billing. By HarmoniProductions."
   },
   {
     "id": "ohemacs",
