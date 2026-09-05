@@ -1,0 +1,22 @@
+[
+  {
+    "id": "abhi-flex1",
+    "name": "Abhi-Flex1",
+    "role": "Founder · porter of OpenGMaps & OHEmacs",
+    "github": "https://github.com/Abhi-Flex1",
+    "twitter": "https://x.com/Abhi_Flex",
+    "twitterHandle": "@Abhi_Flex",
+    "avatar": "https://github.com/Abhi-Flex1.png",
+    "focus": ["OpenGMaps", "OHEmacs", "AppFactory"]
+  },
+  {
+    "id": "ba4893",
+    "name": "BA4893",
+    "role": "Porter of WhatIsIt — WhatsApp on HarmonyOS",
+    "github": "https://github.com/BA4893",
+    "twitter": "https://x.com/LivingInHarmony",
+    "twitterHandle": "@LivingInHarmony",
+    "avatar": "https://github.com/BA4893.png",
+    "focus": ["WhatIsIt", "server-go", "WhatsMiau adapter"]
+  }
+]

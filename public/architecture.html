@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineering Architecture — AppFactory NEXT</title>
+  <meta name="description" content="Detailed architectural patterns for porting global applications to OpenHarmony and HarmonyOS NEXT." />
+
+  <!-- Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="page-architecture">
+  <!-- NAVIGATION BAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a class="brand" href="/" aria-label="AppFactory Home">
+        <span class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </span>
+        <span class="brand-text">AppFactory</span>
+        <span class="brand-tag">NEXT</span>
+      </a>
+
+      <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
+        <a href="/apps" class="nav-item">Ports</a>
+        <a href="/architecture" class="nav-item active">Architecture</a>
+        <a href="/builders" class="nav-item">Builders</a>
+        <a href="/#developers" class="nav-item">Developers</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="status-pill" title="Verified on OpenHarmony 5.0.1 &amp; HarmonyOS NEXT">
+          <span class="pulse-dot"></span>
+          <span class="status-text">Hardware Verified</span>
+        </div>
+        <a class="btn-ghost-sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          <span>GitHub</span>
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation" aria-expanded="false" aria-controls="navMenu">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="arch-page-main">
+    <div class="content-wrap">
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <ol class="breadcrumb-list">
+          <li><a href="/">Home</a></li>
+          <li class="sep">/</li>
+          <li class="active">Engineering Architecture</li>
+        </ol>
+      </nav>
+
+      <div class="arch-hero">
+        <div class="section-kicker">ENGINEERING WHITE PAPER</div>
+        <h1 class="arch-page-title">Three Paths to HarmonyOS NEXT</h1>
+        <p class="arch-page-subtitle">
+          Porting mature global codebases to HarmonyOS NEXT and OpenHarmony 5.0.1 requires choosing the right architectural seam.
+          Depending on upstream constraints, dependency trees, and native bindings, our team has validated three distinct porting patterns.
+        </p>
+      </div>
+
+      <!-- PATTERN 1 -->
+      <section class="pattern-chapter" id="pattern-shim">
+        <div class="chapter-header">
+          <span class="chapter-badge">Pattern 01</span>
+          <h2>The Flutter Backport Shim</h2>
+          <p class="chapter-lead">Preserving Dart Application Code by Shimming Missing GMS Platform Interfaces via ArkWeb</p>
+        </div>
+
+        <div class="chapter-content-grid">
+          <div class="chapter-desc">
+            <p>
+              When a mature Flutter app relies on proprietary Google Mobile Services (GMS) plugins such as <code>google_maps_flutter</code>, directly compiling for OpenHarmony fails because no GMS binary exists on the system.
+            </p>
+            <p>
+              Instead of rewriting the entire UI in ArkTS, this pattern implements a custom <code>google_maps_flutter_ohos</code> plugin implementing the stock Dart platform interface. It binds to an ArkWeb instance executing Google Maps JavaScript API v3.56 with bidirectional JSON method channels, while dispatching GPS location queries to native OHOS Location Kit.
+            </p>
+
+            <div class="pattern-bullets">
+              <h4>Key Architectural Benefits</h4>
+              <ul>
+                <li><strong>100% Upstream Dart Code Reusability:</strong> Screens, state management, models, and business logic remain untouched.</li>
+                <li><strong>No GMS Requirement:</strong> Bypasses Google Play Services completely while using official vector tiles.</li>
+                <li><strong>Native Hardware Performance:</strong> Hardware-accelerated WebGL tile rendering inside the system ArkWeb engine.</li>
+              </ul>
+            </div>
+
+            <div class="chapter-cta">
+              <a href="/apps/opengmaps" class="btn-primary">
+                <span>Explore Validated Project: OpenGMaps</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="chapter-diagram-card">
+            <h4 class="diagram-title">Data Flow &amp; Interface Seam</h4>
+            <div class="pattern-flow">
+              <div class="flow-step">google_maps_flutter (Stock Dart API)</div>
+              <div class="flow-arrow">↓ MethodChannel Calls</div>
+              <div class="flow-step highlight">google_maps_flutter_ohos (Platform Interface)</div>
+              <div class="flow-arrow">↓ JSON Serialization</div>
+              <div class="flow-step">ArkWeb Container (Maps JS API 3.56)</div>
+              <div class="flow-arrow">↓ Geolocation Callback</div>
+              <div class="flow-step highlight">OpenHarmony Location Kit (GPS / Network)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PATTERN 2 -->
+      <section class="pattern-chapter" id="pattern-napi">
+        <div class="chapter-header">
+          <span class="chapter-badge purple">Pattern 02</span>
+          <h2>Native ArkTS Shell + NAPI C Bridge</h2>
+          <p class="chapter-lead">Embedding Legacy C/C++ GUI &amp; Engine Code in an ArkUI Stage-Model HAP</p>
+        </div>
+
+        <div class="chapter-content-grid">
+          <div class="chapter-desc">
+            <p>
+              Decades-old C/C++ GUI systems like GNU Emacs cannot be re-engineered from scratch. Instead, we wrap the engine in a Stage-model ArkTS shell.
+            </p>
+            <p>
+              The ArkUI front-end mounts an <code>XComponent</code> backed by OpenGL ES / EGL for hardware-accelerated rendering. A lightweight, thread-safe NAPI bridge (<code>libentry.so</code>) bridges the HarmonyOS event loop, forwarding touch inputs, keyboard buffer events, and window metrics directly to the upstream C engine.
+            </p>
+
+            <div class="pattern-bullets">
+              <h4>Key Architectural Benefits</h4>
+              <ul>
+                <li><strong>Native GPU Pipeline:</strong> Direct EGL rendering with zero canvas copying overhead.</li>
+                <li><strong>Full Lisp Execution:</strong> Complete GNU Emacs Lisp VM running on-device via two-stage pdump cross-compilation.</li>
+                <li><strong>Dual-Mode Capability:</strong> Supports both Stage-Model GUI application and standalone native terminal CLI binary.</li>
+              </ul>
+            </div>
+
+            <div class="chapter-cta">
+              <a href="/apps/ohemacs" class="btn-primary">
+                <span>Explore Validated Project: OHEmacs</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="chapter-diagram-card">
+            <h4 class="diagram-title">Component Hierarchy &amp; Event Bus</h4>
+            <div class="pattern-flow">
+              <div class="flow-step">ArkUI Stage-Model Window (EntryAbility)</div>
+              <div class="flow-arrow">↓ Surface Binding</div>
+              <div class="flow-step highlight">XComponent Surface (EGL / OpenGL ES 3.0)</div>
+              <div class="flow-arrow">↕ Thread-safe Event Queue</div>
+              <div class="flow-step">NAPI libentry.so (C++ Native Bridge)</div>
+              <div class="flow-arrow">↕ POSIX Sockets &amp; Pipes</div>
+              <div class="flow-step highlight">GNU Emacs 30.1 Core Engine (musl libc)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PATTERN 3 -->
+      <section class="pattern-chapter" id="pattern-server">
+        <div class="chapter-header">
+          <span class="chapter-badge emerald">Pattern 03</span>
+          <h2>Companion Server Bridge</h2>
+          <p class="chapter-lead">Decoupling Closed-Network Cryptography via an Always-On Go Microservice</p>
+        </div>
+
+        <div class="chapter-content-grid">
+          <div class="chapter-desc">
+            <p>
+              When a complex communication service lacks public REST APIs or HarmonyOS client SDKs, building a fully compliant native client from scratch carries severe protocol drift and account ban risks.
+            </p>
+            <p>
+              This pattern isolates the persistent cryptographic session and protocol state machine inside an always-on Go daemon (using <code>whatsmeow</code>). The phone or tablet runs a lightweight, battery-efficient ArkUI client that syncs chats and media over local WebSocket push notifications.
+            </p>
+
+            <div class="pattern-bullets">
+              <h4>Key Architectural Benefits</h4>
+              <ul>
+                <li><strong>Session Longevity:</strong> Multi-Device session survives mobile process kills, reboots, and sleep cycles.</li>
+                <li><strong>Zero Reverse Engineering in ArkTS:</strong> Complex Noise protocol handshakes and protobuf parsing remain in well-audited Go libraries.</li>
+                <li><strong>Native ArkUI Feel:</strong> The mobile user interface is 100% native ArkTS, delivering smooth 120Hz scrolling.</li>
+              </ul>
+            </div>
+
+            <div class="chapter-cta">
+              <a href="/apps/whatisit" class="btn-primary">
+                <span>Explore Validated Project: WhatIsIt</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="chapter-diagram-card">
+            <h4 class="diagram-title">Distributed Session Topology</h4>
+            <div class="pattern-flow">
+              <div class="flow-step">ArkUI Mobile Client (ArkTS + CdpBridge)</div>
+              <div class="flow-arrow">↕ Local WebSocket Push</div>
+              <div class="flow-step highlight">Go Companion Server (whatisit-server)</div>
+              <div class="flow-arrow">↕ Multi-Device Signal Protocol</div>
+              <div class="flow-step">WhatsApp End-to-End Encrypted Cloud</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPARISON MATRIX -->
+      <section class="comparison-section">
+        <div class="section-kicker">TECHNICAL EVALUATION</div>
+        <h2 class="section-title">Pattern Trade-Off Comparison</h2>
+        <div class="table-responsive">
+          <table class="endpoint-table">
+            <thead>
+              <tr>
+                <th>Criteria</th>
+                <th>Pattern 1: Flutter Shim</th>
+                <th>Pattern 2: NAPI C Shell</th>
+                <th>Pattern 3: Companion Bridge</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Primary Language</strong></td>
+                <td>Dart + ArkTS / ArkWeb</td>
+                <td>ArkTS + C / C++</td>
+                <td>ArkTS + Go daemon</td>
+              </tr>
+              <tr>
+                <td><strong>Rendering Engine</strong></td>
+                <td>Flutter Skia/Impeller + ArkWeb</td>
+                <td>XComponent (EGL / OpenGL)</td>
+                <td>Native ArkUI declarative engine</td>
+              </tr>
+              <tr>
+                <td><strong>Best Suited For</strong></td>
+                <td>Cross-platform Flutter apps</td>
+                <td>Legacy Linux/POSIX desktop GUI software</td>
+                <td>E2EE messaging &amp; private cloud daemons</td>
+              </tr>
+              <tr>
+                <td><strong>Hardware Validation</strong></td>
+                <td>OpenHarmony 5.0.1 (API 12)</td>
+                <td>HarmonyOS 6.1.1 (API 24)</td>
+                <td>HarmonyOS emulator + Go host</td>
+              </tr>
+              <tr>
+                <td><strong>Reference Port</strong></td>
+                <td><a href="/apps/opengmaps">OpenGMaps</a></td>
+                <td><a href="/apps/ohemacs">OHEmacs</a></td>
+                <td><a href="/apps/whatisit">WhatIsIt</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="content-wrap">
+      <div class="footer-nav-row">
+        <div class="footer-col">
+          <div class="footer-brand">
+            <span class="brand-text">AppFactory</span>
+            <p>Showcasing global software engineering for the open HarmonyOS ecosystem.</p>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Ports</h5>
+          <a href="/apps/opengmaps">OpenGMaps (Google Maps)</a>
+          <a href="/apps/ohemacs">OHEmacs (GNU Emacs 30.1)</a>
+          <a href="/apps/whatisit">WhatIsIt (WhatsApp Client)</a>
+        </div>
+        <div class="footer-col">
+          <h5>Builders</h5>
+          <a href="https://github.com/Abhi-Flex1" target="_blank" rel="noopener">Abhi-Flex1 (GitHub)</a>
+          <a href="https://x.com/Abhi_Flex" target="_blank" rel="noopener">@Abhi_Flex on X</a>
+          <a href="https://github.com/BA4893" target="_blank" rel="noopener">BA4893 (GitHub)</a>
+          <a href="https://x.com/LivingInHarmony" target="_blank" rel="noopener">@LivingInHarmony on X</a>
+        </div>
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <a href="/apps">All Ports</a>
+          <a href="/architecture">Porting Architecture</a>
+          <a href="/builders">Core Builders</a>
+          <a href="/#developers">Developer API</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 AppFactory. Open source under Apache-2.0.</p>
+        <p>Verified on OpenHarmony 5.0.1 Release &amp; HarmonyOS NEXT.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navMenu = document.getElementById("navMenu");
+    if (menuToggle && navMenu) {
+      menuToggle.addEventListener("click", () => {
+        const open = navMenu.classList.toggle("open");
+        menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    }
+  </script>
+</body>
+</html>

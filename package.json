@@ -1,0 +1,21 @@
+{
+  "name": "appfactory",
+  "version": "2.0.0",
+  "description": "AppFactory — global apps ported to HarmonyOS & OpenHarmony (Node.js showcase site)",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "author": ""
+}

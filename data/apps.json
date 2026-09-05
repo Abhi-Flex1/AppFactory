@@ -1,0 +1,100 @@
+[
+  {
+    "id": "opengmaps",
+    "glyph": "◈",
+    "accent": "linear-gradient(135deg,#0A59F7,#00D0FF)",
+    "name": "OpenGMaps",
+    "tagline": "Google Maps for OpenHarmony & HarmonyOS",
+    "category": "Maps & Navigation",
+    "status": "Beta",
+    "statusClass": "is-beta",
+    "stack": ["Flutter", "ArkTS", "ArkWeb"],
+    "filterTags": ["Flutter"],
+    "repo": "https://github.com/Abhi-Flex1/OpenGMaps",
+    "maintainers": ["abhi-flex1"],
+    "bundle": "io.opengmaps.open_gmaps",
+    "api": "OpenHarmony 5.0.1 · API 12",
+    "license": "Apache-2.0",
+    "description": "Complete Google Maps app on stock google_maps_flutter 2.12.3. No GMS binary ships on OHOS, so it carries an in-house backport (google_maps_flutter_ohos) over the Maps JS API in ArkWeb, plus Places / Geocoding / Directions clients and native Location Kit.",
+    "features": [
+      "Vector tiles, 4 map types, markers and routes via the stock GoogleMap API",
+      "Debounced Places Autocomplete + text search + POI-tap place cards",
+      "Driving / walking / cycling / transit routes with polyline + steps",
+      "Saved places + recents in OHOS preferences, my-location dot",
+      "Honest no-key state — never renders a fake map"
+    ],
+    "porting": [
+      "Pattern: Flutter backport shim — platform interface → JSON → JS bridge",
+      "Dart-only backport: camera, overlays, events + poiTaps extension",
+      "Native channels only for location + storage (io.opengmaps/…)",
+      "Permissions: INTERNET + LOCATION / APPROXIMATELY_LOCATION"
+    ],
+    "install": "fvm flutter run -d <ohos-device> --dart-define=GOOGLE_MAPS_API_KEY=KEY\n# or: fvm flutter build hap --debug … && hdc install …hap",
+    "disclaimer": "Maps data © Google. Key use subject to Google terms + billing."
+  },
+  {
+    "id": "ohemacs",
+    "glyph": "λ",
+    "accent": "linear-gradient(135deg,#5B2EE5,#B16CFF)",
+    "name": "OHEmacs",
+    "tagline": "GNU Emacs 30.1 for OpenHarmony & HarmonyOS",
+    "category": "Productivity · Developer tools",
+    "status": "Stage 1 ✓ · Stage 2 WIP",
+    "statusClass": "is-wip",
+    "stack": ["ArkTS", "NAPI", "C", "XComponent"],
+    "filterTags": ["ArkTS", "NAPI"],
+    "repo": "https://github.com/Abhi-Flex1/OHEmacs",
+    "maintainers": ["abhi-flex1"],
+    "bundle": "com.example.ohemacs",
+    "api": "HarmonyOS 6.1.1 · API 24",
+    "license": "Apache-2.0 (upstream: GPL)",
+    "description": "Emacs ported to OHOS: Stage-model HAP with XComponent surface + NAPI libentry.so + EGL rendering. Stage 1 GUI shell launches and renders (Harmony_PC_61 verified); Stage 2 brings the full Lisp engine via an ohos display backend + two-stage pdump cross-compile.",
+    "features": [
+      "Stage-model HAP, XComponent surface, EGL render loop",
+      "NAPI event queue (touch + resize verified via hilog)",
+      "ohos display backend scaffold (ohosterm / ohosfns / ohosfont)",
+      "Documented cross-compile + on-device emacs.pdmp plan"
+    ],
+    "porting": [
+      "Pattern: native ArkTS shell + NAPI bridge to the C upstream",
+      "Upstream GNU Emacs 30.1, approach cloned from the Android port",
+      "Build: ohpm install → hvigorw assembleHap → hdc install",
+      "See docs/PORTING.md + CROSS_PROBE.md in the repo"
+    ],
+    "install": "ohpm install\nhvigorw assembleHap --mode module -p product=default\nhdc install entry/build/default/outputs/default/entry-default-unsigned.hap",
+    "disclaimer": "GNU Emacs © Free Software Foundation. OHOS shell is Apache-2.0."
+  },
+  {
+    "id": "whatisit",
+    "glyph": "✆",
+    "accent": "linear-gradient(135deg,#00A884,#7CFC9A)",
+    "name": "WhatIsIt",
+    "tagline": "Native WhatsApp client for HarmonyOS",
+    "category": "Communication",
+    "status": "Beta · calls experimental",
+    "statusClass": "is-beta",
+    "stack": ["ArkTS", "Go", "WebSocket"],
+    "filterTags": ["ArkTS", "Go"],
+    "repo": "https://github.com/BA4893/WhatIsIt",
+    "maintainers": ["ba4893"],
+    "bundle": "HarmonyOS app + whatisit-server (Go)",
+    "api": "HarmonyOS (emulator-validated)",
+    "license": "Apache-2.0",
+    "description": "Native ArkUI WhatsApp client whose session lives on a Go whatisit-server (whatsmeow + meowcaller, SQLite, keepalive). Link once via in-app QR or 8-char phone code; the server keeps the Multi-Device session alive. Chats over HTTP + WebSocket push, media cached server-side.",
+    "features": [
+      "QR + phone-code pairing, SHORTCAKE passkey flow (dev fallback)",
+      "1:1 + group text, replies, reactions, ticks, read receipts",
+      "Media send/receive, full-history sync, on-demand backfill",
+      "Status + Channels tabs; session survives server restarts",
+      "WhatsApp-native voice/video via meowcaller (not yet device-validated)"
+    ],
+    "porting": [
+      "Pattern: companion-server bridge — ArkTS app ⇄ Go server ⇄ WA protocol",
+      "server-go is current (wire-compatible with the Rust server/ reference)",
+      "App seam: CdpBridge.ets + PasskeyService + CallService / XComponent",
+      "Deploy: Go 1.25+ anywhere, VPS + Caddy / Cloudflare Tunnel for TLS"
+    ],
+    "install": "cd server-go && go run ./cmd/server  # :18770\n# app: oniro-app build && oniro-app app apply && oniro-app app launch",
+    "disclaimer": "Unofficial client — may violate Meta ToS (ban risk). One account per server IP. No browser / Chrome / Jitsi path."
+  }
+]

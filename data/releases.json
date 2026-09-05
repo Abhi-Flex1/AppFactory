@@ -1,0 +1,115 @@
+{
+  "opengmaps": {
+    "repo": "https://github.com/Abhi-Flex1/OpenGMaps",
+    "hasRelease": true,
+    "tagName": "v0.1.0-keyed",
+    "name": "OpenGMaps v0.1.0 keyed (debug)",
+    "publishedAt": "2026-09-03T20:32:18Z",
+    "htmlUrl": "https://github.com/Abhi-Flex1/OpenGMaps/releases/tag/v0.1.0-keyed",
+    "body": "Debug-signed HAP with working Google Maps Platform keys baked in (verified on OpenHarmony 5.0.1 emulator: real map tiles, live search + place cards, directions route).\n\nKeys used (one per surface, via dart-define):\n- GOOGLE_MAPS_API_KEY = Places key\n- OGM_MAPS_KEY = Maps JavaScript key\n- OGM_GEO_KEY / OGM_DIRS_KEY = Geocoding + Directions key\n\nBuilt from commit f065b65 (`feat: per-service Google Maps API keys via dart-define`).",
+    "assets": [
+      {
+        "name": "entry-default-signed.hap",
+        "label": "Debug-Signed Device HAP",
+        "type": "hap",
+        "size": 105984376,
+        "formattedSize": "101.1 MB",
+        "downloadCount": 4,
+        "downloadUrl": "https://github.com/Abhi-Flex1/OpenGMaps/releases/download/v0.1.0-keyed/entry-default-signed.hap",
+        "installHint": "hdc install entry-default-signed.hap"
+      },
+      {
+        "name": "Source Code (zip)",
+        "label": "Source Code Repository Archive",
+        "type": "archive",
+        "size": 0,
+        "formattedSize": "ZIP",
+        "downloadCount": 0,
+        "downloadUrl": "https://github.com/Abhi-Flex1/OpenGMaps/archive/refs/tags/v0.1.0-keyed.zip",
+        "installHint": "unzip v0.1.0-keyed.zip && cd OpenGMaps*"
+      }
+    ]
+  },
+  "ohemacs": {
+    "repo": "https://github.com/Abhi-Flex1/OHEmacs",
+    "hasRelease": true,
+    "tagName": "v0.1.0",
+    "name": "OHEmacs v0.1.0 - Initial Public Release",
+    "publishedAt": "2026-09-05T14:00:24Z",
+    "htmlUrl": "https://github.com/Abhi-Flex1/OHEmacs/releases/tag/v0.1.0",
+    "body": "First official release of OHEmacs, bringing GNU Emacs 30.1 to OpenHarmony and HarmonyOS devices with both a desktop-faithful GUI and a standalone native aarch64 terminal CLI.\n\nHighlights:\n- Standalone native aarch64 terminal CLI (/data/local/tmp/emacs) supporting interactive TUI and --batch evaluation\n- Desktop-faithful GUI with classic menu bar, toolbar, tab bar, and syntax highlighting\n- Stage 2 Native EGL Surface via XComponent + NAPI bridge\n- Stage 2 Verification Suite: 15/15 PASS",
+    "assets": [
+      {
+        "name": "OHEmacs-v0.1.0-unsigned.hap",
+        "label": "OpenHarmony / HarmonyOS GUI Package",
+        "type": "hap",
+        "size": 2947500,
+        "formattedSize": "2.81 MB",
+        "downloadCount": 0,
+        "downloadUrl": "https://github.com/Abhi-Flex1/OHEmacs/releases/download/v0.1.0/OHEmacs-v0.1.0-unsigned.hap",
+        "installHint": "hdc install OHEmacs-v0.1.0-unsigned.hap"
+      },
+      {
+        "name": "emacs-cli-aarch64",
+        "label": "Native Terminal CLI Binary (aarch64 ELF)",
+        "type": "binary",
+        "size": 68776,
+        "formattedSize": "67.2 KB",
+        "downloadCount": 0,
+        "downloadUrl": "https://github.com/Abhi-Flex1/OHEmacs/releases/download/v0.1.0/emacs-cli-aarch64",
+        "installHint": "hdc file send emacs-cli-aarch64 /data/local/tmp/emacs && hdc shell chmod 755 /data/local/tmp/emacs"
+      },
+      {
+        "name": "OHEmacs-v0.1.0-app-bundle.zip",
+        "label": "Complete Application Bundle Package",
+        "type": "bundle",
+        "size": 1102813,
+        "formattedSize": "1.05 MB",
+        "downloadCount": 0,
+        "downloadUrl": "https://github.com/Abhi-Flex1/OHEmacs/releases/download/v0.1.0/OHEmacs-v0.1.0-app-bundle.zip",
+        "installHint": "unzip OHEmacs-v0.1.0-app-bundle.zip"
+      },
+      {
+        "name": "Source Code (zip)",
+        "label": "Source Code Archive",
+        "type": "archive",
+        "size": 0,
+        "formattedSize": "ZIP",
+        "downloadCount": 0,
+        "downloadUrl": "https://github.com/Abhi-Flex1/OHEmacs/archive/refs/tags/v0.1.0.zip",
+        "installHint": "git clone https://github.com/Abhi-Flex1/OHEmacs.git"
+      }
+    ]
+  },
+  "whatisit": {
+    "repo": "https://github.com/BA4893/WhatIsIt",
+    "hasRelease": false,
+    "tagName": "main-dev",
+    "name": "WhatIsIt (Current Source & Companion Server)",
+    "publishedAt": "2026-08-20T22:23:16Z",
+    "htmlUrl": "https://github.com/BA4893/WhatIsIt",
+    "body": "Native ArkUI WhatsApp client with Go companion server (whatsmeow + meowcaller, SQLite). Link once via in-app QR code or 8-char phone code; the companion server keeps the Multi-Device WhatsApp session alive. Automated GitHub Releases pending; source code and server daemon are immediately buildable.",
+    "assets": [
+      {
+        "name": "whatisit-main.zip",
+        "label": "Full Source Code & Go Server (main branch)",
+        "type": "archive",
+        "size": 0,
+        "formattedSize": "ZIP (Source)",
+        "downloadCount": 0,
+        "downloadUrl": "https://github.com/BA4893/WhatIsIt/archive/refs/heads/main.zip",
+        "installHint": "unzip main.zip && cd WhatIsIt-main/server-go && go run ./cmd/server"
+      },
+      {
+        "name": "server-go.bundle",
+        "label": "Go Companion Server Daemon",
+        "type": "service",
+        "size": 0,
+        "formattedSize": "Go Module",
+        "downloadCount": 0,
+        "downloadUrl": "https://github.com/BA4893/WhatIsIt/tree/main/server-go",
+        "installHint": "cd server-go && go run ./cmd/server # port :18770"
+      }
+    ]
+  }
+}
