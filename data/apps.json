@@ -10,7 +10,7 @@
     "statusClass": "is-beta",
     "stack": ["Flutter", "ArkTS", "ArkWeb"],
     "filterTags": ["Flutter"],
-    "repo": "https://github.com/HarmoniProductions/opengmaps-sdk",
+    "repo": "https://github.com/Abhi-Flex1/OpenGMaps",
     "maintainers": ["abhi-flex1"],
     "bundle": "io.opengmaps.open_gmaps",
     "api": "OpenHarmony 5.0.1 · API 12",
