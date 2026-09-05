@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>AppFactory - Smell Report</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<style>
+		body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+		.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+		.report-section { border: 1px solid #222226; background: #0a0a0b; position: relative; }
+		.corner-box { position: absolute; width: 20px; height: 20px; border: 1px solid #222226; background: #000; }
+	</style>
+</head>
+<body class="bg-black text-[#fafafa]">
+	<main class="mx-auto w-full max-w-6xl px-5 py-8 md:px-10 md:py-12">
+		<header class="report-section mb-8 p-6 md:p-8">
+			<div class="corner-box left-0 top-0 -translate-x-1/2 -translate-y-1/2"></div>
+			<div class="corner-box right-0 top-0 translate-x-1/2 -translate-y-1/2"></div>
+			<div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+				<div>
+					<div class="mono mb-2 text-xs tracking-widest text-[#666]">// SMELL</div>
+					<h1 class="text-4xl font-bold tracking-tight md:text-6xl">AppFactory</h1>
+				</div>
+				<div class="mono text-left text-xs text-[#666] md:text-right">
+					<div>COMMANDCODE REPORT</div>
+					<div class="text-[#444]">2026-09-05</div>
+				</div>
+			</div>
+		</header>
+
+		<section class="report-section mb-8 p-6 md:p-8">
+			<div class="corner-box left-0 top-0 -translate-x-1/2 -translate-y-1/2"></div>
+			<div class="corner-box right-0 top-0 translate-x-1/2 -translate-y-1/2"></div>
+			<div class="grid gap-8 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+				<div>
+					<div class="mono mb-2 text-xs tracking-widest text-[#666]">// OVERALL</div>
+					<div class="text-6xl font-bold tracking-tight md:text-7xl">5/10</div>
+					<div class="mt-1 text-lg text-[#666]">/ 10</div>
+					<div class="mt-4 inline-flex border border-[#fbbf24]/30 bg-[#fbbf24]/10 px-3 py-1 text-sm text-[#fbbf24]">PRESENT</div>
+				</div>
+				<div>
+					<div class="mono mb-3 text-xs tracking-widest text-[#666]">// TL;DR</div>
+					<p class="text-sm leading-6 text-[#a0a0a0]">The design has strong technical foundation and custom device mockups grounded in the HarmonyOS domain, but several category reflexes — blue-violet gradients, uniform pattern card grid, decorative icon toppers — read as generic tech/AI startup rather than a deliberate engineering portfolio.</p>
+					<p class="mt-4 text-sm leading-6 text-[#fbbf24]">FIX: Run /design recolor to shift gradient strategy, then /design relayout to break the uniform pattern card grid.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="report-section mb-8 p-6 md:p-8">
+			<div class="mono mb-6 text-xs tracking-widest text-[#666]">// HEURISTIC SCORES</div>
+			<div class="overflow-x-auto">
+				<table class="w-full min-w-[720px] border-collapse text-sm">
+					<thead>
+						<tr class="border-b border-[#222226] text-left mono text-xs text-[#666]">
+							<th class="py-3 pr-4 font-normal">#</th>
+							<th class="py-3 pr-4 font-normal">HEURISTIC</th>
+							<th class="py-3 pr-4 font-normal">SCORE</th>
+							<th class="py-3 font-normal">KEY FINDING</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-b border-[#1a1a1e]">
+							<td class="py-4 pr-4 text-[#555]">1</td>
+							<td class="py-4 pr-4 text-[#fafafa]">Tech gradient</td>
+							<td class="py-4 pr-4 text-[#ef4444]">0</td>
+							<td class="py-4 text-[#a0a0a0]">Hero, brand, modal all use blue-violet-indigo gradients</td>
+						</tr>
+						<tr class="border-b border-[#1a1a1e]">
+							<td class="py-4 pr-4 text-[#555]">2</td>
+							<td class="py-4 pr-4 text-[#fafafa]">Generic tech hue</td>
+							<td class="py-4 pr-4 text-[#ef4444]">0</td>
+							<td class="py-4 text-[#a0a0a0]">Primary accent #0a59F7 is a predictable tech blue</td>
+						</tr>
+						<tr class="border-b border-[#1a1a1e]">
+							<td class="py-4 pr-4 text-[#555]">3</td>
+							<td class="py-4 pr-4 text-[#fafafa]">Feature tile grid</td>
+							<td class="py-4 pr-4 text-[#ef4444]">0</td>
+							<td class="py-4 text-[#a0a0a0]">Patterns section uses uniform 3-column identical card grid</td>
+						</tr>
+						<tr class="border-b border-[#1a1a1e]">
+							<td class="py-4 pr-4 text-[#555]">4</td>
+							<td class="py-4 pr-4 text-[#fafafa]">Icon topper</td>
+							<td class="py-4 pr-4 text-[#ef4444]">0</td>
+							<td class="py-4 text-[#a0a0a0]">Pattern cards have decorative icon wrappers above headings</td>
+						</tr>
+						<tr class="border-b border-[#1a1a1e]">
+							<td class="py-4 pr-4 text-[#555]">5</td>
+							<td class="py-4 pr-4 text-[#fafafa]">Accent rail</td>
+							<td class="py-4 pr-4 text-[#34d399]">1</td>
+							<td class="py-4 text-[#a0a0a0]">No colored stripes detected</td>
+						</tr>
+						<tr class="border-b border-[#1a1a1e]">
+							<td class="py-4 pr-4 text-[#555]">6</td>
+							<td class="py-4 pr-4 text-[#fafafa]">Unearned blur</td>
+							<td class="py-4 pr-4 text-[#34d399]">1</td>
+							<td class="py-4 text-[#a0a0a0]">Backdrop blur used sparingly and appropriately</td>
+						</tr>
+						<tr class="border-b border-[#1a1a1e]">
+							<td class="py-4 pr-4 text-[#555]">7</td>
+							<td class="py-4 pr-4 text-[#fafafa]">Stat monument</td>
+							<td class="py-4 pr-4 text-[#34d399]">1</td>
+							<td class="py-4 text-[#a0a0a0]">No oversized number clusters detected</td>
+						</tr>
+						<tr class="border-b border-[#1a1a1e]">
+							<td class="py-4 pr-4 text-[#555]">8</td>
+							<td class="py-4 pr-4 text-[#fafafa]">Bounce everywhere</td>
+							<td class="py-4 pr-4 text-[#34d399]">1</td>
+							<td class="py-4 text-[#a0a0a0]">Animations are subtle; no excessive elastic easing</td>
+						</tr>
+						<tr class="border-b border-[#1a1a1e]">
+							<td class="py-4 pr-4 text-[#555]">9</td>
+							<td class="py-4 pr-4 text-[#fafafa]">Default type</td>
+							<td class="py-4 pr-4 text-[#ef4444]">0</td>
+							<td class="py-4 text-[#a0a0a0]">Plus Jakarta Sans is a common AI-generated default</td>
+						</tr>
+						<tr>
+							<td class="py-4 pr-4 text-[#555]">10</td>
+							<td class="py-4 pr-4 text-[#fafafa]">Center stack</td>
+							<td class="py-4 pr-4 text-[#34d399]">1</td>
+							<td class="py-4 text-[#a0a0a0]">Hero centering is appropriate for landing page</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section class="report-section mb-8 p-6 md:p-8">
+			<div class="mono mb-6 text-xs tracking-widest text-[#666]">// COGNITIVE LOAD / RISK</div>
+			<div class="grid gap-6 md:grid-cols-2">
+				<div>
+					<div class="mb-3 text-xl font-semibold">MODERATE</div>
+					<ul class="space-y-3 text-sm text-[#a0a0a0]">
+						<li><span class="mono mr-2 text-[#34d399]">PASS</span>Custom device mockups with domain-specific content</li>
+						<li><span class="mono mr-2 text-[#34d399]">PASS</span>Technical copy with concrete bundle IDs and APIs</li>
+						<li><span class="mono mr-2 text-[#fbbf24]">WATCH</span>Blue-violet gradients signal "generic AI startup"</li>
+						<li><span class="mono mr-2 text-[#ef4444]">FAIL</span>Uniform pattern card grid is a template reflex</li>
+						<li><span class="mono mr-2 text-[#ef4444]">FAIL</span>Decorative icon toppers with no functional purpose</li>
+					</ul>
+				</div>
+				<div>
+					<div class="mono mb-3 text-xs tracking-widest text-[#666]">// NEXT MODES</div>
+					<div class="flex flex-wrap gap-2">
+						<span class="border border-[#333] px-3 py-1 text-sm text-[#a0a0a0]">/recolor</span>
+						<span class="border border-[#333] px-3 py-1 text-sm text-[#a0a0a0]">/relayout</span>
+						<span class="border border-[#333] px-3 py-1 text-sm text-[#a0a0a0]">/typeset</span>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="report-section mb-8 p-6 md:p-8">
+			<div class="mono mb-6 text-xs tracking-widest text-[#666]">// WHAT'S WORKING</div>
+			<div class="grid gap-4 md:grid-cols-3">
+				<article class="border border-[#1f1f24] p-4">
+					<h2 class="mb-2 text-sm font-semibold">Custom Device Mockups</h2>
+					<p class="text-sm leading-6 text-[#a0a0a0]">Phone and tablet mockups with actual UI content (map, terminal, chat) are specific to each ported app.</p>
+				</article>
+				<article class="border border-[#1f1f24] p-4">
+					<h2 class="mb-2 text-sm font-semibold">Domain-Specific Copy</h2>
+					<p class="text-sm leading-6 text-[#a0a0a0]">Bundle IDs, API levels, and architecture patterns are concrete and technical — not placeholder text.</p>
+				</article>
+				<article class="border border-[#1f1f24] p-4">
+					<h2 class="mb-2 text-sm font-semibold">Secondary Accents</h2>
+					<p class="text-sm leading-6 text-[#a0a0a0]">Emerald and purple provide some differentiation from the mono-blue default.</p>
+				</article>
+			</div>
+		</section>
+
+		<section class="report-section mb-8 p-6 md:p-8">
+			<div class="mono mb-6 text-xs tracking-widest text-[#666]">// PRIORITY ISSUES</div>
+			<div class="space-y-5">
+				<article class="border border-[#2a1d22] bg-[#110b0d] p-5">
+					<div class="mono mb-2 text-xs text-[#f43f5e]">P1</div>
+					<h2 class="mb-2 text-lg font-semibold">Tech Gradients Signal Generic AI Startup</h2>
+					<p class="mb-4 text-sm leading-6 text-[#a0a0a0]">Hero text gradient (styles.css:332), brand logo (styles.css:183), and modal glyph (styles.css:2165) all use blue-violet-indigo gradients — the most common visual reflex for AI/tech startups.</p>
+					<div class="border-l border-[#fbbf24] pl-4 text-sm leading-6 text-[#fbbf24]">FIX: Replace with HarmonyOS-specific gradient (coral-red to celestial-blue) or single-hue treatment.</div>
+				</article>
+				<article class="border border-[#2a1d22] bg-[#110b0d] p-5">
+					<div class="mono mb-2 text-xs text-[#f43f5e]">P1</div>
+					<h2 class="mb-2 text-lg font-semibold">Uniform Pattern Card Grid</h2>
+					<p class="mb-4 text-sm leading-6 text-[#a0a0a0]">The patterns section (index.html:404-473) uses a 3-column grid of identical cards, each with icon wrapper, title, description, flow diagram, and "Validated In" link.</p>
+					<div class="border-l border-[#fbbf24] pl-4 text-sm leading-6 text-[#fbbf24]">FIX: Vary card sizes to reflect pattern complexity, or use asymmetric composition.</div>
+				</article>
+				<article class="border border-[#2a1d22] bg-[#110b0d] p-5">
+					<div class="mono mb-2 text-xs text-[#f43f5e]">P2</div>
+					<h2 class="mb-2 text-lg font-semibold">Decorative Icon Toppers</h2>
+					<p class="mb-4 text-sm leading-6 text-[#a0a0a0]">Pattern cards have colored icon wrappers (styles.css:1359-1369) above headings that serve no functional purpose — a template fill pattern.</p>
+					<div class="border-l border-[#fbbf24] pl-4 text-sm leading-6 text-[#fbbf24]">FIX: Remove or replace with actual visual artifacts from each architecture pattern.</div>
+				</article>
+				<article class="border border-[#2a1d22] bg-[#110b0d] p-5">
+					<div class="mono mb-2 text-xs text-[#f43f5e]">P2</div>
+					<h2 class="mb-2 text-lg font-semibold">Default Typeface Choice</h2>
+					<p class="mb-4 text-sm leading-6 text-[#a0a0a0]">Plus Jakarta Sans (index.html:14) is a popular modern sans-serif with no stated reason for this project — reads as an AI-generated default.</p>
+					<div class="border-l border-[#fbbf24] pl-4 text-sm leading-6 text-[#fbbf24]">FIX: Document the choice or select a typeface with stronger ties to the engineering domain.</div>
+				</article>
+			</div>
+		</section>
+
+		<footer class="mono py-8 text-center text-xs tracking-widest text-[#444]">
+			Generated with CommandCode - 2026-09-05
+		</footer>
+	</main>
+</body>
+</html>
