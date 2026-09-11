@@ -2,140 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Production Ports Portfolio — AppFactory NEXT</title>
-  <meta name="description" content="Explore open source applications ported to OpenHarmony and HarmonyOS NEXT. Full source code, download links, and install commands." />
-
-  <!-- Fonts: Plus Jakarta Sans & JetBrains Mono -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Ports — AppFactory</title>
+  <meta name="description" content="Every AppFactory port for OpenHarmony and HarmonyOS NEXT. Source, downloads and install commands." />
+  <link rel="canonical" href="https://appfactoryhos.vercel.app/apps" />
+  <meta property="og:url" content="https://appfactoryhos.vercel.app/apps" />
   <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%231d1d1f'/><path d='M32 72 L50 28 L68 72 M38 58 L62 58' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
 </head>
-<body class="page-catalog">
-  <!-- Navigation Bar -->
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="navbar" id="navbar">
     <div class="nav-container">
-      <a class="brand" href="/" aria-label="AppFactory Home">
-        <span class="brand-logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-            <polyline points="2 17 12 22 22 17"></polyline>
-            <polyline points="2 12 12 17 22 12"></polyline>
-          </svg>
-        </span>
-        <span class="brand-text">AppFactory</span>
-        <span class="brand-tag">NEXT</span>
-      </a>
-
-      <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
-        <a href="/apps" class="nav-item active">Ports</a>
-        <a href="/architecture" class="nav-item">Architecture</a>
-        <a href="/builders" class="nav-item">Builders</a>
-        <a href="/#developers" class="nav-item">Developers</a>
-      </nav>
-
-      <div class="nav-actions">
-        <div class="status-pill" title="Verified on OpenHarmony 5.0.1 &amp; HarmonyOS NEXT">
-          <span class="pulse-dot"></span>
-          <span class="status-text">Hardware Verified</span>
-        </div>
-        <a class="btn-ghost-sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-          <span>GitHub</span>
-        </a>
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation" aria-expanded="false" aria-controls="navMenu">
-          <span></span>
-          <span></span>
-        </button>
-      </div>
+      <a class="brand" href="/" aria-label="AppFactory home"><span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></span><span class="brand-text">AppFactory</span><span class="brand-tag">HarmonyOS</span></a>
+      <nav class="nav-menu" id="navMenu" aria-label="Primary"><a href="/apps" class="nav-item active">Ports</a><a href="/architecture" class="nav-item">Architecture</a><a href="/builders" class="nav-item">Builders</a><a href="/#developers" class="nav-item">Developers</a></nav>
+      <div class="nav-actions"><span class="status-pill"><span class="pulse-dot"></span><span class="status-text">Verified builds</span></span><a class="btn-ghost-sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg><span>GitHub</span></a><button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="navMenu"><span></span><span></span></button></div>
     </div>
   </header>
-
-  <main class="catalog-main">
+  <main class="catalog-main" id="main">
     <div class="content-wrap">
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb"><ol class="breadcrumb-list"><li><a href="/">Home</a></li><li class="sep">/</li><li class="active">Ports</li></ol></nav>
       <div class="catalog-hero-header">
-        <div class="section-kicker">PORTFOLIO DIRECTORY</div>
-        <h1 class="catalog-title">HarmonyOS NEXT Ports</h1>
-        <p class="catalog-subtitle">
-          Comprehensive collection of essential global applications ported to OpenHarmony 5.0.1 and HarmonyOS NEXT.
-          Every project includes transparent install guides, verifiable hardware notes, and direct GitHub releases.
-        </p>
-
-        <!-- Search & Filter Bar -->
+        <div class="section-kicker">Catalog · Sept 2026</div>
+        <h1 class="catalog-title">Every port, with receipts.</h1>
+        <p class="catalog-subtitle">Four projects, each with a live release badge. Open one for the .hap download, release notes and the full install guide.</p>
         <div class="catalog-controls">
-          <div class="search-input-wrapper">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="search" id="catalogSearchInput" placeholder="Search ports, tech stacks, bundles, APIs..." autocomplete="off" />
-            <button class="search-clear hidden" id="catalogSearchClear" aria-label="Clear search">×</button>
-          </div>
-
-          <div class="filter-pills" id="catalogFilterPills" role="group" aria-label="Filter by technology">
-            <button class="filter-pill active" data-stack="all">All Ports</button>
-            <button class="filter-pill" data-stack="Flutter">Flutter</button>
-            <button class="filter-pill" data-stack="ArkTS">ArkTS</button>
-            <button class="filter-pill" data-stack="Go">Go Backend</button>
-            <button class="filter-pill" data-stack="NAPI">Native C / NAPI</button>
-          </div>
+          <div class="search-input-wrapper"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><input type="search" id="catalogSearchInput" placeholder="Search ports, stacks, bundles…" autocomplete="off" aria-label="Search ports" /><button class="search-clear hidden" id="catalogSearchClear" aria-label="Clear search">×</button></div>
+          <div class="filter-pills" id="catalogFilterPills" role="group" aria-label="Filter by technology"><button class="filter-pill active" data-stack="all">All</button><button class="filter-pill" data-stack="Flutter">Flutter</button><button class="filter-pill" data-stack="ArkTS">ArkTS</button><button class="filter-pill" data-stack="Go">Go</button><button class="filter-pill" data-stack="NAPI">NAPI</button></div>
         </div>
       </div>
-
-      <!-- Bento Grid of Projects -->
-      <div class="catalog-grid" id="catalogGrid" aria-live="polite">
-        <!-- Dynamically populated -->
-      </div>
-
-      <div class="empty-state hidden" id="catalogEmptyState">
-        <div class="empty-icon">🔍</div>
-        <h3>No matching ports found</h3>
-        <p>Try clearing your search query or choosing another technology filter.</p>
-        <button class="btn-secondary" id="catalogResetBtn">Reset all filters</button>
-      </div>
+      <div class="catalog-grid" id="catalogGrid" aria-live="polite"></div>
+      <div class="empty-state hidden" id="catalogEmptyState"><h3>No matches</h3><p>Try a shorter query, or clear the stack filter.</p><button class="btn-secondary" id="catalogResetBtn">Reset filters</button></div>
     </div>
   </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="content-wrap">
-      <div class="footer-nav-row">
-        <div class="footer-col">
-          <div class="footer-brand">
-            <span class="brand-text">AppFactory</span>
-            <p>Showcasing global software engineering for the open HarmonyOS ecosystem.</p>
-          </div>
-        </div>
-        <div class="footer-col">
-          <h5>Ports</h5>
-          <a href="/apps/opengmaps">OpenGMaps (Google Maps)</a>
-          <a href="/apps/ohemacs">OHEmacs (GNU Emacs 30.1)</a>
-          <a href="/apps/whatisit">WhatIsIt (WhatsApp Client)</a>
-        </div>
-        <div class="footer-col">
-          <h5>Builders</h5>
-          <a href="https://github.com/Abhi-Flex1" target="_blank" rel="noopener">Abhi-Flex1 (GitHub)</a>
-          <a href="https://x.com/Abhi_Flex" target="_blank" rel="noopener">@Abhi_Flex on X</a>
-          <a href="https://github.com/BA4893" target="_blank" rel="noopener">BA4893 (GitHub)</a>
-          <a href="https://x.com/LivingInHarmony" target="_blank" rel="noopener">@LivingInHarmony on X</a>
-        </div>
-        <div class="footer-col">
-          <h5>Navigation</h5>
-          <a href="/apps">All Ports</a>
-          <a href="/architecture">Porting Architecture</a>
-          <a href="/builders">Core Builders</a>
-          <a href="/#developers">Developer API</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2026 AppFactory. Open source under Apache-2.0.</p>
-        <p>Verified on OpenHarmony 5.0.1 Release &amp; HarmonyOS NEXT.</p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Toast Notification -->
-  <div class="toast hidden" id="toast" role="status" aria-live="polite">Command copied to clipboard</div>
-
+  <footer class="site-footer"><div class="content-wrap"><div class="footer-nav-row"><div class="footer-col"><div class="footer-brand"><span class="brand-text">AppFactory</span><p>Ports of essential apps to HarmonyOS and OpenHarmony, with reproducible notes.</p></div></div><div class="footer-col"><h5>Ports</h5><a href="/apps/opengmaps">OpenGMaps</a><a href="/apps/opentwit">OpenTwit</a><a href="/apps/ohemacs">OHEmacs</a><a href="/apps/whatisit">WhatIsIt</a></div><div class="footer-col"><h5>Builders</h5><a href="https://github.com/Abhi-Flex1" target="_blank" rel="noopener">Abhi-Flex1</a><a href="https://x.com/Abhi_Flex" target="_blank" rel="noopener">@Abhi_Flex</a><a href="https://github.com/BA4893" target="_blank" rel="noopener">BA4893</a><a href="https://x.com/LivingInHarmony" target="_blank" rel="noopener">@LivingInHarmony</a></div><div class="footer-col"><h5>Site</h5><a href="/apps">All ports</a><a href="/architecture">Architecture</a><a href="/builders">Builders</a><a href="/#developers">API</a></div></div><div class="footer-bottom"><p>© 2026 AppFactory · Apache-2.0</p><p>Builds checked on OpenHarmony 5.0.1 and HarmonyOS 6.1.</p></div></div></footer>
+  <div class="toast hidden" id="toast" role="status" aria-live="polite">Copied</div>
   <script src="/apps.js" defer></script>
 </body>
 </html>

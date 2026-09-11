@@ -29,7 +29,8 @@ function formatBytes(bytes) {
 const REPO_MAP = {
   opengmaps: "Abhi-Flex1/OpenGMaps",
   ohemacs: "Abhi-Flex1/OHEmacs",
-  whatisit: "BA4893/WhatIsIt"
+  whatisit: "BA4893/WhatIsIt",
+  opentwit: "Abhi-Flex1/OpenTwit"
 };
 
 const releaseCache = new Map();

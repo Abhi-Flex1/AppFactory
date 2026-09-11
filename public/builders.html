@@ -2,251 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Engineering Builders — AppFactory NEXT</title>
-  <meta name="description" content="Meet the core engineering team porting mature global software to OpenHarmony and HarmonyOS NEXT." />
-
-  <!-- Fonts: Plus Jakarta Sans & JetBrains Mono -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Builders — AppFactory</title>
+  <meta name="description" content="The engineers porting global apps to HarmonyOS and OpenHarmony." />
+  <link rel="canonical" href="https://appfactoryhos.vercel.app/builders" />
+  <meta property="og:url" content="https://appfactoryhos.vercel.app/builders" />
   <link rel="stylesheet" href="/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%231d1d1f'/><path d='M32 72 L50 28 L68 72 M38 58 L62 58' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
 </head>
-<body class="page-builders">
-  <!-- NAVIGATION BAR -->
-  <header class="navbar" id="navbar">
-    <div class="nav-container">
-      <a class="brand" href="/" aria-label="AppFactory Home">
-        <span class="brand-logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-            <polyline points="2 17 12 22 22 17"></polyline>
-            <polyline points="2 12 12 17 22 12"></polyline>
-          </svg>
-        </span>
-        <span class="brand-text">AppFactory</span>
-        <span class="brand-tag">NEXT</span>
-      </a>
-
-      <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
-        <a href="/apps" class="nav-item">Ports</a>
-        <a href="/architecture" class="nav-item">Architecture</a>
-        <a href="/builders" class="nav-item active">Builders</a>
-        <a href="/#developers" class="nav-item">Developers</a>
-      </nav>
-
-      <div class="nav-actions">
-        <div class="status-pill" title="Verified on OpenHarmony 5.0.1 &amp; HarmonyOS NEXT">
-          <span class="pulse-dot"></span>
-          <span class="status-text">Hardware Verified</span>
-        </div>
-        <a class="btn-ghost-sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-          <span>GitHub</span>
-        </a>
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation" aria-expanded="false" aria-controls="navMenu">
-          <span></span>
-          <span></span>
-        </button>
-      </div>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="navbar" id="navbar"><div class="nav-container"><a class="brand" href="/" aria-label="AppFactory home"><span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></span><span class="brand-text">AppFactory</span><span class="brand-tag">HarmonyOS</span></a><nav class="nav-menu" id="navMenu" aria-label="Primary"><a href="/apps" class="nav-item">Ports</a><a href="/architecture" class="nav-item">Architecture</a><a href="/builders" class="nav-item active">Builders</a><a href="/#developers" class="nav-item">Developers</a></nav><div class="nav-actions"><span class="status-pill"><span class="pulse-dot"></span><span class="status-text">Verified builds</span></span><a class="btn-ghost-sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg><span>GitHub</span></a><button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="navMenu"><span></span><span></span></button></div></div></header>
+  <main class="builders-page-main" id="main"><div class="content-wrap">
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb"><ol class="breadcrumb-list"><li><a href="/">Home</a></li><li class="sep">/</li><li class="active">Builders</li></ol></nav>
+    <div class="builders-hero"><div class="section-kicker">Maintainers</div><h1 class="builders-title">Two builders, three ports.</h1><p class="builders-subtitle">No team page stock photos — just the two accounts that sign the commits, and the ports each one looks after.</p></div>
+    <div class="builders-detailed-grid">
+      <article class="builder-profile-card"><div class="profile-header"><div class="builder-avatar-wrap lg"><img class="builder-avatar" src="https://avatars.githubusercontent.com/u/173939742?v=4" alt="Abhi-Flex1" width="72" height="72" loading="lazy" /><div class="builder-verified-badge" title="Maintainer">✓</div></div>
+        <div class="profile-meta"><span class="builder-tagline-badge">Founder · OpenGMaps, OpenTwit, OHEmacs</span><h2 class="profile-name">Abhi-Flex1</h2><p class="profile-role">Shims, native ArkTS clients, NAPI bridges, and this site’s infrastructure.</p>
+          <div class="builder-social-btns"><a class="btn-social-chip" href="https://github.com/Abhi-Flex1" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg><span>GitHub</span></a><a class="btn-social-chip x-brand" href="https://x.com/Abhi_Flex" target="_blank" rel="noopener"><span>@Abhi_Flex</span></a></div></div></div>
+        <div class="profile-body"><h3>Focus</h3><div class="builder-focus-list mb-4"><span class="builder-focus-pill">Flutter shims</span><span class="builder-focus-pill">ArkWeb bridges</span><span class="builder-focus-pill">NAPI + EGL</span><span class="builder-focus-pill">Emacs internals</span></div><h3>Looks after</h3><div class="builder-projects-list"><a href="/apps/opengmaps" class="builder-project-row"><div class="row-glyph" style="background:#007aff">G</div><div class="row-info"><strong>OpenGMaps</strong><span>Maps SDK · OpenHarmony 5.0.1</span></div><span class="row-tag">Beta</span></a><a href="/apps/opentwit" class="builder-project-row"><div class="row-glyph" style="background:#5856d6">T</div><div class="row-info"><strong>OpenTwit</strong><span>X client · HarmonyOS 6.1</span></div><span class="row-tag">Alpha</span></a><a href="/apps/ohemacs" class="builder-project-row"><div class="row-glyph">E</div><div class="row-info"><strong>OHEmacs</strong><span>Emacs 30.1 · HarmonyOS 6.1</span></div><span class="row-tag">Stage 2</span></a></div></div></article>
+      <article class="builder-profile-card"><div class="profile-header"><div class="builder-avatar-wrap lg"><img class="builder-avatar" src="https://avatars.githubusercontent.com/u/101016869?v=4" alt="BA4893" width="72" height="72" loading="lazy" /><div class="builder-verified-badge" title="Maintainer">✓</div></div>
+        <div class="profile-meta"><span class="builder-tagline-badge green">Protocol + Go · WhatIsIt</span><h2 class="profile-name">BA4893</h2><p class="profile-role">Companion-server design, Multi-Device session handling, and the ArkTS client.</p>
+          <div class="builder-social-btns"><a class="btn-social-chip" href="https://github.com/BA4893" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg><span>GitHub</span></a><a class="btn-social-chip x-brand" href="https://x.com/LivingInHarmony" target="_blank" rel="noopener"><span>@LivingInHarmony</span></a></div></div></div>
+        <div class="profile-body"><h3>Focus</h3><div class="builder-focus-list mb-4"><span class="builder-focus-pill">Go daemons</span><span class="builder-focus-pill">whatsmeow</span><span class="builder-focus-pill">WebSocket sync</span><span class="builder-focus-pill">Voice pipeline</span></div><h3>Looks after</h3><div class="builder-projects-list"><a href="/apps/whatisit" class="builder-project-row"><div class="row-glyph" style="background:#12805c">W</div><div class="row-info"><strong>WhatIsIt</strong><span>Messaging · HarmonyOS</span></div><span class="row-tag">Beta</span></a></div></div></article>
     </div>
-  </header>
-
-  <main class="builders-page-main">
-    <div class="content-wrap">
-      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
-        <ol class="breadcrumb-list">
-          <li><a href="/">Home</a></li>
-          <li class="sep">/</li>
-          <li class="active">Core Builders</li>
-        </ol>
-      </nav>
-
-      <div class="builders-hero">
-        <div class="section-kicker">COMMUNITY &amp; MAINTAINERS</div>
-        <h1 class="builders-title">Meet The Engineering Team</h1>
-        <p class="builders-subtitle">
-          AppFactory ports are maintained and hardware-verified by dedicated open source developers pioneering the transition of global software to OpenHarmony and HarmonyOS NEXT.
-        </p>
-      </div>
-
-      <!-- BUILDER DEEP DIVES -->
-      <div class="builders-detailed-grid">
-        <!-- ABHI-FLEX1 -->
-        <article class="builder-profile-card">
-          <div class="profile-header">
-            <div class="builder-avatar-wrap lg">
-              <img class="builder-avatar" src="https://avatars.githubusercontent.com/u/173939742?v=4" alt="Abhi-Flex1 avatar" onerror="this.onerror=null;this.replaceWith(document.createTextNode('A'));" />
-              <div class="builder-verified-badge" title="Verified Porting Maintainer">✓</div>
-            </div>
-            <div class="profile-meta">
-              <span class="builder-tagline-badge">Founder &amp; Porting Engineer</span>
-              <h2 class="profile-name">Abhi-Flex1</h2>
-              <p class="profile-role">Lead maintainer of OpenGMaps, OHEmacs, and AppFactory infrastructure.</p>
-
-              <div class="builder-social-btns">
-                <a class="btn-social-chip" href="https://github.com/Abhi-Flex1" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-                  <span>@Abhi-Flex1</span>
-                </a>
-                <a class="btn-social-chip x-brand" href="https://x.com/Abhi_Flex" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                  <span>@Abhi_Flex</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="profile-body">
-            <h3>Focus Areas</h3>
-            <div class="builder-focus-list mb-4">
-              <span class="builder-focus-pill">Flutter on OpenHarmony</span>
-              <span class="builder-focus-pill">GNU Emacs Porting</span>
-              <span class="builder-focus-pill">NAPI C/C++ Binding</span>
-              <span class="builder-focus-pill">ArkWeb JS Bridges</span>
-            </div>
-
-            <h3>Maintained Ports</h3>
-            <div class="builder-projects-list">
-              <a href="/apps/opengmaps" class="builder-project-row">
-                <div class="row-glyph">◈</div>
-                <div class="row-info">
-                  <strong>OpenGMaps</strong>
-                  <span>Google Maps for OpenHarmony 5.0.1 (Flutter + ArkWeb)</span>
-                </div>
-                <span class="row-tag">v0.1.0-keyed</span>
-              </a>
-              <a href="/apps/ohemacs" class="builder-project-row">
-                <div class="row-glyph">λ</div>
-                <div class="row-info">
-                  <strong>OHEmacs</strong>
-                  <span>GNU Emacs 30.1 for HarmonyOS 6.1 (ArkTS + NAPI + C)</span>
-                </div>
-                <span class="row-tag">v0.1.0</span>
-              </a>
-            </div>
-          </div>
-        </article>
-
-        <!-- BA4893 -->
-        <article class="builder-profile-card">
-          <div class="profile-header">
-            <div class="builder-avatar-wrap lg">
-              <img class="builder-avatar" src="https://avatars.githubusercontent.com/u/101016869?v=4" alt="BA4893 avatar" onerror="this.onerror=null;this.replaceWith(document.createTextNode('B'));" />
-              <div class="builder-verified-badge" title="Verified Porting Maintainer">✓</div>
-            </div>
-            <div class="profile-meta">
-              <span class="builder-tagline-badge green">Protocol &amp; Backend Engineer</span>
-              <h2 class="profile-name">BA4893</h2>
-              <p class="profile-role">Author of WhatIsIt (Native WhatsApp client) and whatsmeow companion architecture.</p>
-
-              <div class="builder-social-btns">
-                <a class="btn-social-chip" href="https://github.com/BA4893" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-                  <span>@BA4893</span>
-                </a>
-                <a class="btn-social-chip x-brand" href="https://x.com/LivingInHarmony" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                  <span>@LivingInHarmony</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="profile-body">
-            <h3>Focus Areas</h3>
-            <div class="builder-focus-list mb-4">
-              <span class="builder-focus-pill">Go Backend Microservices</span>
-              <span class="builder-focus-pill">WhatsApp Multi-Device Protocol</span>
-              <span class="builder-focus-pill">WebSocket Synchronization</span>
-              <span class="builder-focus-pill">meowcaller Audio Pipeline</span>
-            </div>
-
-            <h3>Maintained Ports</h3>
-            <div class="builder-projects-list">
-              <a href="/apps/whatisit" class="builder-project-row">
-                <div class="row-glyph" style="background: #00A884;">✆</div>
-                <div class="row-info">
-                  <strong>WhatIsIt</strong>
-                  <span>Native WhatsApp client for HarmonyOS (ArkTS + Go companion)</span>
-                </div>
-                <span class="row-tag">Beta · Calls Experimental</span>
-              </a>
-            </div>
-          </div>
-        </article>
-      </div>
-
-      <!-- CONTRIBUTION CALLOUT -->
-      <section class="join-builders-card">
-        <div class="join-content">
-          <span class="section-kicker">CONTRIBUTE TO APPFACTORY</span>
-          <h2>Have an essential app to port to HarmonyOS?</h2>
-          <p>
-            Whether it's an upstream Flutter shim, a native ArkTS rewrite, or a NAPI bridge for legacy C/C++, AppFactory welcomes pull requests and new port dossiers.
-          </p>
-          <div class="join-actions">
-            <a href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener" class="btn-primary">
-              <span>Fork AppFactory on GitHub</span>
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-            </a>
-            <a href="/#developers" class="btn-secondary">
-              <span>View Contributor Guide</span>
-            </a>
-          </div>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="content-wrap">
-      <div class="footer-nav-row">
-        <div class="footer-col">
-          <div class="footer-brand">
-            <span class="brand-text">AppFactory</span>
-            <p>Showcasing global software engineering for the open HarmonyOS ecosystem.</p>
-          </div>
-        </div>
-        <div class="footer-col">
-          <h5>Ports</h5>
-          <a href="/apps/opengmaps">OpenGMaps (Google Maps)</a>
-          <a href="/apps/ohemacs">OHEmacs (GNU Emacs 30.1)</a>
-          <a href="/apps/whatisit">WhatIsIt (WhatsApp Client)</a>
-        </div>
-        <div class="footer-col">
-          <h5>Builders</h5>
-          <a href="https://github.com/Abhi-Flex1" target="_blank" rel="noopener">Abhi-Flex1 (GitHub)</a>
-          <a href="https://x.com/Abhi_Flex" target="_blank" rel="noopener">@Abhi_Flex on X</a>
-          <a href="https://github.com/BA4893" target="_blank" rel="noopener">BA4893 (GitHub)</a>
-          <a href="https://x.com/LivingInHarmony" target="_blank" rel="noopener">@LivingInHarmony on X</a>
-        </div>
-        <div class="footer-col">
-          <h5>Navigation</h5>
-          <a href="/apps">All Ports</a>
-          <a href="/architecture">Porting Architecture</a>
-          <a href="/builders">Core Builders</a>
-          <a href="/#developers">Developer API</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2026 AppFactory. Open source under Apache-2.0.</p>
-        <p>Verified on OpenHarmony 5.0.1 Release &amp; HarmonyOS NEXT.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    const menuToggle = document.getElementById("menuToggle");
-    const navMenu = document.getElementById("navMenu");
-    if (menuToggle && navMenu) {
-      menuToggle.addEventListener("click", () => {
-        const open = navMenu.classList.toggle("open");
-        menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
-      });
-    }
-  </script>
+    <section class="join-builders-card"><div class="join-content"><div class="section-kicker">Contribute</div><h2>Porting something? Add it here.</h2><p>Shim, shell or server — if it builds for OpenHarmony and the notes are honest, it belongs in the catalog. PRs welcome.</p><div class="join-actions"><a href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener" class="btn-primary"><span>Fork on GitHub</span></a><a href="/#developers" class="btn-secondary"><span>How to add a port</span></a></div></div></section>
+  </div></main>
+  <footer class="site-footer"><div class="content-wrap"><div class="footer-nav-row"><div class="footer-col"><div class="footer-brand"><span class="brand-text">AppFactory</span><p>Ports of essential apps to HarmonyOS and OpenHarmony, with reproducible notes.</p></div></div><div class="footer-col"><h5>Ports</h5><a href="/apps/opengmaps">OpenGMaps</a><a href="/apps/opentwit">OpenTwit</a><a href="/apps/ohemacs">OHEmacs</a><a href="/apps/whatisit">WhatIsIt</a></div><div class="footer-col"><h5>Builders</h5><a href="https://github.com/Abhi-Flex1" target="_blank" rel="noopener">Abhi-Flex1</a><a href="https://x.com/Abhi_Flex" target="_blank" rel="noopener">@Abhi_Flex</a><a href="https://github.com/BA4893" target="_blank" rel="noopener">BA4893</a><a href="https://x.com/LivingInHarmony" target="_blank" rel="noopener">@LivingInHarmony</a></div><div class="footer-col"><h5>Site</h5><a href="/apps">All ports</a><a href="/architecture">Architecture</a><a href="/builders">Builders</a><a href="/#developers">API</a></div></div><div class="footer-bottom"><p>© 2026 AppFactory · Apache-2.0</p><p>Builds checked on OpenHarmony 5.0.1 and HarmonyOS 6.1.</p></div></div></footer>
+  <script>var t=document.getElementById("menuToggle"),m=document.getElementById("navMenu");if(t&&m){t.addEventListener("click",function(){var o=m.classList.toggle("open");t.setAttribute("aria-expanded",o?"true":"false");document.body.style.overflow=o?"hidden":"";});m.addEventListener("click",function(e){if(e.target.classList.contains("nav-item")){m.classList.remove("open");t.setAttribute("aria-expanded","false");document.body.style.overflow="";}});}</script>
 </body>
 </html>

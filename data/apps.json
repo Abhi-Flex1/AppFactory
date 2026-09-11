@@ -96,5 +96,38 @@
     ],
     "install": "cd server-go && go run ./cmd/server  # :18770\n# app: oniro-app build && oniro-app app apply && oniro-app app launch",
     "disclaimer": "Unofficial client — may violate Meta ToS (ban risk). One account per server IP. No browser / Chrome / Jitsi path."
+  },
+  {
+    "id": "opentwit",
+    "glyph": "T",
+    "accent": "#5856d6",
+    "name": "OpenTwit",
+    "tagline": "Open X client for HarmonyOS devices",
+    "category": "Communication · Social",
+    "status": "Alpha",
+    "statusClass": "is-beta",
+    "stack": ["ArkTS", "Stage Model", "X API v2"],
+    "filterTags": ["ArkTS"],
+    "repo": "https://github.com/Abhi-Flex1/OpenTwit",
+    "maintainers": ["abhi-flex1"],
+    "bundle": "com.opentwit.harmony",
+    "api": "HarmonyOS 6.1.1 · API 24",
+    "license": "Apache-2.0",
+    "description": "Open-source X client built native in ArkTS: a Stage-model app with Home timeline, Explore, Alerts, DMs and Me tabs. Signs in with X via OAuth 2.0 PKCE in an embedded browser; shows sample posts with zero setup and reports paid-access (402) states honestly. Phone, tablet and 2in1 from one HAP.",
+    "features": [
+      "Home timeline with reply / repost / like / views, pull-to-refresh",
+      "Floating compose button with bottom-sheet editor (replies prefill @handle)",
+      "Sign in with X via OAuth 2.0 PKCE — the only auth, no keys to handle",
+      "Explore + search, Alerts, DMs, Me tab with profile card and sign-out",
+      "Zero-setup sample posts; honest 402 paid-access status messages"
+    ],
+    "porting": [
+      "Pattern: native ArkTS Stage client over the X API — no shim, no server",
+      "Auth seam: OAuth 2.0 PKCE in an embedded browser, token in preferences",
+      "UI seam: Navigation + bottom Tabs, HarmonyOS SymbolGlyph icons",
+      "One HAP for phone / tablet / 2in1 (EntryAbility, responsive layout)"
+    ],
+    "install": "hvigorw assembleHap --mode module -p product=default\nhdc install entry/build/default/outputs/default/entry-default-unsigned.hap",
+    "disclaimer": "Unofficial X client. X and Twitter are trademarks of X Corp. Free-tier API limits (HTTP 402) apply — expect restricted actions without paid access."
   }
 ]

@@ -111,5 +111,26 @@
         "installHint": "cd server-go && go run ./cmd/server # port :18770"
       }
     ]
+  },
+  "opentwit": {
+    "repo": "https://github.com/Abhi-Flex1/OpenTwit",
+    "hasRelease": false,
+    "tagName": "main-dev",
+    "name": "OpenTwit (Current Source)",
+    "publishedAt": "2026-09-11T17:05:23Z",
+    "htmlUrl": "https://github.com/Abhi-Flex1/OpenTwit",
+    "body": "Native ArkTS X client for HarmonyOS (Stage model, phone / tablet / 2in1). Home timeline, Explore, Alerts, DMs and Me tabs with OAuth 2.0 PKCE sign-in. Automated GitHub Releases pending; the v1.0.0 source tree builds today via hvigor.",
+    "assets": [
+      {
+          "name": "opentwit-main.zip",
+          "label": "Full Source Code (main branch)",
+          "type": "archive",
+          "size": 0,
+          "formattedSize": "ZIP",
+        "downloadCount": 0,
+        "downloadUrl": "https://github.com/Abhi-Flex1/OpenTwit/archive/refs/heads/main.zip",
+        "installHint": "unzip main.zip && cd OpenTwit-main"
+      }
+    ]
   }
 }

@@ -8,6 +8,7 @@ Express server + vanilla frontend. One dependency (`express`), no build step.
 | App | What it is | Port pattern | Stack | Target | By | Status |
 |---|---|---|---|---|---|---|
 | **OpenGMaps** ([repo](https://github.com/Abhi-Flex1/OpenGMaps)) | Google Maps client | Flutter backport shim (`google_maps_flutter_ohos` over Maps JS API in ArkWeb) | Flutter 3.27.4-ohos, Dart, ArkWeb, Location Kit | OpenHarmony 5.0.1 · API 12 · `io.opengmaps.open_gmaps` | Abhi-Flex1 | Beta (needs API key) |
+| **OpenTwit** ([repo](https://github.com/Abhi-Flex1/OpenTwit)) | Open X client | Native ArkTS Stage client over X API v2 (OAuth 2.0 PKCE) | ArkTS, HarmonyOS Symbols | HarmonyOS 6.1.1 · API 24 · `com.opentwit.harmony` | Abhi-Flex1 | Alpha |
 | **OHEmacs** ([repo](https://github.com/Abhi-Flex1/OHEmacs)) | GNU Emacs 30.1 | Native ArkTS shell + NAPI bridge to C upstream | ArkTS, NAPI, XComponent, EGL, C | HarmonyOS 6.1.1 · API 24 · `com.example.ohemacs` | Abhi-Flex1 | Stage 1 ✓, Stage 2 WIP |
 | **WhatIsIt** ([repo](https://github.com/BA4893/WhatIsIt)) | Native WhatsApp client | Companion-server bridge (ArkTS app ⇄ Go server ⇄ WA protocol) | ArkTS, Go (whatsmeow/meowcaller), WS | HarmonyOS (emulator-validated) | BA4893 | Beta, calls experimental |
 

@@ -1,6 +1,6 @@
 # AppFactory
 
-Showcase for global apps ported to OpenHarmony and HarmonyOS: **OpenGMaps SDK** (Google Maps SDK by HarmoniProductions), **OHEmacs** (GNU Emacs 30.1), **WhatIsIt** (native WhatsApp client).
+Showcase for global apps ported to OpenHarmony and HarmonyOS: **OpenGMaps SDK** (Google Maps SDK by HarmoniProductions), **OpenTwit** (open X client in native ArkTS), **OHEmacs** (GNU Emacs 30.1), **WhatIsIt** (native WhatsApp client).
 
 Node.js + Express site with a JSON API — one dependency, no build step:
 
