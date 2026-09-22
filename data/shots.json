@@ -1,0 +1,291 @@
+{
+  "opentwit-web": {
+    "repo": "Abhi-Flex1/OpenTwit-Web",
+    "ref": "main",
+    "groups": [
+      {
+        "id": "phone",
+        "title": "Phone",
+        "device": "1320 × 2856 · 377 vp layout",
+        "capture": "Emulator capture, hdc uitest screenCap",
+        "frame": "phone",
+        "shots": [
+          {
+            "id": "phone-home-for-you",
+            "label": "Home — For you",
+            "src": "/shots/opentwit-web/phone-home-for-you.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/phone-home-for-you.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/mobile/01-home-for-you.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/mobile/01-home-for-you.jpeg"
+          },
+          {
+            "id": "phone-account-menu",
+            "label": "Account menu",
+            "src": "/shots/opentwit-web/phone-account-menu.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/phone-account-menu.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/mobile/02-account-menu.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/mobile/02-account-menu.jpeg"
+          },
+          {
+            "id": "phone-explore",
+            "label": "Explore",
+            "src": "/shots/opentwit-web/phone-explore.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/phone-explore.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/mobile/04-explore.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/mobile/04-explore.jpeg"
+          },
+          {
+            "id": "phone-explore-results",
+            "label": "Search results",
+            "src": "/shots/opentwit-web/phone-explore-results.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/phone-explore-results.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/mobile/05-explore-results.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/mobile/05-explore-results.jpeg"
+          },
+          {
+            "id": "phone-notifications",
+            "label": "Notifications",
+            "src": "/shots/opentwit-web/phone-notifications.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/phone-notifications.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/mobile/06-notifications.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/mobile/06-notifications.jpeg"
+          },
+          {
+            "id": "phone-messages",
+            "label": "Messages",
+            "src": "/shots/opentwit-web/phone-messages.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/phone-messages.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/mobile/08-messages.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/mobile/08-messages.jpeg"
+          },
+          {
+            "id": "phone-profile",
+            "label": "Profile",
+            "src": "/shots/opentwit-web/phone-profile.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/phone-profile.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/mobile/09-profile.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/mobile/09-profile.jpeg"
+          },
+          {
+            "id": "phone-compose-sheet",
+            "label": "Compose sheet",
+            "src": "/shots/opentwit-web/phone-compose-sheet.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/phone-compose-sheet.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/mobile/12-compose-sheet.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/mobile/12-compose-sheet.jpeg"
+          }
+        ]
+      },
+      {
+        "id": "foldable",
+        "title": "Foldable",
+        "device": "2388 × 2480 · 955 vp layout",
+        "capture": "Emulator capture, unfolded foldable AVD",
+        "frame": "wide",
+        "shots": [
+          {
+            "id": "foldable-home-rail",
+            "label": "Home with side rail",
+            "src": "/shots/opentwit-web/foldable-home-rail.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/foldable-home-rail.jpg",
+            "width": 900,
+            "height": 935,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/foldable/01-home-rail.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/foldable/01-home-rail.jpeg"
+          },
+          {
+            "id": "foldable-home-following",
+            "label": "Following — side rail",
+            "src": "/shots/opentwit-web/foldable-home-following.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/foldable-home-following.jpg",
+            "width": 900,
+            "height": 935,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/foldable/03-home-following.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/foldable/03-home-following.jpeg"
+          },
+          {
+            "id": "foldable-explore",
+            "label": "Explore — wide layout",
+            "src": "/shots/opentwit-web/foldable-explore.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/foldable-explore.jpg",
+            "width": 900,
+            "height": 935,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/foldable/04-explore.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/foldable/04-explore.jpeg"
+          },
+          {
+            "id": "foldable-signed-install",
+            "label": "Signed HAP running",
+            "src": "/shots/opentwit-web/foldable-signed-install.jpg",
+            "thumb": "/shots/opentwit-web/thumbs/foldable-signed-install.jpg",
+            "width": 900,
+            "height": 935,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit-Web/blob/main/screenshots/final/foldable/10-signed-install.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit-Web/main/screenshots/final/foldable/10-signed-install.jpeg"
+          }
+        ]
+      }
+    ],
+    "count": 12
+  },
+  "opentwit": {
+    "repo": "Abhi-Flex1/OpenTwit",
+    "ref": "main",
+    "groups": [
+      {
+        "id": "phone",
+        "title": "Phone",
+        "device": "1320 × 2856",
+        "capture": "Device captures from the OpenTwit repository",
+        "frame": "phone",
+        "shots": [
+          {
+            "id": "phone-home",
+            "label": "Home timeline",
+            "src": "/shots/opentwit/phone-home.jpg",
+            "thumb": "/shots/opentwit/thumbs/phone-home.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit/blob/main/docs/screenshots/home.jpg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit/main/docs/screenshots/home.jpg"
+          },
+          {
+            "id": "phone-explore",
+            "label": "Explore",
+            "src": "/shots/opentwit/phone-explore.jpg",
+            "thumb": "/shots/opentwit/thumbs/phone-explore.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit/blob/main/docs/screenshots/explore.jpg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit/main/docs/screenshots/explore.jpg"
+          },
+          {
+            "id": "phone-alerts",
+            "label": "Alerts",
+            "src": "/shots/opentwit/phone-alerts.jpg",
+            "thumb": "/shots/opentwit/thumbs/phone-alerts.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit/blob/main/docs/screenshots/alerts.jpg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit/main/docs/screenshots/alerts.jpg"
+          },
+          {
+            "id": "phone-dms",
+            "label": "Direct messages",
+            "src": "/shots/opentwit/phone-dms.jpg",
+            "thumb": "/shots/opentwit/thumbs/phone-dms.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit/blob/main/docs/screenshots/dms.jpg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit/main/docs/screenshots/dms.jpg"
+          },
+          {
+            "id": "phone-me",
+            "label": "Me — profile",
+            "src": "/shots/opentwit/phone-me.jpg",
+            "thumb": "/shots/opentwit/thumbs/phone-me.jpg",
+            "width": 620,
+            "height": 1341,
+            "source": "https://github.com/Abhi-Flex1/OpenTwit/blob/main/docs/screenshots/me.jpg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OpenTwit/main/docs/screenshots/me.jpg"
+          }
+        ]
+      }
+    ],
+    "count": 5
+  },
+  "ohemacs": {
+    "repo": "Abhi-Flex1/OHEmacs",
+    "ref": "main",
+    "groups": [
+      {
+        "id": "pc",
+        "title": "PC / 2in1",
+        "device": "3120 × 2080 · Harmony_PC_61",
+        "capture": "Emulator captures from the OHEmacs repository",
+        "frame": "wide",
+        "shots": [
+          {
+            "id": "pc-gui-main",
+            "label": "GUI — *scratch*",
+            "src": "/shots/ohemacs/pc-gui-main.jpg",
+            "thumb": "/shots/ohemacs/thumbs/pc-gui-main.jpg",
+            "width": 900,
+            "height": 600,
+            "source": "https://github.com/Abhi-Flex1/OHEmacs/blob/main/screenshots/gui_main_scratch.png",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OHEmacs/main/screenshots/gui_main_scratch.png"
+          },
+          {
+            "id": "pc-gui-file-menu",
+            "label": "GUI — File menu",
+            "src": "/shots/ohemacs/pc-gui-file-menu.jpg",
+            "thumb": "/shots/ohemacs/thumbs/pc-gui-file-menu.jpg",
+            "width": 900,
+            "height": 600,
+            "source": "https://github.com/Abhi-Flex1/OHEmacs/blob/main/screenshots/gui_file_menu.png",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OHEmacs/main/screenshots/gui_file_menu.png"
+          },
+          {
+            "id": "pc-gui-rust-mode",
+            "label": "GUI — rust-mode",
+            "src": "/shots/ohemacs/pc-gui-rust-mode.jpg",
+            "thumb": "/shots/ohemacs/thumbs/pc-gui-rust-mode.jpg",
+            "width": 900,
+            "height": 600,
+            "source": "https://github.com/Abhi-Flex1/OHEmacs/blob/main/screenshots/gui_rust_mode.png",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OHEmacs/main/screenshots/gui_rust_mode.png"
+          },
+          {
+            "id": "pc-terminal-inapp",
+            "label": "In-app terminal",
+            "src": "/shots/ohemacs/pc-terminal-inapp.jpg",
+            "thumb": "/shots/ohemacs/thumbs/pc-terminal-inapp.jpg",
+            "width": 900,
+            "height": 600,
+            "source": "https://github.com/Abhi-Flex1/OHEmacs/blob/main/screenshots/terminal_inapp.png",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OHEmacs/main/screenshots/terminal_inapp.png"
+          },
+          {
+            "id": "pc-terminal-cli",
+            "label": "Native CLI (aarch64)",
+            "src": "/shots/ohemacs/pc-terminal-cli.jpg",
+            "thumb": "/shots/ohemacs/thumbs/pc-terminal-cli.jpg",
+            "width": 900,
+            "height": 600,
+            "source": "https://github.com/Abhi-Flex1/OHEmacs/blob/main/screenshots/terminal_native_cli.png",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/OHEmacs/main/screenshots/terminal_native_cli.png"
+          }
+        ]
+      }
+    ],
+    "count": 5
+  },
+  "opengmaps": {
+    "repo": "Abhi-Flex1/OpenGMaps",
+    "ref": "main",
+    "groups": [],
+    "count": 0
+  },
+  "whatisit": {
+    "repo": "BA4893/WhatIsIt",
+    "ref": "main",
+    "groups": [],
+    "count": 0
+  }
+}

@@ -11,6 +11,8 @@
   const patternGrid = $("patternGrid");
   const compatBody = $("compatBody");
   const buildersGrid = $("buildersGrid");
+  const captureWall = $("captureWall");
+  const shotCount = $("shotCount");
   const searchInput = $("searchInput");
   const searchClear = $("searchClear");
   const filterPills = $("filterPills");
@@ -20,6 +22,7 @@
 
   let APPS = [];
   let CONTRIBUTORS = [];
+  let SHOTS = {};
   let activeAppId = "opentwit-web";
   let activeStack = "all";
   let query = "";
@@ -56,17 +59,27 @@
   function renderStage() {
     const app = byId(activeAppId) || APPS[0];
     if (!app) return;
+    const entry = SHOTS[app.id];
     if (stageCanvas) {
-      stageCanvas.innerHTML = APPS.map((a) => {
-        const active = a.id === app.id ? " is-active" : "";
-        return AF.mockup(a).replace('class="device ', 'class="device' + active + " ");
-      }).join("");
+      if (AF.hasShots(entry)) {
+        stageCanvas.classList.add("stage-canvas--captures");
+        stageCanvas.innerHTML = AF.galleryHTML(app, entry);
+        AF.wireGallery(stageCanvas, app, entry);
+      } else {
+        stageCanvas.classList.remove("stage-canvas--captures");
+        stageCanvas.innerHTML = AF.mockup(app).replace('class="device ', 'class="device is-active ');
+      }
     }
     if (!stagePanel) return;
     const release = app.version && app.version !== "—" ? app.version : "Source only";
+    const shotTotal = AF.hasShots(entry) ? entry.count : 0;
     stagePanel.innerHTML =
       '<div class="stage-panel-top">' + AF.statusChip(app) +
-      '<span class="chip chip--mute">' + esc(app.tag || app.category) + "</span></div>" +
+      '<span class="chip chip--mute">' + esc(app.tag || app.category) + "</span>" +
+      (shotTotal
+        ? '<span class="chip chip--soft">' + shotTotal + " real captures</span>"
+        : '<span class="chip chip--mute">Interface model</span>') +
+      "</div>" +
       '<h3 class="stage-title">' + esc(app.name) + "</h3>" +
       '<p class="stage-tagline">' + esc(app.tagline) + "</p>" +
       '<p class="stage-desc">' + esc(app.description) + "</p>" +
@@ -78,7 +91,8 @@
       '<div class="spec-row"><dt>Latest</dt><dd>' + esc(release) + "</dd></div>" +
       "</dl>" +
       '<div class="stage-actions">' +
-      '<a class="btn btn--primary" href="/apps/' + app.id + '">Open project page</a>' +
+      '<a class="btn btn--primary" href="/apps/' + app.id + (shotTotal ? "#screens" : "") + '">' +
+      (shotTotal ? "See all " + shotTotal + " captures" : "Open project page") + "</a>" +
       '<button class="btn btn--ghost" type="button" data-open="' + app.id + '">Quick look</button>' +
       '<a class="btn btn--text" href="' + app.repo + '" target="_blank" rel="noopener">Source on GitHub' + chevron + "</a>" +
       "</div>";
@@ -114,6 +128,7 @@
 
   function cardHTML(app) {
     const stack = (app.stack || []).slice(0, 3);
+    const shots = SHOTS[app.id];
     return (
       '<article class="port-card">' +
       '<div class="port-card-top">' + AF.appIcon(app, 56) +
@@ -121,9 +136,11 @@
       '<p class="port-card-tagline">' + esc(app.tagline) + "</p></div></div>" +
       '<p class="port-card-desc is-clamped">' + esc(app.description) + "</p>" +
       '<div class="port-card-stack">' + AF.statusChip(app) +
+      (shots && shots.count ? '<span class="chip chip--soft">' + shots.count + " captures</span>" : "") +
       stack.map((s) => '<span class="chip chip--mute">' + esc(s) + "</span>").join("") + "</div>" +
       '<div class="port-card-foot">' +
-      '<a class="link-arrow" href="/apps/' + app.id + '">Open project' + chevron + "</a>" +
+      '<a class="link-arrow" href="/apps/' + app.id + (shots && shots.count ? "#screens" : "") + '">' +
+      (shots && shots.count ? "See captures" : "Open project") + chevron + "</a>" +
       '<a class="link-quiet" href="' + app.repo + '" target="_blank" rel="noopener">Source</a>' +
       "</div></article>"
     );
@@ -187,6 +204,27 @@
         "</div></article>"
       );
     }).join("");
+  }
+
+  /* Curated wall of real captures from the repositories. */
+  const WALL = [
+    { app: "opentwit-web", shot: "phone-home-for-you" },
+    { app: "opentwit", shot: "phone-home" },
+    { app: "opentwit-web", shot: "foldable-home-rail", group: "foldable" },
+    { app: "ohemacs", shot: "pc-gui-rust-mode" },
+    { app: "opentwit-web", shot: "phone-compose-sheet" },
+    { app: "opentwit", shot: "phone-dms" },
+    { app: "ohemacs", shot: "pc-terminal-cli" },
+    { app: "opentwit-web", shot: "phone-notifications" }
+  ];
+
+  function renderCaptureWall() {
+    if (!captureWall) return;
+    AF.mountCaptureWall(captureWall, APPS, SHOTS, WALL);
+    if (shotCount) {
+      const total = Object.values(SHOTS).reduce((sum, entry) => sum + (entry.count || 0), 0);
+      shotCount.textContent = total ? "These " + total + " captures" : "These captures";
+    }
   }
 
   /* ---------- Quick look sheet ---------- */
@@ -278,10 +316,15 @@
 
   async function boot() {
     try {
-      const [appsRes, contribRes] = await Promise.all([fetch("/api/apps"), fetch("/api/contributors")]);
+      const [appsRes, contribRes, shotsRes] = await Promise.all([
+        fetch("/api/apps"),
+        fetch("/api/contributors"),
+        fetch("/api/shots")
+      ]);
       if (!appsRes.ok) throw new Error("apps request failed");
       APPS = await appsRes.json();
       CONTRIBUTORS = contribRes.ok ? await contribRes.json() : [];
+      SHOTS = shotsRes.ok ? await shotsRes.json() : {};
       if (apiErrorBanner) apiErrorBanner.classList.add("is-hidden");
       const wanted = new URLSearchParams(location.search).get("app");
       activeAppId = APPS.some((a) => a.id === wanted) ? wanted : (APPS.find((a) => a.id === "opentwit-web") ? "opentwit-web" : APPS[0].id);
@@ -291,6 +334,7 @@
       renderPatterns();
       renderCompat();
       renderBuilders();
+      renderCaptureWall();
     } catch (err) {
       if (apiErrorBanner) apiErrorBanner.classList.remove("is-hidden");
       if (patternGrid) renderPatterns();

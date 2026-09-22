@@ -34,9 +34,29 @@ npm run dev      # auto-reload via node --watch
   - `/architecture`: the five porting patterns with call paths, trade-offs and the compatibility record
   - `/builders`: maintainer profiles and the ports each one looks after
 - Data: `data/apps.json` (ports), `data/releases.json` (offline release fallback), `data/contributors.json` (builder credits)
-- Server: `server.js` — static host + `GET /api/apps` + `GET /api/apps/:id` + `GET /api/releases` + `GET /api/releases/:id` + `GET /api/contributors` + `GET /health`
+- Screenshots: `data/shots.json` — real device captures pulled out of each port repository by `npm run shots` (see below), served from `public/shots/`
+- Server: `server.js` — static host + `GET /api/apps` + `GET /api/apps/:id` + `GET /api/releases` + `GET /api/releases/:id` + `GET /api/shots` + `GET /api/shots/:id` + `GET /api/contributors` + `GET /health`
 - Shared frontend helpers: `public/site.js` (app icons, device screens, porting patterns, compatibility record, toast/clipboard, nav wiring)
 - Design + API notes: [`ARCHITECTURE.md`](ARCHITECTURE.md)
+
+## Screenshots
+
+Every image on the site is a real capture taken from the port's own repository —
+no mockups. `scripts/fetch-shots.py` downloads the curated set listed in
+`scripts/shots.sources.json` from `raw.githubusercontent.com`, resizes each one
+into a viewer image plus a thumbnail under `public/shots/<port>/`, and rewrites
+`data/shots.json`, which `/api/shots` serves to the pages.
+
+```sh
+npm run shots                      # refresh everything (needs Pillow)
+npm run shots -- opentwit-web      # one port
+npm run shots -- --refresh         # ignore the download cache
+```
+
+Ports that have not committed captures yet (currently OpenGMaps and WhatIsIt)
+fall back to an interface model drawn from the app's layout, labelled as such —
+add screenshots to the repository, add them to `scripts/shots.sources.json`, and
+re-run `npm run shots` to replace the model with the real thing.
 
 ## Builders
 

@@ -131,6 +131,18 @@ app.get("/api/contributors", (req, res) => {
   res.json(readJSON("contributors.json", []));
 });
 
+// Screenshots pulled from each port repository by scripts/fetch-shots.py.
+app.get("/api/shots", (req, res) => {
+  res.json(readJSON("shots.json", {}));
+});
+
+app.get("/api/shots/:id", (req, res) => {
+  const shots = readJSON("shots.json", {});
+  const found = shots[req.params.id];
+  if (!found) return res.status(404).json({ error: "no screenshots for that port" });
+  res.json(found);
+});
+
 app.get("/api/apps", (req, res) => {
   let apps = readJSON("apps.json", []);
   const { q, stack } = req.query;

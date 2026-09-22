@@ -19,6 +19,8 @@
       .replace(/"/g, "&quot;");
   };
 
+  const esc = AF.esc;
+
   AF.tone = function (app) {
     const fb = AF.fallback[app && app.id] || { accent: "#0A59F7", accentDeep: "#0A3AA8" };
     return {
@@ -347,5 +349,246 @@
         );
       });
     }
+  };
+
+  /* ---------------------------------------------------------------------
+     Real device captures.
+     The images come from each port repository (see scripts/fetch-shots.py)
+     and are served from /shots/. `entry` is one /api/shots/<id> payload:
+     { repo, groups: [{ id, title, device, capture, frame, shots: [...] }] }
+     --------------------------------------------------------------------- */
+  AF.hasShots = function (entry) {
+    return !!(entry && entry.groups && entry.groups.some((g) => g.shots && g.shots.length));
+  };
+
+  AF.shotFigure = function (shot, frame, extraClass) {
+    return (
+      '<figure class="shot shot--' + frame + (extraClass ? " " + extraClass : "") + '">' +
+      '<img src="' + shot.src + '" width="' + shot.width + '" height="' + shot.height +
+      '" alt="' + esc(shot.label) + '" loading="lazy" decoding="async" data-raw="' + shot.raw + '">' +
+      "</figure>"
+    );
+  };
+
+  function groupTabs(groups, activeId) {
+    if (groups.length < 2) return "";
+    return (
+      '<div class="gal-tabs" role="tablist" aria-label="Screen size">' +
+      groups
+        .map(
+          (g) =>
+            '<button class="gal-tab' + (g.id === activeId ? " is-active" : "") + '" type="button" role="tab" data-group="' +
+            g.id + '" aria-selected="' + (g.id === activeId) + '">' + esc(g.title) +
+            ' <span class="gal-tab-count">' + g.shots.length + "</span></button>"
+        )
+        .join("") +
+      "</div>"
+    );
+  }
+
+  /* Compact viewer with a thumbnail strip — used in the home device stage. */
+  AF.galleryHTML = function (app, entry) {
+    if (!AF.hasShots(entry)) return "";
+    const groups = entry.groups.filter((g) => g.shots.length);
+    const group = groups[0];
+    const shot = group.shots[0];
+    return (
+      '<div class="gal" data-gal data-app="' + app.id + '">' +
+      groupTabs(groups, group.id) +
+      '<div class="gal-stage" data-gal-stage>' + AF.shotFigure(shot, group.frame) + "</div>" +
+      '<div class="gal-meta">' +
+      '<p class="gal-caption" data-gal-caption>' + esc(shot.label) + "</p>" +
+      '<p class="gal-device" data-gal-device>' + esc(group.capture) + (group.device ? " · " + esc(group.device) : "") + "</p>" +
+      '<a class="link-quiet" data-gal-source href="' + shot.source + '" target="_blank" rel="noopener">Open the capture on GitHub</a>' +
+      "</div>" +
+      '<div class="gal-thumbs" data-gal-thumbs role="tablist" aria-label="Captures">' +
+      group.shots
+        .map(
+          (s, i) =>
+            '<button class="gal-thumb' + (i === 0 ? " is-active" : "") + '" type="button" role="tab" title="' +
+            esc(s.label) + '" aria-selected="' + (i === 0) + '" data-shot="' + s.id + '">' +
+            '<img src="' + s.thumb + '" alt="' + esc(s.label) + '" loading="lazy" decoding="async">' +
+            "</button>"
+        )
+        .join("") +
+      "</div></div>"
+    );
+  };
+
+  /* Full grid for the project page — every capture in the group, click to enlarge. */
+  AF.shotGridHTML = function (app, entry) {
+    if (!AF.hasShots(entry)) return "";
+    const groups = entry.groups.filter((g) => g.shots.length);
+    const group = groups[0];
+    return (
+      '<div class="gal-grid-wrap" data-gal data-app="' + app.id + '">' +
+      groupTabs(groups, group.id) +
+      '<p class="gal-device" data-gal-device>' + esc(group.capture) + (group.device ? " · " + esc(group.device) : "") + "</p>" +
+      '<div class="shot-grid" data-gal-grid>' +
+      group.shots
+        .map(
+          (s) =>
+            '<button class="shot-card" type="button" data-shot="' + s.id + '">' +
+            AF.shotFigure(s, group.frame) +
+            '<span class="shot-card-label">' + esc(s.label) + "</span></button>"
+        )
+        .join("") +
+      "</div></div>"
+    );
+  };
+
+  function currentGroup(root, entry) {
+    const active = root.querySelector(".gal-tab.is-active");
+    const id = active ? active.dataset.group : entry.groups[0].id;
+    return entry.groups.find((g) => g.id === id) || entry.groups[0];
+  }
+
+  /* Wire a mounted gallery: group switch, thumbnail switch, lightbox. */
+  AF.wireGallery = function (root, app, entry) {
+    const stage = root.querySelector("[data-gal-stage]");
+    const grid = root.querySelector("[data-gal-grid]");
+    const caption = root.querySelector("[data-gal-caption]");
+    const device = root.querySelector("[data-gal-device]");
+    const source = root.querySelector("[data-gal-source]");
+    const thumbs = root.querySelector("[data-gal-thumbs]");
+
+    root.addEventListener("click", (event) => {
+      const groupBtn = event.target.closest(".gal-tab");
+      if (groupBtn) {
+        root.querySelectorAll(".gal-tab").forEach((b) => {
+          const on = b === groupBtn;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-selected", String(on));
+        });
+        const group = currentGroup(root, entry);
+        if (stage) {
+          stage.innerHTML = AF.shotFigure(group.shots[0], group.frame);
+          if (caption) caption.textContent = group.shots[0].label;
+          if (source) source.href = group.shots[0].source;
+        }
+        if (device) device.textContent = group.capture + (group.device ? " · " + group.device : "");
+        if (thumbs) {
+          thumbs.innerHTML = group.shots
+            .map(
+              (s, i) =>
+                '<button class="gal-thumb' + (i === 0 ? " is-active" : "") + '" type="button" title="' + esc(s.label) +
+                '" data-shot="' + s.id + '"><img src="' + s.thumb + '" alt="" loading="lazy"></button>'
+            )
+            .join("");
+        }
+        if (grid) {
+          grid.innerHTML = group.shots
+            .map(
+              (s) =>
+                '<button class="shot-card" type="button" data-shot="' + s.id + '">' + AF.shotFigure(s, group.frame) +
+                '<span class="shot-card-label">' + esc(s.label) + "</span></button>"
+            )
+            .join("");
+        }
+        return;
+      }
+
+      const thumb = event.target.closest(".gal-thumb");
+      if (thumb && thumbs && stage) {
+        const group = currentGroup(root, entry);
+        const shot = group.shots.find((s) => s.id === thumb.dataset.shot);
+        if (!shot) return;
+        thumbs.querySelectorAll(".gal-thumb").forEach((t) => {
+          const on = t === thumb;
+          t.classList.toggle("is-active", on);
+          t.setAttribute("aria-selected", String(on));
+        });
+        stage.innerHTML = AF.shotFigure(shot, group.frame);
+        if (caption) caption.textContent = shot.label;
+        if (source) source.href = shot.source;
+        return;
+      }
+
+      const card = event.target.closest(".shot-card");
+      if (card) {
+        const group = currentGroup(root, entry);
+        const shot = group.shots.find((s) => s.id === card.dataset.shot);
+        if (shot) AF.openLightbox(app, shot, group);
+      }
+    });
+  };
+
+  /* Full-size viewer for a single capture. */
+  AF.openLightbox = function (app, shot, group) {
+    let box = document.getElementById("lightbox");
+    if (!box) {
+      box = document.createElement("div");
+      box.id = "lightbox";
+      box.className = "lightbox";
+      box.setAttribute("role", "dialog");
+      box.setAttribute("aria-modal", "true");
+      box.innerHTML =
+        '<button class="lightbox-close" type="button" aria-label="Close">' +
+        '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6 18 18M18 6 6 18"/></svg></button>' +
+        '<figure class="lightbox-body"><img alt=""><figcaption><b></b><span></span>' +
+        '<a class="link-arrow" target="_blank" rel="noopener">Open the capture on GitHub</a></figcaption></figure>';
+      document.body.appendChild(box);
+      const close = () => AF.closeLightbox();
+      box.querySelector(".lightbox-close").addEventListener("click", close);
+      box.addEventListener("click", (e) => {
+        if (e.target === box) close();
+      });
+    }
+    const img = box.querySelector("img");
+    img.src = shot.src;
+    img.alt = app.name + " — " + shot.label;
+    img.width = shot.width;
+    img.height = shot.height;
+    box.querySelector("figcaption b").textContent = app.name + " — " + shot.label;
+    box.querySelector("figcaption span").textContent = group.capture + (group.device ? " · " + group.device : "");
+    box.querySelector("figcaption a").href = shot.source;
+    box.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+    box.querySelector(".lightbox-close").focus();
+    AF._lightboxKey =
+      AF._lightboxKey ||
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") AF.closeLightbox();
+      });
+  };
+
+  AF.closeLightbox = function () {
+    const box = document.getElementById("lightbox");
+    if (!box || !box.classList.contains("is-open")) return;
+    box.classList.remove("is-open");
+    document.body.style.overflow = "";
+  };
+
+  /* Home page wall: a curated slice of real captures across every port. */
+  AF.mountCaptureWall = function (root, apps, shots, picks) {
+    if (!root) return;
+    const cards = [];
+    picks.forEach((pick) => {
+      const app = apps.find((a) => a.id === pick.app);
+      const entry = shots[pick.app];
+      if (!app || !AF.hasShots(entry)) return;
+      const group = entry.groups.find((g) => g.id === pick.group) || entry.groups[0];
+      const shot = group.shots.find((s) => s.id === pick.shot) || group.shots[0];
+      cards.push(
+        '<button class="wall-card" type="button" data-app="' + app.id + '" data-frame="' + group.frame +
+        '" data-src="' + shot.src + '" data-raw="' + shot.raw + '" data-label="' + esc(app.name + " — " + shot.label) +
+        '" data-device="' + esc(group.device) + '" data-source="' + shot.source + '">' +
+        '<span class="shot shot--' + group.frame + '"><img src="' + shot.src + '" width="' + shot.width +
+        '" height="' + shot.height + '" alt="' + esc(app.name + " — " + shot.label) + '" loading="lazy" decoding="async"></span>' +
+        '<span class="wall-meta"><b>' + esc(app.name) + "</b><span>" + esc(shot.label) + "</span></span>" +
+        "</button>"
+      );
+    });
+    root.innerHTML = cards.join("");
+    root.addEventListener("click", (event) => {
+      const card = event.target.closest(".wall-card");
+      if (!card) return;
+      const app = apps.find((a) => a.id === card.dataset.app);
+      AF.openLightbox(
+        app || { name: "AppFactory" },
+        { src: card.dataset.src, raw: card.dataset.raw, label: card.dataset.label, width: 0, height: 0, source: card.dataset.source },
+        { capture: "Real device capture", device: card.dataset.device }
+      );
+    });
   };
 })();

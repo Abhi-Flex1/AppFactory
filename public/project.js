@@ -79,8 +79,7 @@
     });
   }
 
-  function renderPreview(app, contributors, release) {
-    $("previewStage").innerHTML = AF.mockup(app, "preview");
+  function renderScreens(app, contributors, shotsEntry) {
     $("featureList").innerHTML = (app.features || []).map((f) => "<li>" + esc(f) + "</li>").join("");
     const makers = (app.maintainers || []).map((id) => contributors.find((c) => c.id === id) || { name: id, github: "https://github.com/" + id });
     $("maintainerList").innerHTML = makers
@@ -92,6 +91,35 @@
           '<a class="link-arrow" href="' + (m.github || "#") + '" target="_blank" rel="noopener">GitHub</a></div>'
       )
       .join("");
+
+    const host = $("shotsHost");
+    const modelHost = $("modelHost");
+    const repoLink = $("shotsRepo");
+    if (AF.hasShots(shotsEntry)) {
+      modelHost.classList.add("is-hidden");
+      host.innerHTML = AF.shotGridHTML(app, shotsEntry);
+      AF.wireGallery(host, app, shotsEntry);
+      const groups = shotsEntry.groups;
+      $("shotsTitle").textContent = shotsEntry.count + " captures from the " + app.name + " repository";
+      $("shotsMeta").textContent =
+        groups
+          .map((g) => g.title + " " + g.shots.length)
+          .join(" · ") + " — tap a capture to open it full size.";
+      if (repoLink) {
+        repoLink.href = "https://github.com/" + shotsEntry.repo + "/tree/" + shotsEntry.ref;
+        repoLink.classList.remove("is-hidden");
+      }
+    } else {
+      host.innerHTML = "";
+      modelHost.classList.remove("is-hidden");
+      $("previewStage").innerHTML = AF.mockup(app, "preview");
+      $("shotsTitle").textContent = "Interface model";
+      $("shotsMeta").textContent = "This repository has no committed screenshots yet.";
+      if (repoLink) {
+        repoLink.href = "https://github.com/" + (shotsEntry ? shotsEntry.repo : "") + "#readme";
+        repoLink.classList.remove("is-hidden");
+      }
+    }
   }
 
   function renderArchitecture(app) {
@@ -165,10 +193,12 @@
         fetch("/api/releases/" + currentId),
         fetch("/api/contributors")
       ]);
+      const shotsRes = await fetch("/api/shots/" + currentId);
       const apps = await appsRes.json();
       const app = apps.find((a) => a.id === currentId) || apps[0];
       const release = relRes.ok ? await relRes.json() : null;
       const contributors = contribRes.ok ? await contribRes.json() : [];
+      const shotsEntry = shotsRes.ok ? await shotsRes.json() : null;
 
       document.title = app.name + " — AppFactory";
       const pageUrl = "https://appfactoryhos.vercel.app/apps/" + app.id;
@@ -206,12 +236,16 @@
       }
 
       renderAssets(app, release);
-      renderPreview(app, contributors, release);
+      renderScreens(app, contributors, shotsEntry);
       renderArchitecture(app);
       renderInstall(app, release);
       renderOther(apps);
       $("disclaimer").textContent = app.disclaimer || "";
       wireTabs();
+      if (window.location.hash === "#screens") {
+        const tab = $("tab-screens");
+        if (tab) tab.click();
+      }
     } catch (err) {
       console.error(err);
       const body = $("relBody");

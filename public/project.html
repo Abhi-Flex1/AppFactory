@@ -80,11 +80,11 @@
       </div>
     </section>
 
-    <section class="band band--tight">
+    <section class="band band--tight" id="screens">
       <div class="wrap">
         <div class="tabnav" role="tablist" aria-label="Project sections">
           <button class="active" id="tab-downloads" data-pane="downloads" role="tab" aria-selected="true" aria-controls="pane-downloads">Downloads</button>
-          <button id="tab-preview" data-pane="preview" role="tab" aria-selected="false" aria-controls="pane-preview">Preview</button>
+          <button id="tab-screens" data-pane="screens" role="tab" aria-selected="false" aria-controls="pane-screens">Screenshots</button>
           <button id="tab-architecture" data-pane="architecture" role="tab" aria-selected="false" aria-controls="pane-architecture">Architecture</button>
           <button id="tab-install" data-pane="install" role="tab" aria-selected="false" aria-controls="pane-install">Install</button>
         </div>
@@ -103,17 +103,26 @@
           </div>
         </div>
 
-        <div class="pane" id="pane-preview" role="tabpanel" aria-labelledby="tab-preview">
+        <div class="pane" id="pane-screens" role="tabpanel" aria-labelledby="tab-screens">
+          <div class="panel">
+            <div class="panel-head">
+              <div><h2 id="shotsTitle">Screenshots</h2><p id="shotsMeta">Loading captures…</p></div>
+              <a class="link-arrow is-hidden" id="shotsRepo" href="#" target="_blank" rel="noopener">Screenshot folder on GitHub</a>
+            </div>
+            <div id="shotsHost"></div>
+            <div id="modelHost" class="is-hidden">
+              <p class="section-sub">No captures are committed in this repository yet, so the frame below is an interface model drawn from the app's own layout. Add screenshots to the repo and run <code>npm run shots</code> to replace it.</p>
+              <div class="preview-stage" id="previewStage"></div>
+            </div>
+          </div>
           <div class="panel">
             <div class="preview-grid">
-              <div class="preview-stage" id="previewStage"></div>
               <div>
                 <h2 class="section-title" style="font-size:1.4rem">What works</h2>
                 <p class="section-sub">Checked against the runtime named in the spec table. Anything experimental is labelled as such.</p>
                 <ul class="feature-list" id="featureList"></ul>
-                <h3 class="section-label">Maintainer</h3>
-                <div id="maintainerList"></div>
               </div>
+              <div><h3 class="section-label">Maintainer</h3><div id="maintainerList"></div></div>
             </div>
           </div>
         </div>

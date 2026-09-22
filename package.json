@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "shots": "python3 scripts/fetch-shots.py"
   },
   "license": "Apache-2.0",
   "engines": {

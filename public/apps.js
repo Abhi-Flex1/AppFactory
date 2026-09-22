@@ -13,6 +13,7 @@
 
   let APPS = [];
   let RELEASES = {};
+  let SHOTS = {};
   let activeStack = "all";
   let query = "";
 
@@ -30,16 +31,19 @@
 
   function cardHTML(app) {
     const stack = (app.stack || []).slice(0, 3);
+    const shots = SHOTS[app.id];
+    const shotChip = shots && shots.count ? '<span class="chip chip--soft">' + shots.count + " captures</span>" : "";
     return (
       '<article class="port-card">' +
       '<div class="port-card-top">' + AF.appIcon(app, 56) +
       '<div class="port-card-head"><h3 class="port-card-name">' + esc(app.name) + "</h3>" +
       '<p class="port-card-tagline">' + esc(app.tagline) + "</p></div></div>" +
       '<p class="port-card-desc is-clamped">' + esc(app.description) + "</p>" +
-      '<div class="port-card-stack">' + AF.statusChip(app) + releaseChip(app.id) +
+      '<div class="port-card-stack">' + AF.statusChip(app) + releaseChip(app.id) + shotChip +
       stack.map((s) => '<span class="chip chip--mute">' + esc(s) + "</span>").join("") + "</div>" +
       '<div class="port-card-foot">' +
-      '<a class="link-arrow" href="/apps/' + app.id + '">Open project' + chevron + "</a>" +
+      '<a class="link-arrow" href="/apps/' + app.id + (shots && shots.count ? "#screens" : "") + '">' +
+      (shots && shots.count ? "See captures" : "Open project") + chevron + "</a>" +
       '<a class="link-quiet" href="' + app.repo + '" target="_blank" rel="noopener">Source</a>' +
       "</div></article>"
     );
@@ -102,9 +106,14 @@
 
   (async function boot() {
     try {
-      const [appsRes, relRes] = await Promise.all([fetch("/api/apps"), fetch("/api/releases")]);
+      const [appsRes, relRes, shotsRes] = await Promise.all([
+        fetch("/api/apps"),
+        fetch("/api/releases"),
+        fetch("/api/shots")
+      ]);
       APPS = await appsRes.json();
       RELEASES = relRes.ok ? await relRes.json() : {};
+      SHOTS = shotsRes.ok ? await shotsRes.json() : {};
       render();
     } catch (err) {
       console.error(err);

@@ -1,0 +1,88 @@
+{
+  "opentwit-web": {
+    "repo": "Abhi-Flex1/OpenTwit-Web",
+    "ref": "main",
+    "groups": [
+      {
+        "id": "phone",
+        "title": "Phone",
+        "device": "1320 × 2856 · 377 vp layout",
+        "capture": "Emulator capture, hdc uitest screenCap",
+        "frame": "phone",
+        "shots": [
+          { "file": "screenshots/final/mobile/01-home-for-you.jpeg", "slug": "phone-home-for-you", "label": "Home — For you" },
+          { "file": "screenshots/final/mobile/02-account-menu.jpeg", "slug": "phone-account-menu", "label": "Account menu" },
+          { "file": "screenshots/final/mobile/04-explore.jpeg", "slug": "phone-explore", "label": "Explore" },
+          { "file": "screenshots/final/mobile/05-explore-results.jpeg", "slug": "phone-explore-results", "label": "Search results" },
+          { "file": "screenshots/final/mobile/06-notifications.jpeg", "slug": "phone-notifications", "label": "Notifications" },
+          { "file": "screenshots/final/mobile/08-messages.jpeg", "slug": "phone-messages", "label": "Messages" },
+          { "file": "screenshots/final/mobile/09-profile.jpeg", "slug": "phone-profile", "label": "Profile" },
+          { "file": "screenshots/final/mobile/12-compose-sheet.jpeg", "slug": "phone-compose-sheet", "label": "Compose sheet" }
+        ]
+      },
+      {
+        "id": "foldable",
+        "title": "Foldable",
+        "device": "2388 × 2480 · 955 vp layout",
+        "capture": "Emulator capture, unfolded foldable AVD",
+        "frame": "wide",
+        "shots": [
+          { "file": "screenshots/final/foldable/01-home-rail.jpeg", "slug": "foldable-home-rail", "label": "Home with side rail" },
+          { "file": "screenshots/final/foldable/03-home-following.jpeg", "slug": "foldable-home-following", "label": "Following — side rail" },
+          { "file": "screenshots/final/foldable/04-explore.jpeg", "slug": "foldable-explore", "label": "Explore — wide layout" },
+          { "file": "screenshots/final/foldable/10-signed-install.jpeg", "slug": "foldable-signed-install", "label": "Signed HAP running" }
+        ]
+      }
+    ]
+  },
+  "opentwit": {
+    "repo": "Abhi-Flex1/OpenTwit",
+    "ref": "main",
+    "groups": [
+      {
+        "id": "phone",
+        "title": "Phone",
+        "device": "1320 × 2856",
+        "capture": "Device captures from the OpenTwit repository",
+        "frame": "phone",
+        "shots": [
+          { "file": "docs/screenshots/home.jpg", "slug": "phone-home", "label": "Home timeline" },
+          { "file": "docs/screenshots/explore.jpg", "slug": "phone-explore", "label": "Explore" },
+          { "file": "docs/screenshots/alerts.jpg", "slug": "phone-alerts", "label": "Alerts" },
+          { "file": "docs/screenshots/dms.jpg", "slug": "phone-dms", "label": "Direct messages" },
+          { "file": "docs/screenshots/me.jpg", "slug": "phone-me", "label": "Me — profile" }
+        ]
+      }
+    ]
+  },
+  "ohemacs": {
+    "repo": "Abhi-Flex1/OHEmacs",
+    "ref": "main",
+    "groups": [
+      {
+        "id": "pc",
+        "title": "PC / 2in1",
+        "device": "3120 × 2080 · Harmony_PC_61",
+        "capture": "Emulator captures from the OHEmacs repository",
+        "frame": "wide",
+        "shots": [
+          { "file": "screenshots/gui_main_scratch.png", "slug": "pc-gui-main", "label": "GUI — *scratch*" },
+          { "file": "screenshots/gui_file_menu.png", "slug": "pc-gui-file-menu", "label": "GUI — File menu" },
+          { "file": "screenshots/gui_rust_mode.png", "slug": "pc-gui-rust-mode", "label": "GUI — rust-mode" },
+          { "file": "screenshots/terminal_inapp.png", "slug": "pc-terminal-inapp", "label": "In-app terminal" },
+          { "file": "screenshots/terminal_native_cli.png", "slug": "pc-terminal-cli", "label": "Native CLI (aarch64)" }
+        ]
+      }
+    ]
+  },
+  "opengmaps": {
+    "repo": "Abhi-Flex1/OpenGMaps",
+    "ref": "main",
+    "groups": []
+  },
+  "whatisit": {
+    "repo": "BA4893/WhatIsIt",
+    "ref": "main",
+    "groups": []
+  }
+}
