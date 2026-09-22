@@ -13,7 +13,24 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://appfactoryhos.vercel.app/" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='26' fill='%230A59F7'/><path d='M32 72 L50 28 L68 72 M38 58 L62 58' stroke='white' stroke-width='9' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+  <script>
+    document.documentElement.classList.add("js");
+    (function () {
+      try {
+        if (location.pathname === "/" &&
+            !sessionStorage.getItem("af-booted") &&
+            !/[?&]noboot=1/.test(location.search) &&
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          document.documentElement.classList.add("boot-armed");
+        }
+      } catch (e) {}
+      /* Failsafes: if the motion layer never boots, give the page back. */
+      setTimeout(function () { if (!window.__AF_BOOT_OK) document.documentElement.classList.remove("boot-armed"); }, 4000);
+      setTimeout(function () { if (!document.documentElement.classList.contains("ui-ready")) document.documentElement.classList.remove("js"); }, 3000);
+    })();
+  </script>
   <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/ui.css" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -31,6 +48,38 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Spatial boot sequence: scroll-driven, first visit of the session only. -->
+  <div class="boot-spacer" id="bootSpacer" aria-hidden="true"></div>
+  <div class="boot" id="boot" hidden role="dialog" aria-modal="true" aria-label="Booting AppFactory">
+    <canvas class="boot-stars" aria-hidden="true"></canvas>
+    <div class="boot-scan" aria-hidden="true"></div>
+    <div class="boot-floor" aria-hidden="true"></div>
+    <div class="boot-stage">
+      <div class="boot-field" aria-hidden="true"></div>
+      <div class="boot-core">
+        <span class="boot-ring r1" aria-hidden="true"></span>
+        <span class="boot-ring r2" aria-hidden="true"></span>
+        <span class="boot-ring r3" aria-hidden="true"></span>
+        <div class="boot-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 12 5l8 13"/><path d="M8.4 14.4h7.2"/></svg>
+        </div>
+      </div>
+      <div class="boot-readout">
+        <p class="boot-os">HarmonyOS <b>6.1.1</b></p>
+        <div class="boot-progress" role="progressbar" aria-label="Boot progress"><i></i></div>
+        <div class="boot-meta"><span class="boot-log">HarmonyOS 6.1.1 · kernel ready</span><span class="boot-pct">0%</span></div>
+      </div>
+    </div>
+    <div class="boot-flash" aria-hidden="true"></div>
+    <div class="boot-vignette" aria-hidden="true"></div>
+    <p class="boot-brand">AppFactory · spatial boot</p>
+    <button class="boot-skip" type="button">Skip intro</button>
+    <div class="boot-hint">
+      <span>Scroll to boot</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
 
   <div class="announce">
     <div class="announce-inner">
@@ -57,6 +106,11 @@
         <a href="#developers">Developers</a>
       </nav>
       <div class="nav-side">
+        <button class="cmd-trigger" type="button" aria-label="Open the command palette">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7.4"/><path d="M16.4 16.4 21 21" stroke-linecap="round"/></svg>
+          <span>Search</span>
+          <kbd>⌘K</kbd>
+        </button>
         <span class="nav-status"><span class="chip-dot" aria-hidden="true"></span>Verified builds</span>
         <a class="btn btn--ghost btn--sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.43 2.87 8.18 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03a9.5 9.5 0 0 1 2.5-.34c.85 0 1.71.12 2.51.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
@@ -69,36 +123,53 @@
 
   <main id="main">
     <section class="hero">
+      <div class="hero-glow" aria-hidden="true" data-parallax="0.14"><i></i><i></i><i></i></div>
       <div class="wrap">
         <div class="hero-inner">
           <div class="hero-copy">
             <span class="hero-eyebrow"><span class="chip-dot" aria-hidden="true"></span>AppFactory · porting notes</span>
-            <h1 class="hero-title">Global apps, rebuilt for HarmonyOS.</h1>
-            <p class="hero-sub">Five ports that actually run: a Maps SDK without GMS, two X clients — one native ArkTS, one full web shell — GNU Emacs on an EGL surface, and a native WhatsApp client on a Go companion server. Source, signed HAP downloads and the trade-offs behind each one.</p>
-            <div class="hero-actions">
-              <a class="btn btn--primary" href="/apps/opentwit-web">
+            <h1 class="hero-title" data-split>Global apps, rebuilt for HarmonyOS.</h1>
+            <p class="hero-sub" data-reveal="up" data-reveal-delay="460">Five ports that actually run: a Maps SDK without GMS, two X clients — one native ArkTS, one full web shell — GNU Emacs on an EGL surface, and a native WhatsApp client on a Go companion server. Source, signed HAP downloads and the trade-offs behind each one.</p>
+            <div class="hero-actions" data-reveal="up" data-reveal-delay="580">
+              <a class="btn btn--primary" href="/apps/opentwit-web" data-magnetic>
                 <span>Download OpenTwit Web 1.0.0</span>
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v11"/><polyline points="7 10 12 15 17 10"/><path d="M5 19h14"/></svg>
               </a>
-              <a class="btn btn--tonal" href="#ports">Browse all five ports</a>
+              <a class="btn btn--tonal" href="#ports" data-magnetic>Browse all five ports</a>
             </div>
-            <div class="hero-stats">
-              <div class="hero-stat"><b>5 ports</b><span>Maps · Social · Editor · Messaging</span></div>
+            <div class="hero-stats" data-reveal="up" data-reveal-delay="700">
+              <div class="hero-stat"><b><span data-count="5">5</span> ports</b><span>Maps · Social · Editor · Messaging</span></div>
               <div class="hero-stat"><b>API 12 – 24</b><span>OpenHarmony 5.0.1 to HarmonyOS 6.1</span></div>
-              <div class="hero-stat"><b>2 builders</b><span>Maintained in the open on GitHub</span></div>
-              <div class="hero-stat"><b>100% open</b><span>Apache-2.0, with upstream attribution</span></div>
+              <div class="hero-stat"><b><span data-count="2">2</span> builders</b><span>Maintained in the open on GitHub</span></div>
+              <div class="hero-stat"><b><span data-count="100" data-count-suffix="%">100%</span> open</b><span>Apache-2.0, with upstream attribution</span></div>
             </div>
+            <div class="scroll-cue" aria-hidden="true"><span class="scroll-cue-track"><i></i></span>Keep scrolling</div>
           </div>
 
-          <div class="hero-visual">
-            <div class="hero-stage">
+          <div class="hero-visual tilt-wrap" data-parallax="0.05">
+            <div class="hero-stage tilt" data-tilt>
+              <span class="glare" aria-hidden="true"></span>
               <!-- Real capture from the OpenTwit-Web repo: x.com running in the native shell. -->
               <figure class="shot shot--phone">
                 <img src="/shots/opentwit-web/phone-home-for-you.jpg" width="620" height="1341"
                      alt="OpenTwit Web running x.com inside a native HarmonyOS shell — Home, For you timeline with the native tab bar" />
               </figure>
             </div>
-            <div class="hero-release">
+            <div class="hero-float" aria-hidden="true">
+              <div class="float-chip c1"><div class="float-inner">
+                <span class="app-icon" style="--tone:#0A59F7;--tone-deep:#0A3AA8;width:26px;height:26px;border-radius:8px"><svg viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.8 12h16.4M12 3.8c2.4 2.2 3.6 4.9 3.6 8.2s-1.2 6-3.6 8.2c-2.4-2.2-3.6-4.9-3.6-8.2s1.2-6 3.6-8.2z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+                <b>OpenTwit Web<span>signed HAP · 1.0.0</span></b>
+              </div></div>
+              <div class="float-chip c2"><div class="float-inner">
+                <span class="app-icon" style="--tone:#5B2EE5;--tone-deep:#2E1A80;width:26px;height:26px;border-radius:8px"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M8.6 19.5 13.4 5 16 6l-4.8 14.2z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M11.6 19.5 15.6 8.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></span>
+                <b>OHEmacs<span>GNU Emacs 30.1 · NAPI</span></b>
+              </div></div>
+              <div class="float-chip c3"><div class="float-inner">
+                <span class="app-icon" style="--tone:#00A884;--tone-deep:#00614C;width:26px;height:26px;border-radius:8px"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M20.2 11.6c0 4-3.6 7.2-8.2 7.2-1 0-2-.2-2.9-.5L4.4 20l1.2-3.6A6.9 6.9 0 0 1 3.8 11.6c0-4 3.6-7.2 8.2-7.2s8.2 3.2 8.2 7.2z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg></span>
+                <b>WhatIsIt<span>Go bridge · WebSocket</span></b>
+              </div></div>
+            </div>
+            <div class="hero-release" data-reveal="scale" data-reveal-delay="240">
               <div class="hero-release-head">
                 <span class="app-icon" style="--tone:#0A59F7;--tone-deep:#0A3AA8;width:44px;height:44px;border-radius:13px">
                   <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.8 12h16.4M12 3.8c2.4 2.2 3.6 4.9 3.6 8.2s-1.2 6-3.6 8.2c-2.4-2.2-3.6-4.9-3.6-8.2s1.2-6 3.6-8.2z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
@@ -117,14 +188,31 @@
       </div>
     </section>
 
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <div class="marquee-group">
+          <span class="marquee-item"><b>ArkTS</b> Stage model</span>
+          <span class="marquee-item"><b>ArkWeb</b> system Web component</span>
+          <span class="marquee-item"><b>NAPI</b> libentry.so</span>
+          <span class="marquee-item"><b>EGL</b> GPU surface</span>
+          <span class="marquee-item"><b>Flutter 3.27</b> ohos fork</span>
+          <span class="marquee-item"><b>Go</b> whatsmeow bridge</span>
+          <span class="marquee-item"><b>OAuth 2.0</b> PKCE</span>
+          <span class="marquee-item"><b>HarmonyOS Symbols</b> glyph set</span>
+          <span class="marquee-item"><b>API 12 → 24</b> target range</span>
+          <span class="marquee-item"><b>Signed HAP</b> installs on device</span>
+        </div>
+      </div>
+    </div>
+
     <section class="band band--alt" id="stage" aria-labelledby="stageHeading">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head" data-reveal="up">
           <span class="section-label">Live previews</span>
           <h2 class="section-title" id="stageHeading">Step through every port.</h2>
           <p class="section-sub">Real captures where the repository has them — the OpenTwit Web timeline with its native chrome and tab bar, the native client on device, the Emacs GUI on Harmony_PC_61. Ports without committed captures show an interface model instead.</p>
         </div>
-        <div class="stage">
+        <div class="stage" data-reveal="scale">
           <div class="stage-tabs" id="stageTabs" role="tablist" aria-label="Choose a port to preview"></div>
           <div class="stage-body">
             <div class="stage-canvas" id="stageCanvas" aria-live="polite"></div>
@@ -136,13 +224,13 @@
 
     <section class="band band--white" id="captures" aria-labelledby="capturesHeading">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head" data-reveal="up">
           <span class="section-label">Real devices</span>
           <h2 class="section-title" id="capturesHeading">Screenshots from the repositories.</h2>
           <p class="section-sub"><span id="shotCount">These captures</span> come straight out of the port repos — emulator and device frames committed by the maintainers, pulled into the site by <code>npm run shots</code>. Tap any one to see it full size.</p>
         </div>
         <div class="wall-grid" id="captureWall"></div>
-        <div class="page-actions btn-row">
+        <div class="page-actions btn-row" data-reveal="up" data-reveal-delay="140">
           <a class="btn btn--tonal" href="/apps/opentwit-web">All OpenTwit Web captures</a>
           <a class="btn btn--ghost" href="/apps">Browse the five ports</a>
         </div>
@@ -151,12 +239,12 @@
 
     <section class="band band--white" id="ports" aria-labelledby="portsHeading">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head" data-reveal="up">
           <span class="section-label">The catalogue</span>
           <h2 class="section-title" id="portsHeading">Five ports, documented end to end.</h2>
           <p class="section-sub">Every card carries its target runtime, bundle id and verification state. Open one for the release assets, the architecture notes and the exact build commands.</p>
         </div>
-        <div class="filter-bar">
+        <div class="filter-bar" data-reveal="up" data-reveal-delay="90">
           <div class="search-field">
             <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7.4"/><path d="M16.4 16.4 21 21" stroke-linecap="round"/></svg>
             <input type="search" id="searchInput" placeholder="Search ports, stacks, bundles…" autocomplete="off" aria-label="Search ports" />
@@ -171,7 +259,11 @@
             <button class="pill" data-stack="Go" aria-pressed="false">Go</button>
           </div>
         </div>
-        <div class="card-grid" id="portsGrid" aria-live="polite"></div>
+        <div class="card-grid" id="portsGrid" aria-live="polite">
+          <div class="skeleton-card" aria-hidden="true"><div class="sk-row"><span class="skeleton sk-icon"></span><span class="sk-lines"><span class="skeleton sk-line w70"></span><span class="skeleton sk-line w45"></span></span></div><span class="skeleton sk-body"></span><span class="skeleton sk-body"></span><div class="sk-chips"><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="sk-row"><span class="skeleton sk-icon"></span><span class="sk-lines"><span class="skeleton sk-line w70"></span><span class="skeleton sk-line w45"></span></span></div><span class="skeleton sk-body"></span><span class="skeleton sk-body"></span><div class="sk-chips"><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="sk-row"><span class="skeleton sk-icon"></span><span class="sk-lines"><span class="skeleton sk-line w70"></span><span class="skeleton sk-line w45"></span></span></div><span class="skeleton sk-body"></span><span class="skeleton sk-body"></span><div class="sk-chips"><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span></div></div>
+        </div>
         <div class="empty-state is-hidden" id="emptyState">
           <h3>No matches</h3>
           <p>Try a shorter query, or clear the stack filter.</p>
@@ -195,7 +287,7 @@
 
     <section class="band band--dark" id="patterns" aria-labelledby="patternsHeading">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head" data-reveal="up">
           <span class="section-label">How they are built</span>
           <h2 class="section-title" id="patternsHeading">Five ways onto HarmonyOS.</h2>
           <p class="section-sub">The seam matters more than the language. These are the patterns that survived contact with a real device, each with the port that proved it.</p>
@@ -206,12 +298,12 @@
 
     <section class="band band--alt" id="compatibility" aria-labelledby="compatHeading">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head" data-reveal="up">
           <span class="section-label">Compatibility</span>
           <h2 class="section-title" id="compatHeading">What was checked, and where.</h2>
           <p class="section-sub">No blanket “supports HarmonyOS” claims. Each row names the runtime it was built against and the machine that proved it.</p>
         </div>
-        <div class="table-scroll">
+        <div class="table-scroll" data-reveal="up" data-reveal-delay="100">
           <table class="data-table">
             <caption class="visually-hidden">Runtime and verification status for each AppFactory port</caption>
             <thead>
@@ -225,7 +317,7 @@
 
     <section class="band band--white" id="builders" aria-labelledby="buildersHeading">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head" data-reveal="up">
           <span class="section-label">Maintainers</span>
           <h2 class="section-title" id="buildersHeading">Two people, public commit history.</h2>
           <p class="section-sub">Every port is maintained in the open. GitHub and X accounts are the real ones — issues and pull requests land with the people who wrote the code.</p>
@@ -237,7 +329,7 @@
 
     <section class="band band--alt" id="developers" aria-labelledby="devHeading">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head" data-reveal="up">
           <span class="section-label">Developers</span>
           <h2 class="section-title" id="devHeading">Run the whole site locally.</h2>
           <p class="section-sub">Express plus a folder of JSON — one dependency, no build step. The same API that renders these pages is yours to query.</p>
@@ -307,6 +399,7 @@
           <li>WhatIsIt is unofficial. WhatsApp is a Meta trademark; unofficial clients carry account risk — test on a spare number.</li>
         </ol>
       </div>
+      <div class="footer-mark" aria-hidden="true">AppFactory</div>
       <div class="footer-bottom">
         <p>© 2026 AppFactory · Apache-2.0</p>
         <p>Builds checked on OpenHarmony 5.0.1 and HarmonyOS 6.1.1.</p>
@@ -350,5 +443,6 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="/site.js" defer></script>
   <script src="/app.js" defer></script>
+  <script src="/motion.js" defer></script>
 </body>
 </html>

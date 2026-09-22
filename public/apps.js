@@ -116,6 +116,7 @@
       SHOTS = shotsRes.ok ? await shotsRes.json() : {};
       render();
     } catch (err) {
+      if (grid) grid.innerHTML = "";
       console.error(err);
     }
   })();

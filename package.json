@@ -7,7 +7,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "shots": "python3 scripts/fetch-shots.py"
+    "shots": "python3 scripts/fetch-shots.py",
+    "test": "node scripts/smoke.js && node scripts/boot-test.js && node scripts/boot-guard-test.js",
+    "test:smoke": "node scripts/smoke.js",
+    "test:boot": "node scripts/boot-test.js && node scripts/boot-guard-test.js"
   },
   "license": "Apache-2.0",
   "engines": {
@@ -16,7 +19,9 @@
   "dependencies": {
     "express": "^4.19.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jsdom": "^22.1.0"
+  },
   "keywords": [],
   "author": ""
 }

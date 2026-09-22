@@ -471,7 +471,8 @@
           thumbs.innerHTML = group.shots
             .map(
               (s, i) =>
-                '<button class="gal-thumb' + (i === 0 ? " is-active" : "") + '" type="button" title="' + esc(s.label) +
+                '<button class="gal-thumb' + (i === 0 ? " is-active" : "") + '" type="button" role="tab" aria-selected="' +
+                (i === 0) + '" title="' + esc(s.label) +
                 '" data-shot="' + s.id + '"><img src="' + s.thumb + '" alt="" loading="lazy"></button>'
             )
             .join("");
@@ -543,6 +544,7 @@
     box.querySelector("figcaption span").textContent = group.capture + (group.device ? " · " + group.device : "");
     box.querySelector("figcaption a").href = shot.source;
     box.classList.add("is-open");
+    box._lastFocus = document.activeElement;
     document.body.style.overflow = "hidden";
     box.querySelector(".lightbox-close").focus();
     AF._lightboxKey =
@@ -557,6 +559,14 @@
     if (!box || !box.classList.contains("is-open")) return;
     box.classList.remove("is-open");
     document.body.style.overflow = "";
+    /* return focus to whatever opened the viewer */
+    const back = box._lastFocus;
+    box._lastFocus = null;
+    if (back && typeof back.focus === "function" && document.contains(back)) {
+      try {
+        back.focus({ preventScroll: true });
+      } catch (e) {}
+    }
   };
 
   /* Home page wall: a curated slice of real captures across every port. */

@@ -10,7 +10,12 @@
   <meta property="og:title" content="Ports — AppFactory" />
   <meta property="og:url" content="https://appfactoryhos.vercel.app/apps" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='26' fill='%230A59F7'/><path d='M32 72 L50 28 L68 72 M38 58 L62 58' stroke='white' stroke-width='9' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+  <script>
+    document.documentElement.classList.add("js");
+    setTimeout(function () { if (!document.documentElement.classList.contains("ui-ready")) document.documentElement.classList.remove("js"); }, 3000);
+  </script>
   <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/ui.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -40,6 +45,11 @@
         <a href="/#developers">Developers</a>
       </nav>
       <div class="nav-side">
+        <button class="cmd-trigger" type="button" aria-label="Open the command palette">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7.4"/><path d="M16.4 16.4 21 21" stroke-linecap="round"/></svg>
+          <span>Search</span>
+          <kbd>⌘K</kbd>
+        </button>
         <span class="nav-status"><span class="chip-dot" aria-hidden="true"></span>Verified builds</span>
         <a class="btn btn--ghost btn--sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.43 2.87 8.18 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03a9.5 9.5 0 0 1 2.5-.34c.85 0 1.71.12 2.51.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
@@ -54,14 +64,14 @@
     <section class="page-hero">
       <div class="wrap">
         <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span class="sep">/</span><span aria-current="page">Ports</span></nav>
-        <h1 class="page-title">Every port, with receipts.</h1>
-        <p class="page-sub">Five projects, each with its target runtime, bundle id and verification state on the card. Open one for the release assets, the release notes and the exact install commands.</p>
+        <h1 class="page-title" data-split>Every port, with receipts.</h1>
+        <p class="page-sub" data-reveal="up" data-reveal-delay="380">Five projects, each with its target runtime, bundle id and verification state on the card. Open one for the release assets, the release notes and the exact install commands.</p>
       </div>
     </section>
 
     <section class="band band--tight">
       <div class="wrap">
-        <div class="filter-bar">
+        <div class="filter-bar" data-reveal="up" data-reveal-delay="90">
           <div class="search-field">
             <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7.4"/><path d="M16.4 16.4 21 21" stroke-linecap="round"/></svg>
             <input type="search" id="searchInput" placeholder="Search ports, stacks, bundles…" autocomplete="off" aria-label="Search ports" />
@@ -76,7 +86,7 @@
             <button class="pill" data-stack="Go" aria-pressed="false">Go</button>
           </div>
         </div>
-        <div class="card-grid" id="catalogGrid" aria-live="polite"></div>
+        <div class="card-grid" id="catalogGrid" aria-live="polite"><div class="skeleton-card" aria-hidden="true"><div class="sk-row"><span class="skeleton sk-icon"></span><span class="sk-lines"><span class="skeleton sk-line w70"></span><span class="skeleton sk-line w45"></span></span></div><span class="skeleton sk-body"></span><span class="skeleton sk-body"></span><div class="sk-chips"><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span></div></div><div class="skeleton-card" aria-hidden="true"><div class="sk-row"><span class="skeleton sk-icon"></span><span class="sk-lines"><span class="skeleton sk-line w70"></span><span class="skeleton sk-line w45"></span></span></div><span class="skeleton sk-body"></span><span class="skeleton sk-body"></span><div class="sk-chips"><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span></div></div><div class="skeleton-card" aria-hidden="true"><div class="sk-row"><span class="skeleton sk-icon"></span><span class="sk-lines"><span class="skeleton sk-line w70"></span><span class="skeleton sk-line w45"></span></span></div><span class="skeleton sk-body"></span><span class="skeleton sk-body"></span><div class="sk-chips"><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span><span class="skeleton sk-chip"></span></div></div></div>
         <div class="empty-state is-hidden" id="emptyState">
           <h3>No matches</h3>
           <p>Try a shorter query, or clear the stack filter.</p>
@@ -99,7 +109,7 @@
 
     <section class="band band--white">
       <div class="wrap">
-        <div class="section-head">
+        <div class="section-head" data-reveal="up">
           <span class="section-label">How they are built</span>
           <h2 class="section-title">Five patterns, one catalogue.</h2>
           <p class="section-sub">Native ArkTS, a native web shell, a Flutter backport shim, a NAPI bridge to a C engine, and a Go companion server. The architecture page walks through each seam with its trade-offs.</p>
@@ -138,6 +148,7 @@
           <a href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">Source on GitHub</a>
         </div>
       </div>
+      <div class="footer-mark" aria-hidden="true">AppFactory</div>
       <div class="footer-bottom">
         <p>© 2026 AppFactory · Apache-2.0</p>
         <p>Builds checked on OpenHarmony 5.0.1 and HarmonyOS 6.1.1.</p>
@@ -155,5 +166,6 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="/site.js" defer></script>
   <script src="/apps.js" defer></script>
+  <script src="/motion.js" defer></script>
 </body>
 </html>

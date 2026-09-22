@@ -37,7 +37,54 @@ npm run dev      # auto-reload via node --watch
 - Screenshots: `data/shots.json` — real device captures pulled out of each port repository by `npm run shots` (see below), served from `public/shots/`
 - Server: `server.js` — static host + `GET /api/apps` + `GET /api/apps/:id` + `GET /api/releases` + `GET /api/releases/:id` + `GET /api/shots` + `GET /api/shots/:id` + `GET /api/contributors` + `GET /health`
 - Shared frontend helpers: `public/site.js` (app icons, device screens, porting patterns, compatibility record, toast/clipboard, nav wiring)
+- Motion layer: `public/ui.css` + `public/motion.js` — see below
 - Design + API notes: [`ARCHITECTURE.md`](ARCHITECTURE.md)
+
+## The motion layer
+
+The site is still zero-framework and build-free; the "best of the best" surface
+lives in two extra files loaded after the originals on every page:
+
+- **`public/ui.css`** — a second design layer: the spatial boot sequence,
+  scroll-reveal system, tilt/glare cards, cursor-spotlight borders, skeletons,
+  the ⌘K palette, stacked toasts, the marquee band and reduced-motion collapse.
+  It only ever *adds*; `styles.css` stays the source of truth for tokens.
+
+- **`public/motion.js`** — the behaviour: boot sequence, `IntersectionObserver`
+  reveals, split-word headlines, count-ups, magnetic buttons + click ripples,
+  parallax depth, the toast stack (it replaces `AF.toast`), and the command
+  palette.
+
+Borrowed patterns, hand-ported to vanilla (HeroUI and beUI are React-only):
+HeroUI's component craft — skeletons, chips, springy segmented controls, a
+React-Aria-style combobox palette — and beUI's motion primitives — tilt card
+with cursor glare, magnetic press, animated toast stack, spring bottom sheet,
+text animation and marquee.
+
+**The spatial boot sequence.** On a first visit to `/`, the page arms itself
+(before first paint) and presents a HarmonyOS-style cold boot that you *scroll
+through*: a starfield warp, an expanding brand mark with concentric rings, a
+progress bar and boot log that track your scroll honestly, then a field of app
+tiles rushing the camera before the site is handed back. It runs **once per
+browser session**, is skippable (button, `Esc`, `Enter`, `Space`), never arms
+under `prefers-reduced-motion`, and `?noboot=1` opts out of the URL. If the
+motion layer ever fails to load, two inline timers give the page back
+automatically.
+
+**Command palette.** `⌘K` / `Ctrl+K` anywhere (or the Search pill in the top
+bar) searches ports, pages and actions with fuzzy matching, arrow-key
+navigation and a copy-quickstart action.
+
+## Tests
+
+`jsdom`-driven headless checks — start the server first, then:
+
+```sh
+npm start &
+npm test              # all three suites
+npm run test:smoke    # every route boots clean, palette/toast/marquee/cards work
+npm run test:boot     # the boot sequence + its three escape hatches
+```
 
 ## Screenshots
 

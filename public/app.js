@@ -337,6 +337,7 @@
       renderCaptureWall();
     } catch (err) {
       if (apiErrorBanner) apiErrorBanner.classList.remove("is-hidden");
+      if (portsGrid) portsGrid.innerHTML = "";
       if (patternGrid) renderPatterns();
       if (compatBody) renderCompat();
       console.error(err);

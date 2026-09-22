@@ -1,0 +1,691 @@
+/* ==========================================================================
+   AppFactory — layer 2: spatial boot sequence + motion system
+   HeroUI-style component craft (chips, tabs, cards, palette, skeletons)
+   beUI-style motion primitives (tilt + glare, magnetic press, reveals,
+   marquee, stacked toasts, count-up, spring easing).
+   Loads after styles.css. Everything here degrades cleanly without JS and
+   collapses entirely under prefers-reduced-motion.
+   ========================================================================== */
+
+:root{
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --ease-out-expo:cubic-bezier(.16,1,.3,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-l:.62s;
+  --dur-xl:.9s;
+
+  --glow-blue:rgba(43,123,255,.55);
+  --glow-cyan:rgba(88,201,255,.38);
+  --boot-bg:#04050A;
+  --boot-ink:#EAF0FF;
+}
+
+/* -------------------------------------------------------------------------
+   0. Baseline guards — content is visible unless JS has taken ownership.
+   ------------------------------------------------------------------------- */
+html.js [data-reveal]{opacity:0}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+html.js [data-reveal].is-in{opacity:1}
+html:not(.js) .boot,
+html:not(.js) .scroll-progress,
+html:not(.js) .skeleton-card{display:none!important}
+
+/* View Transitions: same-origin navigations cross-fade where supported. */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vt-out .34s var(--ease-out-expo) both}
+::view-transition-new(root){animation:vt-in .42s var(--ease-out-expo) both}
+@keyframes vt-out{to{opacity:0;transform:scale(.985) translateY(-6px);filter:blur(6px)}}
+@keyframes vt-in{from{opacity:0;transform:scale(1.012) translateY(8px);filter:blur(8px)}}
+
+/* -------------------------------------------------------------------------
+   1. Scroll progress hairline + nav gliding pill
+   ------------------------------------------------------------------------- */
+.scroll-progress{
+  position:fixed;top:0;left:0;right:0;height:2px;z-index:120;
+  background:linear-gradient(90deg,#0A59F7,#4C8DFF 45%,#7C5CFF);
+  transform-origin:0 50%;transform:scaleX(0);pointer-events:none;
+  box-shadow:0 0 14px rgba(43,123,255,.55);
+}
+
+.nav-links{position:relative}
+.nav-pill{
+  position:absolute;top:50%;left:0;height:36px;width:0;
+  border-radius:var(--r-pill);pointer-events:none;opacity:0;
+  background:linear-gradient(180deg,rgba(10,89,247,.1),rgba(10,89,247,.05));
+  box-shadow:inset 0 0 0 1px rgba(10,89,247,.16);
+  transform:translate(0,-50%);
+  transition:left .46s var(--ease-spring),width .46s var(--ease-spring),top .46s var(--ease-spring),opacity .22s var(--ease);
+  z-index:-1;
+}
+html.boot-armed .scroll-progress{display:none}
+.nav-links .nav-pill.is-on{opacity:1}
+.nav-links a{position:relative;z-index:1;transition:color .22s var(--ease)}
+
+/* Command-palette trigger in the top bar */
+.cmd-trigger{
+  display:none;align-items:center;gap:8px;height:36px;padding:0 10px 0 12px;
+  border-radius:var(--r-pill);border:1px solid var(--line);background:var(--surface);
+  color:var(--ink-3);font-size:13.5px;font-weight:600;cursor:pointer;
+  transition:border-color .2s var(--ease),background .2s var(--ease),color .2s var(--ease),transform .12s var(--ease);
+}
+.cmd-trigger:hover{border-color:#C9CAD1;color:var(--ink-2);background:#FBFBFD}
+.cmd-trigger:active{transform:scale(.96)}
+.cmd-trigger kbd{
+  font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.02em;
+  background:var(--surface-2);border:1px solid var(--line);border-bottom-width:2px;
+  border-radius:6px;padding:2px 5px;color:var(--ink-3);
+}
+@media (min-width:600px){.cmd-trigger{display:inline-flex}}
+
+/* -------------------------------------------------------------------------
+   2. Spatial boot sequence (home, first visit)
+   ------------------------------------------------------------------------- */
+.boot-spacer{display:none;height:420vh}
+html.boot-armed .boot-spacer{display:block}
+html.boot-armed .announce,
+html.boot-armed .navbar,
+html.boot-armed main,
+html.boot-armed .footer,
+html.boot-armed .tabbar,
+html.boot-armed .modal,
+html.boot-armed .toast,
+html.boot-armed .toast-stack,
+html.boot-armed .skip-link{display:none!important}
+
+.boot{
+  position:fixed;inset:0;z-index:400;overflow:hidden;
+  background:radial-gradient(120% 90% at 50% 8%,#0A1024 0%,#05070F 45%,#03040A 100%);
+  color:var(--boot-ink);
+  opacity:0;transition:opacity .5s var(--ease);
+  contain:strict;
+}
+.boot[hidden]{display:none}
+.boot.is-live{opacity:1}
+.boot.is-exiting{opacity:0;transition:opacity .5s var(--ease-in-out);pointer-events:none}
+
+.boot-stars{position:absolute;inset:0;width:100%;height:100%;opacity:.9}
+.boot-vignette{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(75% 60% at 50% 45%,transparent 30%,rgba(2,3,7,.72) 100%);
+}
+.boot-scan{
+  position:absolute;inset:0;pointer-events:none;opacity:.28;mix-blend-mode:overlay;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.14) 0 1px,transparent 1px 3px);
+}
+
+/* Perspective floor */
+.boot-floor{
+  position:absolute;left:-25%;right:-25%;bottom:-6vh;height:56vh;pointer-events:none;
+  background-image:
+    linear-gradient(to right,rgba(96,150,255,.34) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(96,150,255,.34) 1px,transparent 1px);
+  background-size:64px 64px;
+  transform:perspective(520px) rotateX(74deg);
+  transform-origin:50% 100%;
+  -webkit-mask-image:linear-gradient(to top,#000 0%,transparent 78%);
+  mask-image:linear-gradient(to top,#000 0%,transparent 78%);
+  opacity:0;
+}
+
+.boot-stage{position:absolute;inset:0;display:grid;place-items:center;perspective:900px}
+
+/* --- core: brand mark + rings --- */
+.boot-core{position:relative;display:grid;place-items:center;width:280px;height:280px;transform-style:preserve-3d;will-change:transform,opacity}
+.boot-ring{
+  position:absolute;left:50%;top:50%;width:230px;height:230px;margin:-115px 0 0 -115px;
+  border-radius:50%;border:1px solid rgba(126,176,255,.5);
+  box-shadow:0 0 34px rgba(43,123,255,.28),inset 0 0 34px rgba(43,123,255,.16);
+  opacity:0;will-change:transform,opacity;
+}
+.boot-ring.r2{border-color:rgba(124,92,255,.45);box-shadow:0 0 34px rgba(124,92,255,.26),inset 0 0 30px rgba(124,92,255,.14)}
+.boot-ring.r3{border-style:dashed;border-color:rgba(88,201,255,.4)}
+
+.boot-mark{
+  position:relative;width:118px;height:118px;border-radius:34px;display:grid;place-items:center;
+  background:linear-gradient(150deg,#3D8BFF,#0A3FC6 55%,#072C8E);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.45),
+    0 0 0 1px rgba(255,255,255,.1),
+    0 22px 60px -18px rgba(10,89,247,.85),
+    0 0 90px rgba(43,123,255,.5);
+  animation:mark-breathe 3.4s var(--ease-in-out) infinite;
+}
+.boot-mark svg{width:60px;height:60px;color:#fff}
+@keyframes mark-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+
+.boot-readout{position:absolute;left:0;right:0;top:calc(50% + 172px);text-align:center;pointer-events:none}
+.boot-os{
+  font-size:13px;font-weight:700;letter-spacing:.34em;text-transform:uppercase;
+  color:rgba(234,240,255,.72);text-indent:.34em;
+}
+.boot-os b{color:#8FB6FF;font-weight:700}
+.boot-progress{
+  width:min(320px,64vw);height:4px;margin:18px auto 0;border-radius:99px;
+  background:rgba(255,255,255,.13);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);
+}
+.boot-progress i{
+  display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#0A59F7,#5FA8FF 60%,#9ED6FF);
+  box-shadow:0 0 16px rgba(95,168,255,.9);
+}
+.boot-meta{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px;font-family:var(--mono);font-size:11.5px;color:rgba(234,240,255,.5)}
+.boot-log{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.boot-log::before{content:"▸ ";color:#5FA8FF}
+.boot-pct{font-variant-numeric:tabular-nums;color:#8FB6FF;font-weight:700}
+
+/* --- spatial tile field --- */
+.boot-field{
+  position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none;opacity:0;
+  will-change:opacity;
+}
+.boot-tile{
+  position:absolute;left:50%;top:50%;
+  width:104px;height:104px;margin:-52px 0 0 -52px;border-radius:26px;
+  display:grid;place-items:center;
+  background:linear-gradient(155deg,rgba(255,255,255,.13),rgba(255,255,255,.03));
+  border:1px solid rgba(160,196,255,.34);
+  box-shadow:0 20px 50px -22px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.3),0 0 40px rgba(43,123,255,.24);
+  backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+  color:#DCE9FF;transform-style:preserve-3d;will-change:transform,opacity;
+}
+.boot-tile svg{width:44px;height:44px}
+.boot-tile.is-blank{background:linear-gradient(155deg,rgba(120,160,255,.16),rgba(80,110,255,.03));border-color:rgba(160,196,255,.2)}
+.boot-tile.is-blank::after{
+  content:"";width:34px;height:34px;border-radius:11px;
+  background:linear-gradient(140deg,rgba(255,255,255,.4),rgba(255,255,255,.04));
+}
+
+/* --- boot chrome --- */
+.boot-flash{position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 50%,#EAF2FF,#8FBDFF 45%,#0A59F7 100%);opacity:0;pointer-events:none}
+.boot-hint{
+  position:absolute;left:0;right:0;bottom:34px;display:flex;flex-direction:column;align-items:center;gap:9px;
+  font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(234,240,255,.6);
+}
+.boot-hint svg{width:20px;height:20px;animation:hint-bob 1.7s var(--ease-in-out) infinite}
+@keyframes hint-bob{0%,100%{transform:translateY(-3px);opacity:.5}50%{transform:translateY(4px);opacity:1}}
+.boot-brand{
+  position:absolute;top:26px;left:0;right:0;text-align:center;
+  font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(234,240,255,.42);
+}
+.boot-skip{
+  position:absolute;top:20px;right:20px;height:36px;padding:0 16px;border-radius:99px;cursor:pointer;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:rgba(234,240,255,.86);
+  font-size:13px;font-weight:600;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:background .2s var(--ease),transform .12s var(--ease);
+}
+.boot-skip:hover{background:rgba(255,255,255,.16)}
+.boot-skip:active{transform:scale(.95)}
+.boot-skip:focus-visible{outline:2px solid #8FB6FF;outline-offset:3px}
+
+/* -------------------------------------------------------------------------
+   3. Reveal system
+   ------------------------------------------------------------------------- */
+html.js [data-reveal]{
+  transition:opacity var(--dur-l) var(--ease-out-expo),transform var(--dur-l) var(--ease-out-expo),filter var(--dur-l) var(--ease-out-expo);
+  transition-delay:var(--rd,0ms);will-change:opacity,transform;
+}
+html.js [data-reveal="fade"]{transform:none;filter:blur(8px)}
+html.js [data-reveal="fade"].is-in{filter:blur(0)}
+html.js [data-reveal="up"]{transform:translate3d(0,26px,0)}
+html.js [data-reveal="left"]{transform:translate3d(-30px,0,0)}
+html.js [data-reveal="right"]{transform:translate3d(30px,0,0)}
+html.js [data-reveal="scale"]{transform:scale(.955)}
+html.js [data-reveal].is-in{transform:none;filter:blur(0)}
+
+/* Line-mask headline reveal (used with data-split) */
+.word-mask{display:inline-block;overflow:hidden;padding-bottom:.14em;margin-bottom:-.14em;vertical-align:bottom}
+.split-word{display:inline-block;transform:translate3d(0,110%,0) rotate(4deg);opacity:0;transition:transform .82s var(--ease-out-expo),opacity .5s var(--ease);transition-delay:var(--wd,0ms)}
+html:not(.js) .split-word,
+.split-text.is-in .split-word,
+.split-word.is-in{transform:none;opacity:1}
+
+/* -------------------------------------------------------------------------
+   4. Hero: aurora, split title, tilt + glare, floating depth chips
+   ------------------------------------------------------------------------- */
+.hero{position:relative;isolation:isolate;overflow:hidden}
+.hero-glow{position:absolute;inset:-10% -5% auto -5%;height:120%;z-index:-1;pointer-events:none;opacity:.9}
+.hero-glow i{
+  position:absolute;border-radius:50%;filter:blur(72px);opacity:.5;
+  animation:aurora 17s var(--ease-in-out) infinite alternate;
+}
+.hero-glow i:nth-child(1){width:44vw;height:44vw;left:-6vw;top:-12vw;background:radial-gradient(circle,rgba(43,123,255,.5),transparent 65%)}
+.hero-glow i:nth-child(2){width:34vw;height:34vw;right:-4vw;top:2vw;background:radial-gradient(circle,rgba(124,92,255,.36),transparent 65%);animation-delay:-6s}
+.hero-glow i:nth-child(3){width:26vw;height:26vw;left:34vw;top:26vw;background:radial-gradient(circle,rgba(88,201,255,.3),transparent 65%);animation-delay:-11s}
+@keyframes aurora{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(4vw,2vw,0) scale(1.12)}
+  100%{transform:translate3d(-3vw,-2vw,0) scale(.96)}
+}
+
+.hero-eyebrow{
+  position:relative;overflow:hidden;
+  animation:fade-up .7s var(--ease-out-expo) both;
+}
+.hero-eyebrow::after{
+  content:"";position:absolute;top:0;bottom:0;width:60%;left:-70%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.85),transparent);
+  animation:sheen 4.4s var(--ease-in-out) infinite;pointer-events:none;
+}
+@keyframes sheen{0%{left:-70%}55%{left:130%}100%{left:130%}}
+@keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+.hero-actions .btn--primary{position:relative;overflow:hidden}
+.hero-actions .btn--primary::after{
+  content:"";position:absolute;top:-60%;left:-40%;width:40%;height:220%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);
+  transform:rotate(18deg) translateX(-260%);
+  transition:transform .8s var(--ease-out-expo);
+}
+.hero-actions .btn--primary:hover::after{transform:rotate(18deg) translateX(420%)}
+
+/* Stat count-up */
+.hero-stat b{font-variant-numeric:tabular-nums}
+.hero-stat b [data-count]{display:inline-block}
+
+/* Tilt + glare stage */
+.tilt-wrap{position:relative;transform-style:preserve-3d;perspective:1100px}
+.tilt{
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0);
+  transition:transform .5s var(--ease-out-expo),box-shadow .4s var(--ease);
+  transform-style:preserve-3d;will-change:transform;
+}
+.tilt.is-tilting{transition:transform .08s linear}
+.glare{
+  position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+  transition:opacity .35s var(--ease);z-index:3;
+  background:radial-gradient(340px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.42),rgba(255,255,255,.08) 42%,transparent 66%);
+  mix-blend-mode:screen;
+}
+.tilt:hover .glare,.tilt.is-tilting .glare{opacity:1}
+
+/* Floating depth chips around the hero device */
+.hero-float{position:absolute;inset:0;pointer-events:none;z-index:4}
+.float-chip{
+  position:absolute;display:flex;align-items:center;gap:9px;padding:9px 14px 9px 10px;
+  border-radius:16px;background:rgba(255,255,255,.86);border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 18px 40px -20px rgba(11,12,16,.55),0 2px 8px -4px rgba(11,12,16,.16);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  font-size:12.5px;font-weight:700;color:var(--ink);
+  opacity:0;animation:float-in .8s var(--ease-out-expo) forwards;
+  animation-delay:var(--fd,0ms);
+  transform:translate3d(0,14px,0);
+}
+.float-chip .app-icon{width:26px;height:26px;border-radius:8px}
+.float-chip .app-icon svg{width:14px;height:14px}
+.float-chip b{display:block;font-size:12.5px;font-weight:700;line-height:1.25}
+.float-chip b span{display:block;font-size:10.5px;font-weight:600;color:var(--ink-3);line-height:1.3}
+.float-chip.c1{left:-4%;top:12%}
+.float-chip.c2{right:-6%;top:34%;--fd:140ms}
+.float-chip.c3{left:2%;bottom:12%;--fd:280ms}
+@keyframes float-in{to{opacity:1;transform:translate3d(0,0,0)}}
+.float-chip{animation-fill-mode:forwards}
+.float-inner{display:flex;align-items:center;gap:9px;animation:float-y 7s ease-in-out infinite}
+.float-chip.c2 .float-inner{animation-duration:8.4s;animation-delay:-2s}
+.float-chip.c3 .float-inner{animation-duration:9.2s;animation-delay:-4s}
+@keyframes float-y{0%,100%{transform:translateY(-6px)}50%{transform:translateY(6px)}}
+
+@media (max-width:900px){.hero-float{display:none}}
+
+/* -------------------------------------------------------------------------
+   5. Spotlight cards (cursor-tracked border glow)
+   ------------------------------------------------------------------------- */
+.port-card,.builder-card,.step,.chapter,.asset,.builder-profile,.api-card,.other-card,.shot-card,.wall-card{
+  position:relative;isolation:isolate;
+}
+.port-card::before,.builder-card::before,.step::before,.chapter::before,.asset::before,.builder-profile::before,.api-card::before,.other-card::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;opacity:0;
+  transition:opacity .4s var(--ease);
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),rgba(10,89,247,.1),transparent 62%);
+}
+.port-card:hover::before,.builder-card:hover::before,.step:hover::before,.chapter:hover::before,
+.asset:hover::before,.builder-profile:hover::before,.api-card:hover::before,.other-card:hover::before{opacity:1}
+.port-card>*,.builder-card>*,.step>*,.chapter>*,.asset>*,.builder-profile>*,.api-card>*,.other-card>*{position:relative;z-index:1}
+.port-card,.builder-card,.step,.chapter,.asset,.api-card,.other-card{transition:transform .4s var(--ease-out-expo),box-shadow .4s var(--ease),border-color .4s var(--ease)}
+.port-card:hover,.builder-card:hover,.step:hover,.chapter:hover,.asset:hover,.api-card:hover,.other-card:hover{transform:translateY(-4px);box-shadow:var(--sh-3)}
+
+/* Cards enter in a stagger — scroll-gated on first paint, and re-run whenever
+   a controller re-renders the grid (search, filter, tab switch). */
+html.js .card-grid>*,html.js .builder-grid>*,html.js .pattern-grid>*,html.js .wall-grid>*,html.js .shot-grid>*,html.js .other-grid>*,html.js .dev-grid>*,html.js .asset-grid>*{
+  opacity:0;transform:translateY(18px);
+  transition:opacity .6s var(--ease-out-expo),transform .6s var(--ease-out-expo);
+  transition-delay:var(--sd,0ms);
+}
+html.js .card-grid.is-in>*,html.js .builder-grid.is-in>*,html.js .pattern-grid.is-in>*,
+html.js .wall-grid.is-in>*,html.js .shot-grid.is-in>*,html.js .other-grid.is-in>*,
+html.js .dev-grid.is-in>*,html.js .asset-grid.is-in>*{
+  opacity:1;transform:none;
+  animation:card-in .58s var(--ease-out-expo) both;
+  animation-delay:var(--sd,0ms);
+}
+@keyframes card-in{from{opacity:0;transform:translateY(20px) scale(.985)}to{opacity:1;transform:none}}
+
+/* Section heads: label → title → sub cascade inside the parent reveal. */
+html.js .section-head[data-reveal]>*{
+  opacity:0;transform:translateY(18px);
+  transition:opacity .68s var(--ease-out-expo),transform .68s var(--ease-out-expo);
+}
+html.js .section-head[data-reveal].is-in>*{opacity:1;transform:none}
+html.js .section-head[data-reveal]>*:nth-child(1){transition-delay:.06s}
+html.js .section-head[data-reveal]>*:nth-child(2){transition-delay:.15s}
+html.js .section-head[data-reveal]>*:nth-child(3){transition-delay:.24s}
+html.js .section-head[data-reveal]>*:nth-child(n+4){transition-delay:.32s}
+
+/* -------------------------------------------------------------------------
+   6. HeroUI-style component craft
+   ------------------------------------------------------------------------- */
+/* Skeletons while the JSON API resolves */
+.skeleton{
+  position:relative;overflow:hidden;border-radius:var(--r-l);
+  background:linear-gradient(100deg,var(--surface-3) 30%,#F6F7F9 45%,var(--surface-3) 60%);
+  background-size:280% 100%;animation:shimmer 1.35s linear infinite;
+}
+.skeleton-card{display:flex;flex-direction:column;gap:12px;padding:20px;border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface)}
+.skeleton-card .sk-row{display:flex;gap:14px;align-items:center}
+.skeleton-card .sk-icon{width:56px;height:56px;border-radius:16px;flex:none}
+.skeleton-card .sk-lines{flex:1;display:grid;gap:8px}
+.skeleton-card .sk-line{height:12px;border-radius:99px}
+.skeleton-card .sk-line.w70{width:70%}
+.skeleton-card .sk-line.w45{width:45%}
+.skeleton-card .sk-body{height:14px;border-radius:99px}
+.skeleton-card .sk-chips{display:flex;gap:6px}
+.skeleton-card .sk-chip{height:26px;width:74px;border-radius:99px}
+@keyframes shimmer{to{background-position:-180% 0}}
+
+/* Segmented / pill filters with a springier press */
+.pill,.gal-tab,.stage-tab,.cmd-trigger,.btn{transition-timing-function:var(--ease-out-expo)}
+.pill{position:relative;overflow:hidden}
+.pill:active{transform:scale(.95)}
+.pill[aria-pressed="true"]{box-shadow:0 6px 16px -10px rgba(17,18,22,.8)}
+.pill.is-popping{animation:pill-pop .42s var(--ease-spring)}
+@keyframes pill-pop{0%{transform:scale(.9)}55%{transform:scale(1.07)}100%{transform:scale(1)}}
+
+/* Buttons: magnetic press + click ripple */
+.btn{position:relative;overflow:hidden;isolation:isolate}
+.btn.is-magnetic{transition:transform .34s var(--ease-spring),background var(--dur) var(--ease),border-color var(--dur) var(--ease)}
+.btn .ripple{
+  position:absolute;border-radius:50%;transform:scale(0);pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 70%);
+  animation:ripple .62s var(--ease-out-expo) forwards;
+}
+.btn--tonal .ripple,.btn--ghost .ripple{background:radial-gradient(circle,rgba(10,89,247,.32),rgba(10,89,247,0) 70%)}
+@keyframes ripple{to{transform:scale(2.6);opacity:0}}
+.btn>*{position:relative;z-index:1}
+
+/* Chips: subtle idle motion for status dots */
+.chip--status .chip-dot{animation:dot-pulse 2.4s var(--ease-in-out) infinite}
+.chip--new{position:relative;overflow:hidden}
+.chip--new::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.9) 50%,transparent 70%);
+  background-size:250% 100%;animation:sheen-bg 3.6s var(--ease-in-out) infinite;mix-blend-mode:overlay;
+}
+@keyframes dot-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.78)}}
+@keyframes sheen-bg{0%{background-position:150% 0}60%,100%{background-position:-90% 0}}
+
+/* Search field focus glow */
+.search-field{transition:box-shadow .3s var(--ease),border-color .3s var(--ease)}
+.search-field:focus-within{border-color:rgba(10,89,247,.55);box-shadow:0 0 0 4px rgba(10,89,247,.13)}
+
+/* Table rows */
+.data-table tbody tr{transition:background .22s var(--ease)}
+.data-table tbody tr:hover{background:var(--blue-soft-2)}
+
+/* Terminal caret */
+.terminal pre{position:relative}
+.terminal pre::after{
+  content:"";display:inline-block;width:8px;height:15px;margin-left:6px;vertical-align:-2px;
+  background:#7FB4FF;animation:caret 1.1s steps(1) infinite;
+}
+@keyframes caret{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+/* -------------------------------------------------------------------------
+   7. Marquee band
+   ------------------------------------------------------------------------- */
+.marquee{
+  position:relative;overflow:hidden;background:var(--dark);color:#fff;
+  border-top:1px solid var(--dark-line);border-bottom:1px solid var(--dark-line);
+  padding:15px 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+}
+.marquee-track{display:flex;width:max-content;animation:marquee 38s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-group{display:flex;align-items:center;gap:34px;padding-right:34px}
+.marquee-item{
+  display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
+  font-size:13.5px;font-weight:600;color:rgba(255,255,255,.72);
+}
+.marquee-item::before{content:"";width:5px;height:5px;border-radius:50%;background:#5FA8FF;box-shadow:0 0 10px #5FA8FF}
+.marquee-item b{color:#fff;font-weight:700}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* -------------------------------------------------------------------------
+   8. Stacked toasts (beUI animated toast stack)
+   ------------------------------------------------------------------------- */
+.toast-stack{
+  position:fixed;left:50%;bottom:88px;transform:translateX(-50%);
+  z-index:210;display:flex;flex-direction:column-reverse;align-items:center;gap:9px;
+  pointer-events:none;width:max-content;max-width:min(92vw,460px);
+}
+.toast-stack .toast{
+  position:static;opacity:1;transform:none;pointer-events:auto;
+  display:flex;align-items:center;gap:9px;
+  background:rgba(17,18,22,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 40px -18px rgba(0,0,0,.7);
+  animation:toast-in .5s var(--ease-spring) both;cursor:pointer;
+  max-width:100%;
+}
+.toast-stack .toast::before{
+  content:"";width:7px;height:7px;border-radius:50%;background:#48D07A;flex:none;
+  box-shadow:0 0 10px rgba(72,208,122,.9);
+}
+.toast-stack .toast.is-out{animation:toast-out .34s var(--ease-in-out) forwards}
+@keyframes toast-in{from{opacity:0;transform:translateY(18px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes toast-out{to{opacity:0;transform:translateY(-10px) scale(.96);filter:blur(4px)}}
+@media (min-width:1024px){.toast-stack{bottom:30px;left:auto;right:26px;transform:none;align-items:flex-end}}
+
+/* -------------------------------------------------------------------------
+   9. Command palette (⌘K)
+   ------------------------------------------------------------------------- */
+.cmd{position:fixed;inset:0;z-index:260;display:flex;align-items:flex-start;justify-content:center;padding:12vh 16px 16px}
+.cmd[hidden]{display:none}
+.cmd-backdrop{position:absolute;inset:0;background:rgba(8,9,14,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:fade .25s var(--ease) both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.cmd-panel{
+  position:relative;width:min(620px,100%);border-radius:22px;overflow:hidden;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 40px 90px -40px rgba(8,10,20,.7),0 0 0 1px rgba(11,12,16,.06);
+  animation:cmd-in .42s var(--ease-spring) both;
+}
+@keyframes cmd-in{from{opacity:0;transform:translateY(-16px) scale(.97)}to{opacity:1;transform:none}}
+.cmd-input-row{display:flex;align-items:center;gap:11px;padding:15px 16px;border-bottom:1px solid var(--line-2)}
+.cmd-input-row svg{color:var(--ink-3);flex:none}
+.cmd-input-row input{flex:1;border:0;background:none;font-size:16.5px;color:var(--ink);min-width:0}
+.cmd-input-row input:focus{outline:none}
+.cmd-input-row input::placeholder{color:var(--ink-4)}
+.cmd-input-row kbd{
+  font-family:var(--mono);font-size:10.5px;font-weight:700;background:var(--surface-2);
+  border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:3px 6px;color:var(--ink-3);
+}
+.cmd-list{list-style:none;margin:0;padding:8px;max-height:min(46vh,380px);overflow-y:auto;scrollbar-width:thin}
+.cmd-group{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-4);padding:10px 10px 6px}
+.cmd-item{
+  display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;cursor:pointer;
+  transition:background .16s var(--ease);
+}
+.cmd-item .app-icon{width:32px;height:32px;border-radius:10px}
+.cmd-item .app-icon svg{width:17px;height:17px}
+.cmd-item .cmd-ico{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);color:var(--ink-2);flex:none}
+.cmd-item .cmd-ico svg{width:17px;height:17px}
+.cmd-item .cmd-txt{flex:1;min-width:0}
+.cmd-item .cmd-txt b{display:block;font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmd-item .cmd-txt span{display:block;font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cmd-item .cmd-go{color:var(--ink-4);font-size:12px;font-weight:600;opacity:0;transition:opacity .18s var(--ease)}
+.cmd-item.is-active{background:var(--blue-soft)}
+.cmd-item.is-active .cmd-txt b{color:var(--blue-press)}
+.cmd-item.is-active .cmd-go{opacity:1;color:var(--blue)}
+.cmd-item mark{background:rgba(10,89,247,.16);color:inherit;border-radius:3px;padding:0 1px}
+.cmd-empty{padding:26px 14px;text-align:center;font-size:14px;color:var(--ink-3)}
+.cmd-foot{display:flex;gap:16px;flex-wrap:wrap;padding:11px 16px;border-top:1px solid var(--line-2);background:rgba(244,245,247,.7);font-size:11.5px;color:var(--ink-3)}
+.cmd-foot kbd{font-family:var(--mono);font-size:10px;background:#fff;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px;font-weight:700}
+
+/* -------------------------------------------------------------------------
+   10. Section-level ambient polish
+   ------------------------------------------------------------------------- */
+.band--dark{position:relative;overflow:hidden}
+.band--dark::before{
+  content:"";position:absolute;inset:-30% -10% auto -10%;height:150%;pointer-events:none;
+  background:
+    radial-gradient(45% 40% at 18% 22%,rgba(43,123,255,.32),transparent 70%),
+    radial-gradient(40% 38% at 82% 68%,rgba(124,92,255,.26),transparent 70%);
+  animation:aurora 22s var(--ease-in-out) infinite alternate;
+}
+.band--dark>.wrap{position:relative;z-index:1}
+.band--dark::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 40%,#000,transparent 85%);
+  mask-image:radial-gradient(70% 60% at 50% 40%,#000,transparent 85%);
+}
+.pattern-card{transition:transform .4s var(--ease-out-expo),box-shadow .4s var(--ease),border-color .4s var(--ease);position:relative;overflow:hidden}
+.pattern-card:hover{transform:translateY(-4px);border-color:rgba(143,182,255,.4);box-shadow:0 30px 60px -34px rgba(0,0,0,.9)}
+.pattern-card::after{
+  content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(143,182,255,.14),transparent);
+  transform:skewX(-16deg);transition:left .75s var(--ease-out-expo);pointer-events:none;
+}
+.pattern-card:hover::after{left:130%}
+
+/* Footer link micro-motion */
+.footer-col a{position:relative;transition:color .2s var(--ease),transform .3s var(--ease-out-expo)}
+.footer-col a:hover{transform:translateX(3px)}
+
+/* Section label slides in */
+html.js .section-label{transition:opacity var(--dur-l) var(--ease-out-expo),transform var(--dur-l) var(--ease-out-expo);transition-delay:var(--rd,0ms)}
+
+/* -------------------------------------------------------------------------
+   11. Responsive tuning
+   ------------------------------------------------------------------------- */
+@media (min-width:1024px){
+  .nav-links{gap:26px}
+}
+@media (max-width:600px){
+  .boot-tile{width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:22px}
+  .boot-tile svg{width:36px;height:36px}
+  .boot-readout{top:calc(50% + 150px)}
+  .boot-brand{display:none}
+  .cmd{padding-top:8vh}
+}
+/* Short viewports (landscape phones, small laptops): keep the readout clear
+   of the scroll hint and shrink the core so nothing collides. */
+@media (max-height:660px){
+  .boot-core{width:220px;height:220px}
+  .boot-mark{width:96px;height:96px;border-radius:28px}
+  .boot-mark svg{width:48px;height:48px}
+  .boot-ring{width:186px;height:186px;margin:-93px 0 0 -93px}
+  .boot-readout{top:calc(50% + 118px)}
+  .boot-hint{bottom:16px;gap:6px}
+}
+@media (max-width:380px){
+  .boot-skip{top:auto;bottom:16px;right:16px}
+}
+
+/* ==========================================================================
+   11b. Second pass — depth, feedback and page furniture
+   ========================================================================== */
+
+/* Anchored sections clear the sticky bar */
+section[id],div[id="screens"]{scroll-margin-top:78px}
+
+/* Scrollbars: thin, neutral, never in the way */
+*{scrollbar-width:thin;scrollbar-color:#C7C8D0 transparent}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#C7C8D0;border-radius:99px;border:3px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:#A9AAB2;border:3px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-corner{background:transparent}
+
+/* Parallax depth (set by motion.js) */
+[data-parallax]{transform:translate3d(0,var(--py,0px),0);will-change:transform}
+
+/* Hero scroll cue */
+.scroll-cue{display:flex;align-items:center;gap:10px;margin-top:34px;font-size:11.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-4)}
+.scroll-cue-track{position:relative;width:34px;height:2px;border-radius:2px;background:var(--line);overflow:hidden}
+.scroll-cue-track i{position:absolute;top:0;left:0;height:100%;width:12px;border-radius:2px;background:var(--blue);animation:cue-slide 2.1s var(--ease-in-out) infinite}
+@keyframes cue-slide{0%{transform:translateX(-14px)}100%{transform:translateX(36px)}}
+@media (min-width:900px){.scroll-cue{margin-top:44px}}
+
+/* Filter pills and stage tabs pop on press */
+.stage-tab.is-popping,.gal-tab.is-popping{animation:pill-pop .44s var(--ease-spring)}
+.stage-tab,.gal-tab{transition:transform .2s var(--ease-spring),background var(--dur) var(--ease),color var(--dur) var(--ease),border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+.stage-tab:active,.gal-tab:active{transform:scale(.95)}
+
+/* The dark band picks up a cursor-following bloom */
+.band--dark::before{
+  background:
+    radial-gradient(34% 34% at var(--sx,50%) var(--sy,32%),rgba(143,182,255,.34),transparent 72%),
+    radial-gradient(45% 40% at 18% 22%,rgba(43,123,255,.3),transparent 70%),
+    radial-gradient(40% 38% at 82% 68%,rgba(124,92,255,.24),transparent 70%);
+}
+
+/* Quick-look sheet: spring entrance, drag handle, drag-to-dismiss physics */
+.modal{background:rgba(11,12,16,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);animation:fade .26s var(--ease) both}
+.modal-card{animation:sheet-in .5s var(--ease-spring) both;transition:transform .45s var(--ease-spring)}
+.modal-card.is-dragging{transition:none;user-select:none}
+.modal-card.is-dismissing{animation:sheet-out .3s var(--ease-in-out) forwards}
+@keyframes sheet-in{from{opacity:0;transform:translateY(46px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes sheet-out{to{opacity:0;transform:translateY(60px) scale(.96)}}
+.sheet-grip{display:block;width:44px;height:5px;border-radius:99px;background:#D6D7DD;margin:-6px auto 6px;cursor:grab;touch-action:none}
+.sheet-grip:active{cursor:grabbing}
+@media (min-width:720px){.sheet-grip{display:none}}
+
+/* Lightbox entrance */
+.lightbox{background:rgba(8,9,12,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);animation:fade .24s var(--ease) both}
+.lightbox-body{animation:lightbox-in .42s var(--ease-spring) both}
+@keyframes lightbox-in{from{opacity:0;transform:scale(.94) translateY(14px)}to{opacity:1;transform:none}}
+.lightbox-close{transition:transform .3s var(--ease-spring),background .2s var(--ease)}
+.lightbox-close:hover{transform:rotate(90deg);background:rgba(255,255,255,.2)}
+
+/* Device captures breathe on hover */
+.gal-stage .shot,.hero-stage .shot{transition:transform .5s var(--ease-out-expo),box-shadow .5s var(--ease)}
+.hero-stage:hover .shot{transform:translateY(-4px) scale(1.012)}
+
+/* Footer signature wordmark */
+.footer-mark{
+  margin-top:34px;font-size:clamp(3rem,13vw,9rem);line-height:.9;font-weight:800;letter-spacing:-.04em;
+  background:linear-gradient(180deg,rgba(17,18,22,.16),rgba(17,18,22,.03));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  user-select:none;pointer-events:none;
+}
+
+/* Spec rows and endpoint rows pick up a tint on hover */
+.spec-row,.modal-specs div,.endpoint-list li,.spec-cell{transition:background .22s var(--ease)}
+.spec-row:hover,.modal-specs div:hover,.endpoint-list li:hover,.spec-cell:hover{background:var(--blue-soft-2)}
+
+/* Focus visibility never gets lost on dark surfaces */
+.band--dark :focus-visible,.announce :focus-visible,.terminal :focus-visible,.join-card :focus-visible{outline-color:#8FB6FF}
+
+/* -------------------------------------------------------------------------
+   12. Reduced motion — collapse everything, keep the content
+   ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion:reduce){
+  html.js [data-reveal],html.js [data-reveal].is-in{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+  html.js .section-head[data-reveal]>*{opacity:1!important;transform:none!important;transition:none!important}
+  html.js .card-grid>*,html.js .builder-grid>*,html.js .pattern-grid>*,html.js .wall-grid>*,html.js .shot-grid>*,html.js .other-grid>*,html.js .dev-grid>*,html.js .asset-grid>*{opacity:1!important;transform:none!important;transition:none!important;animation:none!important}
+  .split-word{opacity:1!important;transform:none!important;transition:none!important}
+  .boot{display:none!important}
+  .boot-spacer{display:none!important}
+  .hero-glow i,.boot-mark,.marquee-track,.float-inner,.chip--status .chip-dot,.hero-eyebrow::after,.terminal pre::after,.scroll-cue-track i,.skeleton,.chip--new::after,.pattern-card::after,.stage-tab.is-popping,.gal-tab.is-popping,.pill.is-popping,.cmd-panel,.cmd-backdrop{animation:none!important}
+  .pattern-card::after{display:none}
+  [data-parallax]{transform:none!important}
+  .marquee-track{transform:none}
+  .marquee{-webkit-mask-image:none;mask-image:none}
+  .toast-stack .toast{animation:none}
+  .modal-card,.modal,.lightbox,.lightbox-body,.lightbox-body img{animation:none!important}
+  .tilt{transform:none!important}
+  .glare{display:none}
+  ::view-transition-old(root),::view-transition-new(root){animation:none}
+}
