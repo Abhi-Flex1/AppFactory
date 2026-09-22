@@ -1,41 +1,81 @@
-# AppFactory — Architecture (v2, Node.js)
+# AppFactory — Architecture (v3, HarmonyOS design language)
 
 Showcase website for global apps ported to HarmonyOS / OpenHarmony.
-Express server + vanilla frontend. One dependency (`express`), no build step.
+Express server + vanilla frontend. One dependency (`express`), no build step,
+no bundler, no framework.
 
 ## Portfolio (source of truth: `data/apps.json`)
 
 | App | What it is | Port pattern | Stack | Target | By | Status |
 |---|---|---|---|---|---|---|
-| **OpenGMaps** ([repo](https://github.com/Abhi-Flex1/OpenGMaps)) | Google Maps client | Flutter backport shim (`google_maps_flutter_ohos` over Maps JS API in ArkWeb) | Flutter 3.27.4-ohos, Dart, ArkWeb, Location Kit | OpenHarmony 5.0.1 · API 12 · `io.opengmaps.open_gmaps` | Abhi-Flex1 | Beta (needs API key) |
+| **OpenGMaps SDK** ([repo](https://github.com/Abhi-Flex1/OpenGMaps)) | Google Maps SDK | Flutter backport shim (`google_maps_flutter_ohos` over Maps JS API in ArkWeb) | Flutter 3.27.4-ohos, Dart, ArkWeb, Location Kit | OpenHarmony 5.0.1 · API 12 · `io.opengmaps.open_gmaps` | Abhi-Flex1 | Beta (needs API key) |
 | **OpenTwit** ([repo](https://github.com/Abhi-Flex1/OpenTwit)) | Open X client | Native ArkTS Stage client over X API v2 (OAuth 2.0 PKCE) | ArkTS, HarmonyOS Symbols | HarmonyOS 6.1.1 · API 24 · `com.opentwit.harmony` | Abhi-Flex1 | Alpha |
+| **OpenTwit Web** ([repo](https://github.com/Abhi-Flex1/OpenTwit-Web)) | x.com in a native shell | Native web shell — system Web component + ArkUI chrome, injected CSS/JS | ArkTS, ArkWeb, Stage model | HarmonyOS 6.1.1 · API 24 · `com.opentwit.web` | Abhi-Flex1 | 1.0.0 · signed HAP |
 | **OHEmacs** ([repo](https://github.com/Abhi-Flex1/OHEmacs)) | GNU Emacs 30.1 | Native ArkTS shell + NAPI bridge to C upstream | ArkTS, NAPI, XComponent, EGL, C | HarmonyOS 6.1.1 · API 24 · `com.example.ohemacs` | Abhi-Flex1 | Stage 1 ✓, Stage 2 WIP |
-| **WhatIsIt** ([repo](https://github.com/BA4893/WhatIsIt)) | Native WhatsApp client | Companion-server bridge (ArkTS app ⇄ Go server ⇄ WA protocol) | ArkTS, Go (whatsmeow/meowcaller), WS | HarmonyOS (emulator-validated) | BA4893 | Beta, calls experimental |
+| **WhatIsIt** ([repo](https://github.com/BA4893/WhatIsIt)) | Native WhatsApp client | Companion-server bridge (ArkTS app ⇄ Go server ⇄ WA protocol) | ArkTS, Go (whatsmeow/meowcaller), WebSocket | HarmonyOS (emulator-validated) | BA4893 | Beta, calls experimental |
 
 Builders (`data/contributors.json`): [Abhi-Flex1](https://github.com/Abhi-Flex1) ([@Abhi_Flex](https://x.com/Abhi_Flex)) · [BA4893](https://github.com/BA4893) ([@LivingInHarmony](https://x.com/LivingInHarmony)).
 
-## Site architecture
+## File map
 
 ```
-server.js               Express: static public/ + JSON API + SPA fallback (PORT env, default 3000)
-data/apps.json          port dossiers (id, glyph, accent, stack, repo, maintainers[], install…)
-data/contributors.json  builder credits (github, twitter, avatar, focus[])
-public/index.html       bench hero / dossiers / builders / routes / developers / footer + sheet, JSON-LD
-public/styles.css       token system: lab paper, slate ink, Harmony signal blue; Space Grotesk + Plex Sans/Mono
-public/app.js           boot typing → bench select → dossiers/filter/sheet; fetch api/*, Lucide-guarded
+server.js                Express: static public/ + JSON API + MPA routes (PORT env, default 3000)
+data/apps.json           port dossiers (id, accent, status, stack, repo, maintainers[], features[], porting[], install)
+data/contributors.json   builder credits (github, twitter, avatar, focus[])
+data/releases.json       offline fallback for GitHub release data
+public/styles.css        the whole design system (tokens to components to responsive)
+public/site.js           shared helpers: app icons, device screens, patterns, compatibility, toast, nav wiring
+public/index.html        hero + device stage + catalogue + patterns + compatibility + builders + developers
+public/apps.html         catalogue with search, stack filters and release chips
+public/project.html      per-port page: downloads / preview / architecture / install
+public/architecture.html five patterns, trade-off table, compatibility record
+public/builders.html     maintainer profiles
+public/{app,apps,project,architecture,builders}.js   page controllers
 ```
 
-- **API:** `GET /api/apps[?q=][?stack=]` · `GET /api/apps/:id` · `GET /api/contributors` · `GET /health` · JSON 404 for unknown `/api/*`.
-- **Design (per Anthropic frontend-design skill + 2026 structural rules):** subject-grounded "bench log" — the page boots the ports in front of you (typed `hdc` log, status lamps, selectable devices). Cool lab paper (not cream), slate ink, Harmony signal blue; Space Grotesk display + Plex Sans body + Plex Mono for real data only. No scroll-reveals, no gradient meshes, no template chrome (no all-caps eyebrows, no `→` links, no middle-dot meta strings). Tokens as CSS vars, 4px spacing grid, fluid `clamp()` type, container queries for dossier rows.
-- **Accessibility/SEO baseline:** skip link, landmarks, heading order, visible focus, AA contrast pairs, `prefers-reduced-motion` disables typing, lazy avatars with fixed dims, JSON-LD ItemList, `<noscript>` dossier list.
-- **Filtering:** client-side full-text search + stack chips over the API payload.
-- **Dialog:** highlights, porting notes, install `<pre>`, maintainer byline, disclaimer. `Esc`/backdrop close, `aria-modal`.
+## API
 
-## Porting patterns documented on-site
+`GET /api/apps[?q=][?stack=]` · `GET /api/apps/:id` · `GET /api/releases` ·
+`GET /api/releases/:id` · `GET /api/contributors` · `GET /health` ·
+JSON `404` for unknown `/api/*`.
 
-1. **Native ArkTS shell** — Stage HAP + ArkUI + services; NAPI/XComponent for native code (WhatIsIt, OHEmacs shell).
-2. **Backport shim** — keep stock plugin API, implement the OHOS platform interface (OpenGMaps).
-3. **Companion server** — protocol lives on a small Go server, app stays thin + native (WhatIsIt server-go).
+Release data is fetched from the GitHub Releases API per repo (see `REPO_MAP`
+in `server.js`), cached for 10 minutes, and falls back to `data/releases.json`
+when the network or rate limit fails. Asset labels and install hints are
+derived from the file type (`hap` → device build, `binary` → native asset,
+`zip` → source archive).
+
+## Design system (HarmonyOS)
+
+- **Colour.** One brand accent — HarmonyOS system blue `#0A59F7` — on a neutral
+  surface ladder (`#FFFFFF` / `#F4F5F7` / `#EBECF0`) with `#0D0E12` for the
+  dark bands. Semantic green/amber/blue soft chips carry status; app icons use a
+  per-port two-tone gradient derived from each port's accent.
+- **Type.** `HarmonyOS Sans` when installed, otherwise the platform UI font.
+  Letter spacing stays at `0`; hierarchy comes from size, weight and colour.
+- **Rhythm.** 8px spacing grid, 18–24px panel radii (the HarmonyOS large-panel
+  scale), 1px hairlines, and two shadow levels for floating layers.
+- **Controls.** Capsule buttons in the HarmonyOS hierarchy — filled (primary),
+  tonal (secondary), text (tertiary) — pill chips for metadata, segmented tabs
+  for the device stage and the project sections, a bottom sheet for "quick look".
+- **Navigation.** Sticky translucent top bar on wide screens; on phones a
+  HarmonyOS-style bottom tab bar (Home / Ports / Architecture / Builders) with
+  filled symbols, which disappears again at ≥1024px.
+- **Motion.** One easing curve (`cubic-bezier(.2,0,.2,1)`) at 260ms for fades,
+  panel swaps and hover lifts; `prefers-reduced-motion` collapses all of it.
+- **Device stage.** Every screen inside a device frame is drawn from
+  `AF.SCREENS` in `public/site.js` — the OpenTwit Web timeline with its native
+  header and switcher, the native compose sheet, the maps route, the Emacs
+  window and the WhatsApp thread — and is reused verbatim on the project pages.
+
+## Accessibility / SEO baseline
+
+Skip link, landmarks, one `h1` per page, `role="tablist"`/`aria-selected` on the
+stage and project tabs, `aria-pressed` on filter pills, visible focus rings, AA
+contrast for text on both light and dark bands, `aria-live` on the rendered
+catalogue, lazy avatars with fixed dimensions, `<noscript>` port lists on the
+home and catalogue pages, per-page canonical + Open Graph tags, and JSON-LD
+`ItemList` of the five ports on the home page.
 
 ## Run / deploy
 
@@ -44,9 +84,11 @@ npm install && npm start   # http://localhost:3000
 PORT=8080 npm start        # custom port
 ```
 
-Deploy anywhere Node runs (VPS, Render, Fly, Docker). No static-export step; `GET /health` is the probe.
+Deploy anywhere Node runs (VPS, Render, Fly, Docker). No static-export step;
+`GET /health` is the probe.
 
 ## Roadmap
 
-- Screenshots per dossier, `.hap` release links, per-app deep links (`/?app=id`)
+- Screenshot galleries per port pulled from each repo's `screenshots/final`
+- Per-app deep links (`/?app=id`) and richer release filtering
 - i18n (EN/中文), RSS for new ports, tablet/foldable/watch/TV badges per port

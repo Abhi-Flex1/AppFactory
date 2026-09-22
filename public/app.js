@@ -1,294 +1,303 @@
-/* AppFactory — home controller. Solid accents, sheet modal, drawer nav. */
-let APPS = [];
-let CONTRIBUTORS = [];
-let activeAppId = "opengmaps";
-let currentFilter = "all";
-let searchQuery = "";
-let lastFocusedElement = null;
+/* AppFactory — home controller: device stage, catalogue, patterns, builders. */
+(function () {
+  const AF = window.AF;
+  const esc = AF.esc;
 
-const SOLID = { opengmaps: "#007aff", ohemacs: "#1d1d1f", whatisit: "#12805c", opentwit: "#5856d6" };
-const GLYPH = { opengmaps: "G", ohemacs: "E", whatisit: "W", opentwit: "T" };
+  const $ = (id) => document.getElementById(id);
+  const stageTabs = $("stageTabs");
+  const stageCanvas = $("stageCanvas");
+  const stagePanel = $("stagePanel");
+  const portsGrid = $("portsGrid");
+  const patternGrid = $("patternGrid");
+  const compatBody = $("compatBody");
+  const buildersGrid = $("buildersGrid");
+  const searchInput = $("searchInput");
+  const searchClear = $("searchClear");
+  const filterPills = $("filterPills");
+  const emptyState = $("emptyState");
+  const apiErrorBanner = $("apiErrorBanner");
+  const resetFiltersBtn = $("resetFiltersBtn");
 
-const portsGrid = document.getElementById("portsGrid");
-const buildersGrid = document.getElementById("buildersGrid");
-const searchInput = document.getElementById("searchInput");
-const searchClear = document.getElementById("searchClear");
-const filterPills = document.getElementById("filterPills");
-const emptyState = document.getElementById("emptyState");
-const apiErrorBanner = document.getElementById("apiErrorBanner");
-const resetFiltersBtn = document.getElementById("resetFiltersBtn");
-const toast = document.getElementById("toast");
-const menuToggle = document.getElementById("menuToggle");
-const navMenu = document.getElementById("navMenu");
+  let APPS = [];
+  let CONTRIBUTORS = [];
+  let activeAppId = "opentwit-web";
+  let activeStack = "all";
+  let query = "";
+  let lastFocus = null;
 
-const stageTabs = document.querySelectorAll(".stage-tab");
-const infoTitle = document.getElementById("info-title");
-const infoTagline = document.getElementById("info-tagline");
-const infoDesc = document.getElementById("info-desc");
-const infoStatus = document.getElementById("info-status");
-const infoTarget = document.getElementById("info-target");
-const infoBundle = document.getElementById("info-bundle");
-const infoPattern = document.getElementById("info-pattern");
-const infoStack = document.getElementById("info-stack");
-const infoDossierBtn = document.getElementById("info-dossier-btn");
-const infoProjectLink = document.getElementById("info-project-link");
-const infoRepoLink = document.getElementById("info-repo-link");
+  const byId = (id) => APPS.find((a) => a.id === id);
+  const chevron =
+    '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>';
 
-const modalBackdrop = document.getElementById("modalBackdrop");
-const modalCloseBtn = document.getElementById("modalCloseBtn");
-const modalGlyph = document.getElementById("modalGlyph");
-const modalStatusBadge = document.getElementById("modalStatusBadge");
-const modalTitle = document.getElementById("modalTitle");
-const modalTagline = document.getElementById("modalTagline");
-const modalSpecGrid = document.getElementById("modalSpecGrid");
-const modalDesc = document.getElementById("modalDesc");
-const modalFeatures = document.getElementById("modalFeatures");
-const modalPorting = document.getElementById("modalPorting");
-const modalInstall = document.getElementById("modalInstall");
-const modalCopyInstallBtn = document.getElementById("modalCopyInstallBtn");
-const modalMaintainers = document.getElementById("modalMaintainers");
-const modalRepoLink = document.getElementById("modalRepoLink");
-const modalDisclaimer = document.getElementById("modalDisclaimer");
-const copyCliBtn = document.getElementById("copyCliBtn");
-
-let toastTimeout;
-function showToast(message) {
-  if (!toast) return;
-  toast.textContent = message;
-  toast.classList.remove("hidden");
-  clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => toast.classList.add("hidden"), 2400);
-}
-function copyToClipboard(text, msg) {
-  msg = msg || "Copied";
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => showToast(msg)).catch(() => fallbackCopy(text, msg));
-  } else fallbackCopy(text, msg);
-}
-function fallbackCopy(text, msg) {
-  const ta = document.createElement("textarea");
-  ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
-  document.body.appendChild(ta); ta.select();
-  try { document.execCommand("copy"); showToast(msg); } catch (e) { showToast("Copy failed"); }
-  document.body.removeChild(ta);
-}
-function escapeHTML(s) {
-  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-}
-function solidFor(app) { return SOLID[app.id] || "#1d1d1f"; }
-function glyphFor(app) { return GLYPH[app.id] || (app.glyph && app.glyph.length === 1 ? app.glyph : "A"); }
-
-const PATTERN_MAP = {
-  opengmaps: "Flutter backport shim",
-  ohemacs: "ArkTS shell + NAPI bridge",
-  whatisit: "Companion server (Go + ArkTS)",
-  opentwit: "Native ArkTS client"
-};
-
-function selectStageApp(appId) {
-  activeAppId = appId;
-  const app = APPS.find((a) => a.id === appId);
-  stageTabs.forEach((tab) => {
-    const on = tab.dataset.app === appId;
-    tab.classList.toggle("active", on);
-    tab.setAttribute("aria-selected", on ? "true" : "false");
-    tab.tabIndex = on ? 0 : -1;
-  });
-  document.querySelectorAll(".device-mockup").forEach((m) => {
-    m.classList.toggle("active", m.id === "mockup-" + appId);
-  });
-  if (!app) return;
-  if (infoTitle) infoTitle.textContent = app.name;
-  if (infoTagline) infoTagline.textContent = app.tagline;
-  if (infoDesc) infoDesc.textContent = app.description;
-  if (infoStatus) infoStatus.textContent = app.status;
-  if (infoTarget) infoTarget.textContent = app.api;
-  if (infoBundle) infoBundle.textContent = app.bundle;
-  if (infoPattern) infoPattern.textContent = PATTERN_MAP[app.id] || "Native port";
-  if (infoStack) infoStack.textContent = (app.stack || []).join(" · ");
-  if (infoDossierBtn) infoDossierBtn.dataset.open = app.id;
-  if (infoProjectLink) infoProjectLink.href = "/apps/" + app.id;
-  if (infoRepoLink) infoRepoLink.href = app.repo;
-}
-stageTabs.forEach((tab, i) => {
-  tab.addEventListener("click", () => selectStageApp(tab.dataset.app));
-  tab.addEventListener("keydown", (e) => {
-    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-    e.preventDefault();
-    const dir = e.key === "ArrowRight" ? 1 : -1;
-    const next = stageTabs[(i + dir + stageTabs.length) % stageTabs.length];
-    next.focus(); selectStageApp(next.dataset.app);
-  });
-});
-if (infoDossierBtn) infoDossierBtn.addEventListener("click", () => openModal(infoDossierBtn.dataset.open));
-
-function renderPorts() {
-  if (!portsGrid) return;
-  const query = searchQuery.trim().toLowerCase();
-  const filtered = APPS.filter((app) => {
-    const tags = [...(app.stack || []), ...(app.filterTags || [])].map((s) => s.toLowerCase());
-    if (currentFilter !== "all" && !tags.includes(currentFilter.toLowerCase())) return false;
-    if (!query) return true;
-    const hay = [app.name, app.tagline, app.category, app.description, app.api, app.bundle, ...(app.stack || [])].join(" ").toLowerCase();
-    return query.split(/\s+/).every((t) => hay.includes(t));
-  });
-  if (!filtered.length) {
-    portsGrid.innerHTML = "";
-    if (emptyState) emptyState.classList.remove("hidden");
-    return;
+  /* ---------- Device stage ---------- */
+  function renderStageTabs() {
+    if (!stageTabs) return;
+    stageTabs.innerHTML = APPS.map((app) => {
+      const on = app.id === activeAppId;
+      return (
+        '<button class="stage-tab" type="button" role="tab" data-app="' + app.id + '" aria-selected="' + on +
+        '" aria-controls="stageCanvas" tabindex="' + (on ? "0" : "-1") + '">' +
+        AF.appIcon(app, 24) + esc(app.name) + "</button>"
+      );
+    }).join("");
+    stageTabs.querySelectorAll(".stage-tab").forEach((tab, index) => {
+      tab.addEventListener("click", () => selectApp(tab.dataset.app));
+      tab.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        const tabs = Array.from(stageTabs.querySelectorAll(".stage-tab"));
+        const next = tabs[(index + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length];
+        next.focus();
+        selectApp(next.dataset.app);
+      });
+    });
   }
-  if (emptyState) emptyState.classList.add("hidden");
-  portsGrid.innerHTML = filtered.map((app) => {
-    const tone = app.statusClass === "is-wip" ? "warn" : "ok";
+
+  function renderStage() {
+    const app = byId(activeAppId) || APPS[0];
+    if (!app) return;
+    if (stageCanvas) {
+      stageCanvas.innerHTML = APPS.map((a) => {
+        const active = a.id === app.id ? " is-active" : "";
+        return AF.mockup(a).replace('class="device ', 'class="device' + active + " ");
+      }).join("");
+    }
+    if (!stagePanel) return;
+    const release = app.version && app.version !== "—" ? app.version : "Source only";
+    stagePanel.innerHTML =
+      '<div class="stage-panel-top">' + AF.statusChip(app) +
+      '<span class="chip chip--mute">' + esc(app.tag || app.category) + "</span></div>" +
+      '<h3 class="stage-title">' + esc(app.name) + "</h3>" +
+      '<p class="stage-tagline">' + esc(app.tagline) + "</p>" +
+      '<p class="stage-desc">' + esc(app.description) + "</p>" +
+      '<dl class="spec-list">' +
+      '<div class="spec-row"><dt>Target</dt><dd>' + esc(app.api) + "</dd></div>" +
+      '<div class="spec-row"><dt>Bundle</dt><dd class="is-mono">' + esc(app.bundle) + "</dd></div>" +
+      '<div class="spec-row"><dt>Pattern</dt><dd>' + esc(AF.patternOf(app)) + "</dd></div>" +
+      '<div class="spec-row"><dt>Stack</dt><dd>' + esc((app.stack || []).join(" · ")) + "</dd></div>" +
+      '<div class="spec-row"><dt>Latest</dt><dd>' + esc(release) + "</dd></div>" +
+      "</dl>" +
+      '<div class="stage-actions">' +
+      '<a class="btn btn--primary" href="/apps/' + app.id + '">Open project page</a>' +
+      '<button class="btn btn--ghost" type="button" data-open="' + app.id + '">Quick look</button>' +
+      '<a class="btn btn--text" href="' + app.repo + '" target="_blank" rel="noopener">Source on GitHub' + chevron + "</a>" +
+      "</div>";
+    const quick = stagePanel.querySelector("[data-open]");
+    if (quick) quick.addEventListener("click", () => openModal(quick.dataset.open));
+  }
+
+  function selectApp(id) {
+    activeAppId = id;
+    if (stageTabs) {
+      stageTabs.querySelectorAll(".stage-tab").forEach((tab) => {
+        const on = tab.dataset.app === id;
+        tab.setAttribute("aria-selected", on ? "true" : "false");
+        tab.tabIndex = on ? 0 : -1;
+      });
+    }
+    renderStage();
+  }
+
+  /* ---------- Catalogue ---------- */
+  function visibleApps() {
+    const q = query.trim().toLowerCase();
+    return APPS.filter((app) => {
+      const tags = [...(app.stack || []), ...(app.filterTags || [])].map((t) => t.toLowerCase());
+      if (activeStack !== "all" && !tags.includes(activeStack.toLowerCase())) return false;
+      if (!q) return true;
+      const hay = [app.name, app.tagline, app.tag, app.category, app.description, app.api, app.bundle, app.status, (app.stack || []).join(" ")]
+        .join(" ")
+        .toLowerCase();
+      return q.split(/\s+/).every((term) => hay.includes(term));
+    });
+  }
+
+  function cardHTML(app) {
     const stack = (app.stack || []).slice(0, 3);
     return (
-      '<article class="port-card" data-id="' + app.id + '">' +
-      '<div class="card-top"><div class="card-glyph-box" style="background:' + solidFor(app) + '">' + escapeHTML(glyphFor(app)) + '</div>' +
-      '<div class="card-status-badge ' + tone + '"><span class="badge-dot"></span><span>' + escapeHTML(app.status) + "</span></div></div>" +
-      "<h3 class='card-title'>" + escapeHTML(app.name) + "</h3>" +
-      "<p class='card-tagline'>" + escapeHTML(app.tagline) + "</p>" +
-      "<p class='card-desc'>" + escapeHTML(app.description) + "</p>" +
-      '<div class="card-features">' + stack.map((s) => '<span class="card-feature-pill">' + escapeHTML(s) + "</span>").join("") + "</div>" +
-      '<div class="card-footer"><a class="btn-open-dossier" href="/apps/' + app.id + '"><span>Open project</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"></polyline></svg></a>' +
-      '<a class="card-repo-link" href="' + app.repo + '" target="_blank" rel="noopener"><span>Source</span><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a></div>' +
-      "</article>"
+      '<article class="port-card">' +
+      '<div class="port-card-top">' + AF.appIcon(app, 56) +
+      '<div class="port-card-head"><h3 class="port-card-name">' + esc(app.name) + "</h3>" +
+      '<p class="port-card-tagline">' + esc(app.tagline) + "</p></div></div>" +
+      '<p class="port-card-desc is-clamped">' + esc(app.description) + "</p>" +
+      '<div class="port-card-stack">' + AF.statusChip(app) +
+      stack.map((s) => '<span class="chip chip--mute">' + esc(s) + "</span>").join("") + "</div>" +
+      '<div class="port-card-foot">' +
+      '<a class="link-arrow" href="/apps/' + app.id + '">Open project' + chevron + "</a>" +
+      '<a class="link-quiet" href="' + app.repo + '" target="_blank" rel="noopener">Source</a>' +
+      "</div></article>"
     );
-  }).join("");
-}
-
-if (searchInput) searchInput.addEventListener("input", (e) => {
-  searchQuery = e.target.value;
-  if (searchClear) searchClear.classList.toggle("hidden", !searchQuery);
-  renderPorts();
-});
-if (searchClear) searchClear.addEventListener("click", () => {
-  searchQuery = ""; if (searchInput) searchInput.value = "";
-  searchClear.classList.add("hidden"); renderPorts(); if (searchInput) searchInput.focus();
-});
-if (filterPills) filterPills.addEventListener("click", (e) => {
-  const pill = e.target.closest(".filter-pill"); if (!pill) return;
-  filterPills.querySelectorAll(".filter-pill").forEach((p) => p.classList.remove("active"));
-  pill.classList.add("active"); currentFilter = pill.dataset.stack; renderPorts();
-});
-if (resetFiltersBtn) resetFiltersBtn.addEventListener("click", () => {
-  searchQuery = ""; currentFilter = "all";
-  if (searchInput) searchInput.value = "";
-  if (searchClear) searchClear.classList.add("hidden");
-  if (filterPills) filterPills.querySelectorAll(".filter-pill").forEach((p) => p.classList.toggle("active", p.dataset.stack === "all"));
-  renderPorts();
-});
-document.addEventListener("click", (e) => {
-  const openBtn = e.target.closest("[data-open]");
-  if (openBtn) { openModal(openBtn.dataset.open); return; }
-  const copyBtn = e.target.closest("[data-copy]");
-  if (copyBtn) {
-    copyToClipboard(copyBtn.dataset.copy, "Install command copied");
-    const old = copyBtn.textContent; copyBtn.textContent = "Copied";
-    setTimeout(() => { copyBtn.textContent = old; }, 1600);
   }
-});
 
-function renderBuilders() {
-  if (!buildersGrid) return;
-  buildersGrid.innerHTML = CONTRIBUTORS.map((p) => {
-    const initial = (p.name || "A").charAt(0).toUpperCase();
-    return (
-      '<article class="builder-card"><div class="builder-avatar-wrap">' +
-      '<img class="builder-avatar" src="' + p.avatar + '" alt="' + escapeHTML(p.name) + '" width="64" height="64" loading="lazy" onerror="this.style.display=\'none\';this.parentNode.insertAdjacentHTML(\'afterbegin\',\'<span class=&quot;builder-avatar&quot; aria-hidden=&quot;true&quot;>' + initial + '</span>\')" />' +
-      '<span class="builder-verified-badge" title="Maintainer">✓</span></div>' +
-      '<div class="builder-content"><h3 class="builder-name">' + escapeHTML(p.name) + '</h3><p class="builder-role">' + escapeHTML(p.role) + "</p>" +
-      '<div class="builder-focus-list">' + (p.focus || []).map((f) => '<span class="builder-focus-pill">' + escapeHTML(f) + "</span>").join("") + "</div>" +
-      '<div class="builder-socials"><a class="social-link" href="' + p.github + '" target="_blank" rel="noopener">GitHub</a>' +
-      '<a class="social-link" href="' + p.twitter + '" target="_blank" rel="noopener">' + escapeHTML(p.twitterHandle || "X") + "</a></div></div></article>"
-    );
-  }).join("");
-}
-
-function openModal(appId) {
-  const app = APPS.find((a) => a.id === appId);
-  if (!app || !modalBackdrop) return;
-  lastFocusedElement = document.activeElement;
-  if (modalGlyph) { modalGlyph.textContent = glyphFor(app); modalGlyph.style.background = solidFor(app); }
-  if (modalStatusBadge) modalStatusBadge.textContent = app.status;
-  if (modalTitle) modalTitle.textContent = app.name;
-  if (modalTagline) modalTagline.textContent = app.tagline;
-  if (modalDesc) modalDesc.textContent = app.description;
-  if (modalSpecGrid) modalSpecGrid.innerHTML =
-    '<div class="spec-item"><div class="spec-label">Target</div><div class="spec-val">' + escapeHTML(app.api) + '</div></div>' +
-    '<div class="spec-item"><div class="spec-label">Bundle</div><div class="spec-val font-mono">' + escapeHTML(app.bundle) + '</div></div>' +
-    '<div class="spec-item"><div class="spec-label">License</div><div class="spec-val">' + escapeHTML(app.license) + '</div></div>' +
-    '<div class="spec-item"><div class="spec-label">Stack</div><div class="spec-val">' + escapeHTML((app.stack || []).join(" · ")) + "</div></div>";
-  if (modalFeatures) modalFeatures.innerHTML = (app.features || []).map((f) => "<li>" + escapeHTML(f) + "</li>").join("");
-  if (modalPorting) modalPorting.innerHTML = (app.porting || []).map((p) => "<li>" + escapeHTML(p) + "</li>").join("");
-  if (modalInstall) modalInstall.textContent = app.install || "";
-  if (modalCopyInstallBtn) modalCopyInstallBtn.onclick = () => copyToClipboard(app.install, "Install command copied");
-  if (modalMaintainers) {
-    const makers = (app.maintainers || []).map((mid) => CONTRIBUTORS.find((c) => c.id === mid) || { name: mid });
-    modalMaintainers.innerHTML = makers.map((m) => '<span class="maintainer-chip">' + escapeHTML(m.name) + "</span>").join("");
+  function renderPorts() {
+    if (!portsGrid) return;
+    const list = visibleApps();
+    portsGrid.innerHTML = list.map(cardHTML).join("");
+    if (emptyState) emptyState.classList.toggle("is-hidden", list.length > 0);
   }
-  if (modalRepoLink) modalRepoLink.href = app.repo;
-  if (modalDisclaimer) modalDisclaimer.textContent = app.disclaimer || "";
-  modalBackdrop.classList.remove("hidden");
-  document.body.style.overflow = "hidden";
-  if (modalCloseBtn) modalCloseBtn.focus();
-}
-function closeModal() {
-  if (!modalBackdrop) return;
-  modalBackdrop.classList.add("hidden");
-  document.body.style.overflow = "";
-  if (lastFocusedElement && lastFocusedElement.focus) lastFocusedElement.focus();
-}
-if (modalCloseBtn) modalCloseBtn.addEventListener("click", closeModal);
-if (modalBackdrop) modalBackdrop.addEventListener("click", (e) => { if (e.target === modalBackdrop) closeModal(); });
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    if (modalBackdrop && !modalBackdrop.classList.contains("hidden")) closeModal();
-    if (navMenu && navMenu.classList.contains("open")) { navMenu.classList.remove("open"); if (menuToggle) menuToggle.setAttribute("aria-expanded", "false"); document.body.style.overflow = ""; }
+
+  /* ---------- Patterns + compatibility ---------- */
+  function renderPatterns() {
+    if (!patternGrid) return;
+    patternGrid.innerHTML = AF.PATTERNS.map((p) => {
+      const app = byId(p.appliesTo);
+      return (
+        '<article class="pattern-card">' +
+        '<span class="pattern-badge">' + esc(p.badge) + "</span>" +
+        '<h3 class="pattern-title">' + esc(p.title) + "</h3>" +
+        '<p class="pattern-lead">' + esc(p.lead) + "</p>" +
+        '<ul class="flow">' + p.flow.map((step) => "<li>" + esc(step) + "</li>").join("") + "</ul>" +
+        '<p class="pattern-applied">Proved by <a href="/apps/' + p.appliesTo + '">' + esc(app ? app.name : p.appliesTo) + "</a></p>" +
+        "</article>"
+      );
+    }).join("");
   }
-});
 
-if (copyCliBtn) copyCliBtn.addEventListener("click", () => {
-  copyToClipboard("git clone https://github.com/Abhi-Flex1/AppFactory.git && cd AppFactory && npm install && npm start", "Quickstart copied");
-  const label = copyCliBtn.querySelector(".copy-label");
-  if (label) { const o = label.textContent; label.textContent = "Copied"; setTimeout(() => { label.textContent = o; }, 1600); }
-});
+  function renderCompat() {
+    if (!compatBody) return;
+    compatBody.innerHTML = AF.COMPAT.map((row) => {
+      const app = byId(row.id);
+      if (!app) return "";
+      const tone = row.tone === "ok" ? "chip--ok" : "chip--warn";
+      return (
+        "<tr><td><span class=\"cell-app\">" + AF.appIcon(app, 32) + "<span>" + esc(app.name) + "</span></span></td>" +
+        "<td>" + esc(row.target) + "</td>" +
+        '<td><span class="chip ' + tone + '"><span class="chip-dot"></span>' + esc(row.verification) + "</span></td>" +
+        "<td>" + esc(row.checked) + "</td>" +
+        "<td>" + esc(row.form) + "</td></tr>"
+      );
+    }).join("");
+  }
 
-if (menuToggle && navMenu) {
-  menuToggle.addEventListener("click", () => {
-    const open = navMenu.classList.toggle("open");
-    menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    document.body.style.overflow = open ? "hidden" : "";
+  /* ---------- Builders ---------- */
+  function renderBuilders() {
+    if (!buildersGrid) return;
+    buildersGrid.innerHTML = CONTRIBUTORS.map((p) => {
+      const initial = esc((p.name || "A").charAt(0).toUpperCase());
+      return (
+        '<article class="builder-card">' +
+        '<div class="builder-top">' +
+        '<img class="builder-avatar" src="' + p.avatar + '" alt="' + esc(p.name) + '" width="60" height="60" loading="lazy" ' +
+        'onerror="this.replaceWith(Object.assign(document.createElement(\'span\'),{className:\'builder-avatar\',textContent:\'' + initial + '\'}))" />' +
+        '<div><h3 class="builder-name">' + esc(p.name) + '</h3><p class="builder-role">' + esc(p.role) + "</p></div></div>" +
+        '<div class="builder-focus">' + (p.focus || []).map((f) => '<span class="chip chip--mute">' + esc(f) + "</span>").join("") + "</div>" +
+        '<div class="builder-links">' +
+        '<a class="btn btn--ghost btn--sm" href="' + p.github + '" target="_blank" rel="noopener">GitHub</a>' +
+        (p.twitter ? '<a class="btn btn--ghost btn--sm" href="' + p.twitter + '" target="_blank" rel="noopener">' + esc(p.twitterHandle || "X") + "</a>" : "") +
+        "</div></article>"
+      );
+    }).join("");
+  }
+
+  /* ---------- Quick look sheet ---------- */
+  function openModal(id) {
+    const app = byId(id);
+    const modal = $("modal");
+    if (!app || !modal) return;
+    lastFocus = document.activeElement;
+    $("modalIcon").innerHTML = AF.appIcon(app, 52);
+    $("modalStatus").innerHTML = AF.statusChip(app);
+    $("modalTitle").textContent = app.name;
+    $("modalTagline").textContent = app.tagline;
+    $("modalDesc").textContent = app.description;
+    $("modalSpecs").innerHTML =
+      "<div><b>Target</b><span>" + esc(app.api) + "</span></div>" +
+      "<div><b>Bundle</b><span>" + esc(app.bundle) + "</span></div>" +
+      "<div><b>Pattern</b><span>" + esc(AF.patternOf(app)) + "</span></div>" +
+      "<div><b>Stack</b><span>" + esc((app.stack || []).join(" · ")) + "</span></div>";
+    $("modalFeatures").innerHTML = (app.features || []).map((f) => "<li>" + esc(f) + "</li>").join("");
+    $("modalPorting").innerHTML = (app.porting || []).map((p) => "<li>" + esc(p) + "</li>").join("");
+    $("modalInstall").textContent = app.install || "";
+    $("modalProject").href = "/apps/" + app.id;
+    $("modalRepo").href = app.repo;
+    $("modalDisclaimer").textContent = app.disclaimer || "";
+    $("modalCopy").onclick = () => AF.copy(app.install || "", "Install command copied");
+    modal.classList.remove("is-hidden");
+    document.body.style.overflow = "hidden";
+    $("modalClose").focus();
+  }
+
+  function closeModal() {
+    const modal = $("modal");
+    if (!modal || modal.classList.contains("is-hidden")) return;
+    modal.classList.add("is-hidden");
+    document.body.style.overflow = "";
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  /* ---------- Wiring ---------- */
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      query = e.target.value;
+      if (searchClear) searchClear.classList.toggle("is-hidden", !query);
+      renderPorts();
+    });
+  }
+  if (searchClear) {
+    searchClear.addEventListener("click", () => {
+      query = "";
+      if (searchInput) searchInput.value = "";
+      searchClear.classList.add("is-hidden");
+      renderPorts();
+      if (searchInput) searchInput.focus();
+    });
+  }
+  if (filterPills) {
+    filterPills.addEventListener("click", (e) => {
+      const pill = e.target.closest(".pill");
+      if (!pill) return;
+      activeStack = pill.dataset.stack;
+      filterPills.querySelectorAll(".pill").forEach((p) => p.setAttribute("aria-pressed", String(p === pill)));
+      renderPorts();
+    });
+  }
+  if (resetFiltersBtn) {
+    resetFiltersBtn.addEventListener("click", () => {
+      query = "";
+      activeStack = "all";
+      if (searchInput) searchInput.value = "";
+      if (searchClear) searchClear.classList.add("is-hidden");
+      if (filterPills) {
+        filterPills.querySelectorAll(".pill").forEach((p) => p.setAttribute("aria-pressed", String(p.dataset.stack === "all")));
+      }
+      renderPorts();
+    });
+  }
+  const modal = $("modal");
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+    $("modalClose").addEventListener("click", closeModal);
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
   });
-  navMenu.addEventListener("click", (e) => {
-    if (e.target.classList.contains("nav-item")) {
-      navMenu.classList.remove("open");
-      menuToggle.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
+
+  AF.wireShell();
+
+  async function boot() {
+    try {
+      const [appsRes, contribRes] = await Promise.all([fetch("/api/apps"), fetch("/api/contributors")]);
+      if (!appsRes.ok) throw new Error("apps request failed");
+      APPS = await appsRes.json();
+      CONTRIBUTORS = contribRes.ok ? await contribRes.json() : [];
+      if (apiErrorBanner) apiErrorBanner.classList.add("is-hidden");
+      const wanted = new URLSearchParams(location.search).get("app");
+      activeAppId = APPS.some((a) => a.id === wanted) ? wanted : (APPS.find((a) => a.id === "opentwit-web") ? "opentwit-web" : APPS[0].id);
+      renderStageTabs();
+      renderStage();
+      renderPorts();
+      renderPatterns();
+      renderCompat();
+      renderBuilders();
+    } catch (err) {
+      if (apiErrorBanner) apiErrorBanner.classList.remove("is-hidden");
+      if (patternGrid) renderPatterns();
+      if (compatBody) renderCompat();
+      console.error(err);
     }
-  });
-  window.addEventListener("resize", () => {
-    if (window.innerWidth >= 1024 && navMenu.classList.contains("open")) {
-      navMenu.classList.remove("open");
-      menuToggle.setAttribute("aria-expanded", "false");
-      document.body.style.overflow = "";
-    }
-  });
-}
-
-async function initApp() {
-  try {
-    const [appsRes, contribRes] = await Promise.all([fetch("/api/apps"), fetch("/api/contributors")]);
-    if (!appsRes.ok) throw new Error("apps fetch failed");
-    APPS = await appsRes.json();
-    CONTRIBUTORS = contribRes.ok ? await contribRes.json() : [];
-    if (apiErrorBanner) apiErrorBanner.classList.add("hidden");
-    const params = new URLSearchParams(location.search);
-    const wanted = params.get("app");
-    selectStageApp(APPS.some((a) => a.id === wanted) ? wanted : "opengmaps");
-    renderPorts(); renderBuilders();
-  } catch (err) {
-    console.error(err);
-    if (apiErrorBanner) apiErrorBanner.classList.remove("hidden");
   }
-}
-initApp();
+
+  boot();
+})();

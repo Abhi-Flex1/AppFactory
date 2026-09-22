@@ -28,9 +28,10 @@ function formatBytes(bytes) {
 // GitHub Releases Cache & Fetcher
 const REPO_MAP = {
   opengmaps: "Abhi-Flex1/OpenGMaps",
+  opentwit: "Abhi-Flex1/OpenTwit",
+  "opentwit-web": "Abhi-Flex1/OpenTwit-Web",
   ohemacs: "Abhi-Flex1/OHEmacs",
-  whatisit: "BA4893/WhatIsIt",
-  opentwit: "Abhi-Flex1/OpenTwit"
+  whatisit: "BA4893/WhatIsIt"
 };
 
 const releaseCache = new Map();
@@ -188,4 +189,3 @@ app.get("/builders", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "builders.
 app.get("*", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "index.html")));
 
 app.listen(PORT, () => console.log(`AppFactory listening on http://localhost:${PORT}`));
-

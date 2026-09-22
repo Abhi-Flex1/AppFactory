@@ -3,26 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>AppFactory — Global Apps, at Home on HarmonyOS</title>
-  <meta name="description" content="Four production ports for HarmonyOS and OpenHarmony — OpenGMaps, OpenTwit, OHEmacs and WhatIsIt — with source, downloads and porting notes. Verified on real builds." />
-  <meta name="theme-color" content="#f5f5f7" />
+  <title>AppFactory — global apps, rebuilt for HarmonyOS</title>
+  <meta name="description" content="Five working ports for HarmonyOS and OpenHarmony — OpenGMaps, OpenTwit, OpenTwit Web, OHEmacs and WhatIsIt — with source, signed HAP downloads and the porting notes behind each one." />
+  <meta name="theme-color" content="#f4f5f7" />
+  <meta name="color-scheme" content="light" />
   <link rel="canonical" href="https://appfactoryhos.vercel.app/" />
-  <meta property="og:title" content="AppFactory — Global Apps, at Home on HarmonyOS" />
-  <meta property="og:description" content="OpenGMaps, OpenTwit, OHEmacs and WhatIsIt: production ports for HarmonyOS and OpenHarmony, with install steps and source." />
+  <meta property="og:title" content="AppFactory — global apps, rebuilt for HarmonyOS" />
+  <meta property="og:description" content="OpenGMaps, OpenTwit, OpenTwit Web, OHEmacs and WhatIsIt: five production ports for HarmonyOS and OpenHarmony, with install steps, downloads and source." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://appfactoryhos.vercel.app/" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%231d1d1f'/><path d='M32 72 L50 28 L68 72 M38 58 L62 58' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='26' fill='%230A59F7'/><path d='M32 72 L50 28 L68 72 M38 58 L62 58' stroke='white' stroke-width='9' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
   <link rel="stylesheet" href="/styles.css" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "AppFactory Ported Apps",
+    "name": "AppFactory ports for HarmonyOS and OpenHarmony",
     "itemListElement": [
-      {"@type": "ListItem","position": 1,"item": {"@type": "SoftwareApplication","name": "OpenGMaps","applicationCategory": "MapsApplication","operatingSystem": "OpenHarmony 5.0.1, HarmonyOS NEXT","offers": {"@type": "Offer","price": "0"},"codeRepository": "https://github.com/Abhi-Flex1/OpenGMaps"}},
-      {"@type": "ListItem","position": 2,"item": {"@type": "SoftwareApplication","name": "OHEmacs","applicationCategory": "DeveloperApplication","operatingSystem": "HarmonyOS 6.1.1, OpenHarmony","offers": {"@type": "Offer","price": "0"},"codeRepository": "https://github.com/Abhi-Flex1/OHEmacs"}},
-      {"@type": "ListItem","position": 3,"item": {"@type": "SoftwareApplication","name": "WhatIsIt","applicationCategory": "CommunicationApplication","operatingSystem": "HarmonyOS NEXT","offers": {"@type": "Offer","price": "0"},"codeRepository": "https://github.com/BA4893/WhatIsIt"}},
-      {"@type": "ListItem","position": 4,"item": {"@type": "SoftwareApplication","name": "OpenTwit","applicationCategory": "SocialNetworking","operatingSystem": "HarmonyOS 6.1.1, OpenHarmony","offers": {"@type": "Offer","price": "0"},"codeRepository": "https://github.com/Abhi-Flex1/OpenTwit"}}
+      {"@type": "ListItem","position": 1,"item": {"@type": "SoftwareApplication","name": "OpenGMaps SDK","applicationCategory": "MapsApplication","operatingSystem": "OpenHarmony 5.0.1, HarmonyOS","offers": {"@type": "Offer","price": "0"},"codeRepository": "https://github.com/Abhi-Flex1/OpenGMaps"}},
+      {"@type": "ListItem","position": 2,"item": {"@type": "SoftwareApplication","name": "OpenTwit","applicationCategory": "SocialNetworkingApplication","operatingSystem": "HarmonyOS 6.1.1","offers": {"@type": "Offer","price": "0"},"codeRepository": "https://github.com/Abhi-Flex1/OpenTwit"}},
+      {"@type": "ListItem","position": 3,"item": {"@type": "SoftwareApplication","name": "OpenTwit Web","applicationCategory": "SocialNetworkingApplication","operatingSystem": "HarmonyOS 6.1.1","softwareVersion": "1.0.0","offers": {"@type": "Offer","price": "0"},"codeRepository": "https://github.com/Abhi-Flex1/OpenTwit-Web"}},
+      {"@type": "ListItem","position": 4,"item": {"@type": "SoftwareApplication","name": "OHEmacs","applicationCategory": "DeveloperApplication","operatingSystem": "HarmonyOS 6.1.1, OpenHarmony","offers": {"@type": "Offer","price": "0"},"codeRepository": "https://github.com/Abhi-Flex1/OHEmacs"}},
+      {"@type": "ListItem","position": 5,"item": {"@type": "SoftwareApplication","name": "WhatIsIt","applicationCategory": "CommunicationApplication","operatingSystem": "HarmonyOS","offers": {"@type": "Offer","price": "0"},"codeRepository": "https://github.com/BA4893/WhatIsIt"}}
     ]
   }
   </script>
@@ -30,217 +32,329 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="navbar" id="navbar">
-    <div class="nav-container">
-      <a class="brand" href="/" aria-label="AppFactory home">
-        <span class="brand-logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-        </span>
-        <span class="brand-text">AppFactory</span>
-        <span class="brand-tag">HarmonyOS</span>
+  <div class="announce">
+    <div class="announce-inner">
+      <span class="chip-dot" aria-hidden="true"></span>
+      <b>OpenTwit Web 1.0.0</b>
+      <span>— the real x.com web app in a native HarmonyOS shell, signed and downloadable.</span>
+      <a href="/apps/opentwit-web">Open the port
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </a>
-      <nav class="nav-menu" id="navMenu" aria-label="Primary">
-        <a href="/apps" class="nav-item">Ports</a>
-        <a href="/architecture" class="nav-item">Architecture</a>
-        <a href="/builders" class="nav-item">Builders</a>
-        <a href="#developers" class="nav-item">Developers</a>
+    </div>
+  </div>
+
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="/" aria-label="AppFactory home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 12 5l8 13"/><path d="M8.4 14.4h7.2"/></svg></span>
+        <span class="brand-name">AppFactory</span>
+        <span class="brand-chip">HarmonyOS</span>
+      </a>
+      <nav class="nav-links" id="navMenu" aria-label="Primary">
+        <a href="/apps">Ports</a>
+        <a href="/architecture">Architecture</a>
+        <a href="/builders">Builders</a>
+        <a href="#developers">Developers</a>
       </nav>
-      <div class="nav-actions">
-        <span class="status-pill" title="Verified on OpenHarmony 5.0.1 and HarmonyOS 6.1 builds"><span class="pulse-dot"></span><span class="status-text">Verified builds</span></span>
-        <a class="btn-ghost-sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      <div class="nav-side">
+        <span class="nav-status"><span class="chip-dot" aria-hidden="true"></span>Verified builds</span>
+        <a class="btn btn--ghost btn--sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.43 2.87 8.18 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03a9.5 9.5 0 0 1 2.5-.34c.85 0 1.71.12 2.51.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
           <span>GitHub</span>
         </a>
-        <button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="navMenu"><span></span><span></span></button>
+        <button class="menu-btn" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="navMenu"><span></span><span></span></button>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <section class="hero-section" id="top">
-      <div class="content-wrap">
-        <p class="hero-eyebrow"><span class="edition">AppFactory · Porting notes</span><span class="rule" aria-hidden="true"></span><span>OpenHarmony 5.0.1 — HarmonyOS 6.1 · Sept 2026</span></p>
-        <h1 class="hero-title">Global apps, at home on HarmonyOS.</h1>
-        <p class="hero-subtitle">Four working ports with honest trade-offs: a Maps SDK without GMS, an X client in native ArkTS, GNU Emacs on an EGL surface, and a native WhatsApp client on a Go companion server. Source, .hap downloads and install logs included.</p>
-        <div class="hero-actions">
-          <a class="btn-primary" href="#ports"><span>Browse the ports</span><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
-          <a class="btn-secondary" href="/apps/opengmaps"><span>Start with OpenGMaps</span></a>
-          <a class="btn-tertiary" href="#patterns"><span>How the ports work</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
-        </div>
-        <div class="hero-facts" aria-label="At a glance">
-          <div class="hero-fact"><b>4 ports</b><span>Maps · Social · Emacs · Messaging</span></div>
-          <div class="hero-fact"><b>API 12 – 24</b><span>OpenHarmony 5.0.1 through HarmonyOS 6.1</span></div>
-          <div class="hero-fact"><b>2 builders</b><span>Maintained in the open on GitHub</span></div>
-        </div>
-
-        <div class="stage-container" aria-label="Port previews">
-          <div class="stage-tabs" role="tablist" aria-label="Choose a port to preview">
-            <button class="stage-tab active" role="tab" id="tab-opengmaps" data-app="opengmaps" aria-selected="true" aria-controls="stage-view"><span class="tab-glyph" aria-hidden="true">G</span><span class="tab-label">OpenGMaps</span><span class="tab-badge">Flutter</span></button>
-            <button class="stage-tab" role="tab" id="tab-ohemacs" data-app="ohemacs" aria-selected="false" aria-controls="stage-view"><span class="tab-glyph" aria-hidden="true">E</span><span class="tab-label">OHEmacs</span><span class="tab-badge">ArkTS + C</span></button>
-            <button class="stage-tab" role="tab" id="tab-whatisit" data-app="whatisit" aria-selected="false" aria-controls="stage-view"><span class="tab-glyph" aria-hidden="true">W</span><span class="tab-label">WhatIsIt</span><span class="tab-badge">Go + ArkTS</span></button>
-            <button class="stage-tab" role="tab" id="tab-opentwit" data-app="opentwit" aria-selected="false" aria-controls="stage-view"><span class="tab-glyph" aria-hidden="true">T</span><span class="tab-label">OpenTwit</span><span class="tab-badge">ArkTS</span></button>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <span class="hero-eyebrow"><span class="chip-dot" aria-hidden="true"></span>AppFactory · porting notes</span>
+            <h1 class="hero-title">Global apps, rebuilt for HarmonyOS.</h1>
+            <p class="hero-sub">Five ports that actually run: a Maps SDK without GMS, two X clients — one native ArkTS, one full web shell — GNU Emacs on an EGL surface, and a native WhatsApp client on a Go companion server. Source, signed HAP downloads and the trade-offs behind each one.</p>
+            <div class="hero-actions">
+              <a class="btn btn--primary" href="/apps/opentwit-web">
+                <span>Download OpenTwit Web 1.0.0</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v11"/><polyline points="7 10 12 15 17 10"/><path d="M5 19h14"/></svg>
+              </a>
+              <a class="btn btn--tonal" href="#ports">Browse all five ports</a>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat"><b>5 ports</b><span>Maps · Social · Editor · Messaging</span></div>
+              <div class="hero-stat"><b>API 12 – 24</b><span>OpenHarmony 5.0.1 to HarmonyOS 6.1</span></div>
+              <div class="hero-stat"><b>2 builders</b><span>Maintained in the open on GitHub</span></div>
+              <div class="hero-stat"><b>100% open</b><span>Apache-2.0, with upstream attribution</span></div>
+            </div>
           </div>
-          <div class="stage-body" id="stage-view">
-            <div class="stage-canvas">
-              <div class="device-mockup phone-mockup active" id="mockup-opengmaps">
-                <div class="phone-frame">
-                  <div class="phone-island"><span class="island-camera"></span></div>
-                  <div class="phone-screen screen-map">
-                    <div class="phone-statusbar" aria-hidden="true"><span>9:41</span><span class="sb-icons"><svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><rect x="0" y="7" width="2.4" height="4" rx="0.6"/><rect x="3.6" y="5" width="2.4" height="6" rx="0.6"/><rect x="7.2" y="2.6" width="2.4" height="8.4" rx="0.6"/><rect x="10.8" y="0" width="2.4" height="11" rx="0.6"/></svg><svg width="14" height="11" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1.5 4.5a10 10 0 0 1 13 0M4 7.2a6.4 6.4 0 0 1 8 0M6.4 9.7a2.8 2.8 0 0 1 3.2 0"/><circle cx="8" cy="11" r="1" fill="currentColor" stroke="none"/></svg><svg width="21" height="11" viewBox="0 0 23 12" fill="none"><rect x="0.5" y="0.5" width="18" height="11" rx="3" stroke="currentColor" opacity=".5"/><rect x="2.5" y="2.5" width="13" height="7" rx="1.6" fill="currentColor"/><path d="M20.5 4v4a2 2 0 0 0 0-4z" fill="currentColor" opacity=".5"/></svg></span></div>
-                    <div class="map-bg" aria-hidden="true"><div class="map-water"></div><div class="map-park"></div><div class="map-highway"></div><div class="map-road-1"></div><div class="map-road-2"></div>
-                      <svg class="map-polyline" viewBox="0 0 280 460" preserveAspectRatio="none"><path d="M 50 380 Q 90 320 80 260 T 170 190 T 220 90" fill="none" stroke="#0A59F7" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 10" /><circle cx="50" cy="380" r="7" fill="#0A59F7" stroke="#ffffff" stroke-width="2.5" /><circle cx="220" cy="90" r="7" fill="#1d1d1f" stroke="#ffffff" stroke-width="2.5" /></svg>
+
+          <div class="hero-visual">
+            <div class="hero-stage">
+              <div class="device device--phone is-active">
+                <div class="device-frame">
+                  <span class="device-cam" aria-hidden="true"></span>
+                  <div class="d-screen d-screen--home">
+                    <div class="sb" aria-hidden="true"><span>9:41</span><span class="sb-icons"><svg width="15" height="10" viewBox="0 0 15 10" fill="currentColor"><rect x="0" y="6.4" width="2.3" height="3.6" rx="0.7"/><rect x="3.4" y="4.4" width="2.3" height="5.6" rx="0.7"/><rect x="6.8" y="2.2" width="2.3" height="7.8" rx="0.7"/><rect x="10.2" y="0" width="2.3" height="10" rx="0.7"/></svg><svg width="20" height="10" viewBox="0 0 22 11" fill="none"><rect x="0.5" y="0.5" width="17" height="10" rx="3" stroke="currentColor" opacity=".45"/><rect x="2.3" y="2.3" width="12" height="6.4" rx="1.5" fill="currentColor"/><path d="M19.4 3.6v3.8a1.9 1.9 0 0 0 0-3.8z" fill="currentColor" opacity=".45"/></svg></span></div>
+                    <div class="d-header">
+                      <span class="d-avatar d-avatar--me">A</span>
+                      <span class="d-switch"><b class="on">For you</b><b>Following</b></span>
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3.4l1.9 4.6 4.9.4-3.7 3.2 1.1 4.8L12 14l-4.2 2.4 1.1-4.8-3.7-3.2 4.9-.4z"/></svg>
                     </div>
-                    <div class="map-search-bar"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span>Harmony Boulevard, Shenzhen</span></div>
-                    <div class="map-turn-card"><div class="turn-icon" aria-hidden="true">↱</div><div class="turn-info"><div class="turn-dist">In 300 m</div><div class="turn-street">Turn right · Harmony Blvd</div></div></div>
-                    <div class="map-eta-card"><div class="eta-time">18 min<small>Fastest</small></div><div class="eta-details">7.4 km · Arrives 15:42 · via ArkWeb tiles</div></div>
-                  </div>
-                </div>
-              </div>
-              <div class="device-mockup tablet-mockup" id="mockup-ohemacs">
-                <div class="tablet-frame">
-                  <div class="window-titlebar"><div class="window-dots" aria-hidden="true"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="window-title">OHEmacs — *scratch* · HarmonyOS Stage</div><div class="window-badge">API 24</div></div>
-                  <div class="window-screen screen-term">
-                    <div class="term-tabs"><span class="term-tab active">*scratch*</span><span class="term-tab">ohos-surface.c</span><span class="term-tab">init.el</span></div>
-                    <div class="term-code"><p><span class="c-comment">;; GNU Emacs 30.1 · Stage HAP · HarmonyOS 6.1</span></p><p><span class="c-comment">;; XComponent EGL surface + NAPI event queue</span></p><p><br /></p><p><span class="c-keyword">(defun</span> <span class="c-fn">ohos-init-frame</span> ()</p><p>&nbsp;&nbsp;<span class="c-keyword">(message</span> <span class="c-string">"surface %s ready"</span></p><p>&nbsp;&nbsp;&nbsp;<span class="c-var">(napi-surface-size)</span>))</p><p><br /></p><p><span class="c-keyword">(when</span> <span class="c-var">ohos-touch-p</span></p><p>&nbsp;&nbsp;<span class="c-keyword">(enable-touch-scroll</span> <span class="c-const">:momentum</span> <span class="c-keyword">t</span>))</p></div>
-                    <div class="term-modeline"><span class="mod-status">-UUU:---</span><span class="mod-name">*scratch*</span><span class="mod-info">(Lisp Interaction) · EGL</span></div>
-                  </div>
-                </div>
-              </div>
-              <div class="device-mockup phone-mockup" id="mockup-whatisit">
-                <div class="phone-frame">
-                  <div class="phone-island"><span class="island-camera"></span></div>
-                  <div class="phone-screen screen-chat">
-                    <div class="phone-statusbar" aria-hidden="true"><span>9:41</span><span class="sb-icons"><svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><rect x="0" y="7" width="2.4" height="4" rx="0.6"/><rect x="3.6" y="5" width="2.4" height="6" rx="0.6"/><rect x="7.2" y="2.6" width="2.4" height="8.4" rx="0.6"/><rect x="10.8" y="0" width="2.4" height="11" rx="0.6"/></svg><svg width="21" height="11" viewBox="0 0 23 12" fill="none"><rect x="0.5" y="0.5" width="18" height="11" rx="3" stroke="currentColor" opacity=".5"/><rect x="2.5" y="2.5" width="13" height="7" rx="1.6" fill="currentColor"/></svg></span></div>
-                    <div class="chat-header"><div class="chat-avatar">W</div><div class="chat-meta"><div class="chat-name">Builders, Shenzhen</div><div class="chat-sub">online · encrypted</div></div><div class="chat-icons"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.13.96.36 1.9.7 2.8a2 2 0 0 1-.45 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.45c.9.34 1.84.57 2.8.7a2 2 0 0 1 1.7 2z"/></svg></div></div>
-                    <div class="chat-messages"><div class="chat-date">Today</div><div class="bubble bubble-them"><p>QR paired. Companion server on :18770, session alive.</p><span class="bubble-time">15:20</span></div><div class="bubble bubble-me"><p>History synced — 4,154 messages indexed locally.</p><span class="bubble-time">15:21 · Read</span></div><div class="bubble bubble-them"><p>Voice path is still experimental on-device.</p><span class="bubble-time">15:22</span></div></div>
-                    <div class="chat-input-bar"><span class="chat-input-placeholder">Message</span><div class="chat-send-btn" aria-hidden="true">↑</div></div>
-                  </div>
-                </div>
-              </div>
-              <div class="device-mockup phone-mockup" id="mockup-opentwit">
-                <div class="phone-frame">
-                  <div class="phone-island"><span class="island-camera"></span></div>
-                  <div class="phone-screen screen-x">
-                    <div class="phone-statusbar" aria-hidden="true"><span>9:41</span><span class="sb-icons"><svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><rect x="0" y="7" width="2.4" height="4" rx="0.6"/><rect x="3.6" y="5" width="2.4" height="6" rx="0.6"/><rect x="7.2" y="2.6" width="2.4" height="8.4" rx="0.6"/><rect x="10.8" y="0" width="2.4" height="11" rx="0.6"/></svg><svg width="21" height="11" viewBox="0 0 23 12" fill="none"><rect x="0.5" y="0.5" width="18" height="11" rx="3" stroke="currentColor" opacity=".5"/><rect x="2.5" y="2.5" width="13" height="7" rx="1.6" fill="currentColor"/></svg></span></div>
-                    <div class="x-header"><span class="x-title">Home</span><span class="x-head-ic"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></span></div>
-                    <div class="x-timeline">
-                      <article class="x-post"><div class="x-avatar" style="background:#007aff">H</div><div class="x-body"><div class="x-meta"><strong>Harmony Builders</strong><span>@harmony_build · 2h</span></div><p class="x-text">Timeline renders in native ArkTS. Pull to refresh actually refreshes.</p><div class="x-actions"><span>↩ 12</span><span>⟲ 48</span><span class="liked">♥ 312</span><span>▤ 8.1K</span></div></div></article>
-                      <article class="x-post"><div class="x-avatar" style="background:#1d1d1f">A</div><div class="x-body"><div class="x-meta"><strong>Abhi</strong><span>@abhi_flex · 5h</span></div><p class="x-text">OAuth PKCE sign-in works in the embedded browser. No API keys to paste.</p><div class="x-actions"><span>↩ 4</span><span>⟲ 21</span><span>♡ 96</span><span>▤ 2.3K</span></div></div></article>
-                      <article class="x-post"><div class="x-avatar" style="background:#5856d6">X</div><div class="x-body"><div class="x-meta"><strong>X API</strong><span>@xapi · 1d</span></div><p class="x-text">Free tier limits apply here. OpenTwit shows the 402 instead of spinning.</p><div class="x-actions"><span>↩ 0</span><span>⟲ 2</span><span>♡ 11</span><span>▤ 640</span></div></div></article>
+                    <div class="d-timeline">
+                      <article class="d-post"><span class="d-avatar" style="background:#0A59F7">H</span><div class="d-post-body"><div class="d-post-meta"><strong>Harmony Builders</strong><span>@harmony_build · 2h</span></div><p class="d-post-text">x.com renders in the system Web component — the header, the switcher and the tab bar are native ArkUI.</p><div class="d-post-actions"><span>↩ 12</span><span>⟲ 48</span><span class="liked">♥ 312</span><span>▤ 8.1K</span></div></div></article>
+                      <article class="d-post"><span class="d-avatar" style="background:#1D1D1F">A</span><div class="d-post-body"><div class="d-post-meta"><strong>Abhi</strong><span>@abhi_flex · 5h</span></div><p class="d-post-text">Injected CSS strips X's own nav, so the shell never draws chrome twice.</p><div class="d-post-actions"><span>↩ 4</span><span>⟲ 21</span><span>♥ 96</span><span>▤ 2.3K</span></div></div></article>
+                      <article class="d-post"><span class="d-avatar" style="background:#5856D6">S</span><div class="d-post-body"><div class="d-post-meta"><strong>Shenzhen Dev</strong><span>@sz_dev · 7h</span></div><p class="d-post-text">Rail layout kicks in past 840 vp. Same HAP on the foldable.</p><div class="d-post-actions"><span>↩ 9</span><span>⟲ 34</span><span class="liked">♥ 178</span><span>▤ 4.6K</span></div></div></article>
                     </div>
-                    <div class="x-fab" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></div>
-                    <div class="x-tabs" aria-hidden="true">
-                      <svg class="on" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-                      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
-                      <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M22 7l-10 7L2 7"/></svg>
+                    <button class="d-fab" aria-hidden="true" tabindex="-1"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 3.6a2.6 2.6 0 1 1 3.6 3.6L7.4 20.4 3 21.6l1.2-4.4z"/></svg></button>
+                    <div class="d-tabbar" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="var(--blue)"><path d="M3.6 10.6 12 3.6l8.4 7v9.2a1.2 1.2 0 0 1-1.2 1.2h-4.6v-6h-5.2v6H4.8a1.2 1.2 0 0 1-1.2-1.2z"/></svg>
+                      <svg viewBox="0 0 24 24" fill="#9A9BA1"><circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.8 15.8 20.4 20.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                      <svg viewBox="0 0 24 24" fill="#9A9BA1"><path d="M12 3.2a5.6 5.6 0 0 0-5.6 5.6c0 4.4-2 6.2-2 6.2h15.2s-2-1.8-2-6.2A5.6 5.6 0 0 0 12 3.2z"/><path d="M14 18.2a2.2 2.2 0 0 1-4 0z"/></svg>
+                      <svg viewBox="0 0 24 24" fill="#9A9BA1"><rect x="2.6" y="4.4" width="18.8" height="15.2" rx="3.4"/></svg>
+                      <svg viewBox="0 0 24 24" fill="#9A9BA1"><circle cx="12" cy="8.6" r="4.2"/><path d="M4.4 20.4c0-3.7 3.4-6.2 7.6-6.2s7.6 2.5 7.6 6.2z"/></svg>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="stage-info">
-              <div class="info-header"><span class="info-tag" id="info-status">Beta</span><h2 class="info-title" id="info-title">OpenGMaps SDK</h2><p class="info-tagline" id="info-tagline">Google Maps SDK for OpenHarmony &amp; HarmonyOS</p></div>
-              <p class="info-desc" id="info-desc">A Flutter backport that keeps the stock google_maps_flutter API and renders through ArkWeb, with location from Location Kit.</p>
-              <div class="info-metrics">
-                <div class="metric-card"><div class="metric-label">Target</div><div class="metric-value" id="info-target">OpenHarmony 5.0.1 · API 12</div></div>
-                <div class="metric-card"><div class="metric-label">Bundle</div><div class="metric-value font-mono" id="info-bundle">io.opengmaps.open_gmaps</div></div>
-                <div class="metric-card"><div class="metric-label">Pattern</div><div class="metric-value" id="info-pattern">Flutter backport shim</div></div>
-                <div class="metric-card"><div class="metric-label">Stack</div><div class="metric-value" id="info-stack">Flutter, ArkWeb, Dart</div></div>
+            <div class="hero-release">
+              <div class="hero-release-head">
+                <span class="app-icon" style="--tone:#0A59F7;--tone-deep:#0A3AA8;width:44px;height:44px;border-radius:13px">
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.8 12h16.4M12 3.8c2.4 2.2 3.6 4.9 3.6 8.2s-1.2 6-3.6 8.2c-2.4-2.2-3.6-4.9-3.6-8.2s1.2-6 3.6-8.2z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+                </span>
+                <span class="hero-release-meta"><b>OpenTwit Web</b><span>v1.0.0 · signed HAP</span></span>
+                <span class="chip chip--new">New</span>
               </div>
-              <div class="info-actions">
-                <a class="btn-action-primary" id="info-project-link" href="/apps/opengmaps"><span>Open project page</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
-                <button class="btn-action-secondary" id="info-dossier-btn" data-open="opengmaps"><span>Quick look</span></button>
-                <a class="btn-action-tertiary" id="info-repo-link" href="https://github.com/Abhi-Flex1/OpenGMaps" target="_blank" rel="noopener"><span>Source on GitHub</span><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
-              </div>
+              <dl>
+                <dt>Bundle</dt><dd>com.opentwit.web</dd>
+                <dt>Package</dt><dd>337 KB · OpenHarmony test identity</dd>
+              </dl>
+              <a class="btn btn--tonal btn--sm btn--block" href="/apps/opentwit-web">Install guide</a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section-ports" id="ports">
-      <div class="content-wrap">
-        <div class="section-header">
-          <div><div class="section-kicker">01 — Ports</div><h2 class="section-title">Four ports, documented end to end.</h2><p class="section-subtitle">Each one lists what works, what doesn’t, and the exact commands to build it. No placeholders.</p></div>
-          <div class="filter-controls" role="search">
-            <div class="search-input-wrapper"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><input type="search" id="searchInput" placeholder="Search ports, stacks, bundles…" autocomplete="off" aria-label="Search ports" /><button class="search-clear hidden" id="searchClear" aria-label="Clear search">×</button></div>
-            <div class="filter-pills" id="filterPills" role="group" aria-label="Filter by technology"><button class="filter-pill active" data-stack="all">All</button><button class="filter-pill" data-stack="Flutter">Flutter</button><button class="filter-pill" data-stack="ArkTS">ArkTS</button><button class="filter-pill" data-stack="Go">Go</button><button class="filter-pill" data-stack="NAPI">NAPI</button></div>
+    <section class="band band--alt" id="stage" aria-labelledby="stageHeading">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">Live previews</span>
+          <h2 class="section-title" id="stageHeading">Step through every port.</h2>
+          <p class="section-sub">Each screen below is the shipping interface, redrawn from the app's own layout: the OpenTwit Web timeline with native chrome, the native compose sheet, the maps route, the Emacs window and the WhatsApp thread.</p>
+        </div>
+        <div class="stage">
+          <div class="stage-tabs" id="stageTabs" role="tablist" aria-label="Choose a port to preview"></div>
+          <div class="stage-body">
+            <div class="stage-canvas" id="stageCanvas" aria-live="polite"></div>
+            <div class="stage-panel" id="stagePanel"></div>
           </div>
         </div>
-        <div class="ports-grid" id="portsGrid" aria-live="polite"></div>
-        <noscript><div class="noscript-fallback"><h3>Port catalog</h3><ul><li><a href="https://github.com/Abhi-Flex1/OpenGMaps">OpenGMaps SDK — Google Maps SDK for OpenHarmony</a></li><li><a href="https://github.com/Abhi-Flex1/OHEmacs">OHEmacs — GNU Emacs 30.1 for HarmonyOS</a></li><li><a href="https://github.com/BA4893/WhatIsIt">WhatIsIt — native WhatsApp client</a></li></ul></div></noscript>
-        <div class="empty-state hidden" id="emptyState"><h3>No matches</h3><p>Try a shorter query, or clear the stack filter.</p><button class="btn-secondary" id="resetFiltersBtn">Reset filters</button></div>
-        <div class="api-error-banner hidden" id="apiErrorBanner"><p>Couldn’t reach <code>/api/apps</code>. Run <code>npm start</code> and reload.</p></div>
       </div>
     </section>
 
-    <section class="section-patterns" id="patterns">
-      <div class="content-wrap">
-        <div class="patterns-dark">
-          <div class="section-kicker">02 — How they’re built</div>
-          <h2 class="section-title">Three ways onto HarmonyOS.</h2>
-          <p class="section-subtitle">The seam you choose matters more than the language. These are the three we’ve actually shipped.</p>
-          <div class="patterns-grid">
-            <div class="pattern-card pattern-featured">
-              <div class="pattern-featured-content"><div class="pattern-badge">01 · Shim</div><h3 class="pattern-title">Flutter backport shim</h3><p class="pattern-desc">Keep the Dart side untouched. Re-implement the missing GMS platform interface on ArkWeb + Location Kit. Validated in OpenGMaps.</p><div class="pattern-applied"><span class="applied-label">See it in</span><a href="/apps/opengmaps" class="applied-link">OpenGMaps</a></div></div>
-              <div class="pattern-flow"><div class="flow-step">Stock plugin API</div><div class="flow-arrow">↓ method channel</div><div class="flow-step highlight">OHOS platform interface</div><div class="flow-arrow">↓ JSON bridge</div><div class="flow-step highlight">ArkWeb + Location Kit</div></div>
+    <section class="band band--white" id="ports" aria-labelledby="portsHeading">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">The catalogue</span>
+          <h2 class="section-title" id="portsHeading">Five ports, documented end to end.</h2>
+          <p class="section-sub">Every card carries its target runtime, bundle id and verification state. Open one for the release assets, the architecture notes and the exact build commands.</p>
+        </div>
+        <div class="filter-bar">
+          <div class="search-field">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7.4"/><path d="M16.4 16.4 21 21" stroke-linecap="round"/></svg>
+            <input type="search" id="searchInput" placeholder="Search ports, stacks, bundles…" autocomplete="off" aria-label="Search ports" />
+            <button class="search-clear is-hidden" id="searchClear" aria-label="Clear search">×</button>
+          </div>
+          <div class="pill-row" id="filterPills" role="group" aria-label="Filter by technology">
+            <button class="pill" data-stack="all" aria-pressed="true">All five</button>
+            <button class="pill" data-stack="ArkTS" aria-pressed="false">ArkTS</button>
+            <button class="pill" data-stack="ArkWeb" aria-pressed="false">ArkWeb</button>
+            <button class="pill" data-stack="Flutter" aria-pressed="false">Flutter</button>
+            <button class="pill" data-stack="NAPI" aria-pressed="false">NAPI</button>
+            <button class="pill" data-stack="Go" aria-pressed="false">Go</button>
+          </div>
+        </div>
+        <div class="card-grid" id="portsGrid" aria-live="polite"></div>
+        <div class="empty-state is-hidden" id="emptyState">
+          <h3>No matches</h3>
+          <p>Try a shorter query, or clear the stack filter.</p>
+          <button class="btn btn--tonal" id="resetFiltersBtn">Reset filters</button>
+        </div>
+        <noscript>
+          <div class="noscript">
+            <p>This catalogue is rendered from <code>/api/apps</code>. Direct links to each port:</p>
+            <ul>
+              <li><a href="/apps/opengmaps">OpenGMaps SDK — Google Maps SDK for OpenHarmony</a></li>
+              <li><a href="/apps/opentwit">OpenTwit — open X client in native ArkTS</a></li>
+              <li><a href="/apps/opentwit-web">OpenTwit Web — x.com in a native HarmonyOS shell</a></li>
+              <li><a href="/apps/ohemacs">OHEmacs — GNU Emacs 30.1 for HarmonyOS</a></li>
+              <li><a href="/apps/whatisit">WhatIsIt — native WhatsApp client for HarmonyOS</a></li>
+            </ul>
+          </div>
+        </noscript>
+        <div class="notice is-hidden" id="apiErrorBanner">Couldn’t reach <code>/api/apps</code>. Run <code>npm start</code> and reload.</div>
+      </div>
+    </section>
+
+    <section class="band band--dark" id="patterns" aria-labelledby="patternsHeading">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">How they are built</span>
+          <h2 class="section-title" id="patternsHeading">Five ways onto HarmonyOS.</h2>
+          <p class="section-sub">The seam matters more than the language. These are the patterns that survived contact with a real device, each with the port that proved it.</p>
+        </div>
+        <div class="pattern-grid" id="patternGrid"></div>
+      </div>
+    </section>
+
+    <section class="band band--alt" id="compatibility" aria-labelledby="compatHeading">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">Compatibility</span>
+          <h2 class="section-title" id="compatHeading">What was checked, and where.</h2>
+          <p class="section-sub">No blanket “supports HarmonyOS” claims. Each row names the runtime it was built against and the machine that proved it.</p>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <caption class="visually-hidden">Runtime and verification status for each AppFactory port</caption>
+            <thead>
+              <tr><th scope="col">Port</th><th scope="col">Target runtime</th><th scope="col">Verification</th><th scope="col">Checked on</th><th scope="col">Form factors</th></tr>
+            </thead>
+            <tbody id="compatBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band--white" id="builders" aria-labelledby="buildersHeading">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">Maintainers</span>
+          <h2 class="section-title" id="buildersHeading">Two people, public commit history.</h2>
+          <p class="section-sub">Every port is maintained in the open. GitHub and X accounts are the real ones — issues and pull requests land with the people who wrote the code.</p>
+        </div>
+        <div class="builder-grid" id="buildersGrid"></div>
+        <div class="page-actions"><a class="btn btn--tonal" href="/builders">Meet the builders</a></div>
+      </div>
+    </section>
+
+    <section class="band band--alt" id="developers" aria-labelledby="devHeading">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">Developers</span>
+          <h2 class="section-title" id="devHeading">Run the whole site locally.</h2>
+          <p class="section-sub">Express plus a folder of JSON — one dependency, no build step. The same API that renders these pages is yours to query.</p>
+        </div>
+        <div class="dev-grid">
+          <div class="terminal">
+            <div class="terminal-bar">
+              <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <h3>Terminal</h3>
+              <button class="copy-btn" id="copyCliBtn" type="button">Copy</button>
             </div>
-            <div class="pattern-card"><div class="pattern-badge">02 · Shell</div><h3 class="pattern-title">ArkTS shell + NAPI</h3><p class="pattern-desc">Wrap C/C++ engines in a Stage HAP. XComponent owns the EGL surface; a thread-safe NAPI queue carries input. Validated in OHEmacs.</p><div class="pattern-flow"><div class="flow-step">Stage HAP window</div><div class="flow-arrow">↓ surface</div><div class="flow-step highlight">XComponent · EGL</div><div class="flow-arrow">↓ events</div><div class="flow-step">NAPI bridge → C engine</div></div><div class="pattern-applied"><span class="applied-label">See it in</span><a href="/apps/ohemacs" class="applied-link">OHEmacs</a></div></div>
-            <div class="pattern-card"><div class="pattern-badge">03 · Server</div><h3 class="pattern-title">Companion server</h3><p class="pattern-desc">Keep crypto and protocol state in a small Go daemon; ship a thin ArkTS client over WebSocket. Validated in WhatIsIt.</p><div class="pattern-flow"><div class="flow-step">ArkTS client</div><div class="flow-arrow">↕ WebSocket</div><div class="flow-step highlight">Go daemon · whatsmeow</div><div class="flow-arrow">↕ protocol</div><div class="flow-step">Messaging network</div></div><div class="pattern-applied"><span class="applied-label">See it in</span><a href="/apps/whatisit" class="applied-link">WhatIsIt</a></div></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-builders" id="builders">
-      <div class="content-wrap">
-        <div class="section-header"><div><div class="section-kicker">03 — Builders</div><h2 class="section-title">Maintained by two people.</h2><p class="section-subtitle">Real accounts, real commit history. Everything links out to GitHub and X.</p></div><a class="btn-tertiary" href="/builders"><span>All builders</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg></a></div>
-        <div class="builders-grid" id="buildersGrid"></div>
-      </div>
-    </section>
-
-    <section class="section-dev" id="developers">
-      <div class="content-wrap">
-        <div class="section-header"><div><div class="section-kicker">04 — Developers</div><h2 class="section-title">Run it locally.</h2><p class="section-subtitle">One dependency (<code>express</code>), no build step. The same JSON the pages use is yours to query.</p></div></div>
-        <div class="dev-layout">
-          <div class="terminal-card"><div class="terminal-header"><div class="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div><span class="terminal-title">Terminal</span><button class="copy-code-btn" id="copyCliBtn" aria-label="Copy quickstart"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span class="copy-label">Copy</span></button></div><pre class="terminal-body"><code><span class="t-prompt">$</span> git clone https://github.com/Abhi-Flex1/AppFactory.git
+            <pre><code><span class="t-prompt">$</span> git clone https://github.com/Abhi-Flex1/AppFactory.git
 <span class="t-prompt">$</span> cd AppFactory &amp;&amp; npm install
 <span class="t-prompt">$</span> npm start
 
 <span class="t-out">listening on http://localhost:3000</span>
-<span class="t-prompt">$</span> curl -s localhost:3000/api/apps | jq '.[].name'</code></pre></div>
-          <div class="api-card"><h3 class="card-heading">API</h3><div class="endpoint-table-wrap"><table class="endpoint-table"><thead><tr><th>Route</th><th>What you get</th></tr></thead><tbody><tr><td><code>GET /api/apps</code></td><td>All dossiers. <code>?q=</code> and <code>?stack=</code> filter server-side.</td></tr><tr><td><code>GET /api/apps/:id</code></td><td>One dossier: stack, bundle, install, notes.</td></tr><tr><td><code>GET /api/releases/:id</code></td><td>Live GitHub release + .hap assets.</td></tr><tr><td><code>GET /api/contributors</code></td><td>Builders and focus areas.</td></tr><tr><td><code>GET /health</code></td><td>Uptime probe.</td></tr></tbody></table></div><div class="contrib-box"><h4 class="contrib-title">Adding a port?</h4><p class="contrib-text">Append to <code>data/apps.json</code>, add yourself to <code>data/contributors.json</code>, open a PR.</p></div></div>
+<span class="t-prompt">$</span> curl -s localhost:3000/api/apps | jq '.[].name'</code></pre>
+          </div>
+          <div class="api-card">
+            <h3>JSON API</h3>
+            <ul class="endpoint-list">
+              <li><code>GET /api/apps</code><span>Every dossier. <code>?q=</code> and <code>?stack=</code> filter server-side.</span></li>
+              <li><code>GET /api/apps/:id</code><span>One dossier: stack, bundle, install steps, notes.</span></li>
+              <li><code>GET /api/releases/:id</code><span>Live GitHub release with its .hap assets.</span></li>
+              <li><code>GET /api/contributors</code><span>Builders and their focus areas.</span></li>
+              <li><code>GET /health</code><span>Uptime probe.</span></li>
+            </ul>
+            <p class="section-sub">Adding a port is a pull request: one object in <code>data/apps.json</code>, a builder in <code>data/contributors.json</code>, and a link from the catalogue.</p>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="content-wrap">
-      <div class="footer-notes"><h4 class="footer-notes-title">Footnotes</h4><ol class="disclaimer-list"><li><strong>1.</strong> OpenGMaps needs a Google Maps Platform key and follows Google’s terms. No GMS binary ships on-device.</li><li><strong>2.</strong> GNU Emacs © Free Software Foundation (GPL). The HarmonyOS shell and NAPI bridge in OHEmacs are Apache-2.0.</li><li><strong>3.</strong> WhatIsIt is unofficial. WhatsApp is a Meta trademark; unofficial clients carry account risk — test on a spare number.</li></ol></div>
-      <div class="footer-nav-row">
-        <div class="footer-col"><div class="footer-brand"><span class="brand-text">AppFactory</span><p>Ports of essential apps to HarmonyOS and OpenHarmony, with reproducible notes.</p></div></div>
-        <div class="footer-col"><h5>Ports</h5><a href="/apps/opengmaps">OpenGMaps</a><a href="/apps/opentwit">OpenTwit</a><a href="/apps/ohemacs">OHEmacs</a><a href="/apps/whatisit">WhatIsIt</a></div>
-        <div class="footer-col"><h5>Builders</h5><a href="https://github.com/Abhi-Flex1" target="_blank" rel="noopener">Abhi-Flex1</a><a href="https://x.com/Abhi_Flex" target="_blank" rel="noopener">@Abhi_Flex</a><a href="https://github.com/BA4893" target="_blank" rel="noopener">BA4893</a><a href="https://x.com/LivingInHarmony" target="_blank" rel="noopener">@LivingInHarmony</a></div>
-        <div class="footer-col"><h5>Site</h5><a href="/apps">All ports</a><a href="/architecture">Architecture</a><a href="/builders">Builders</a><a href="#developers">API</a></div>
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-brand">
+            <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 12 5l8 13"/><path d="M8.4 14.4h7.2"/></svg></span>
+            <span class="brand-name">AppFactory</span>
+          </div>
+          <p class="footer-about">Ports of essential apps to HarmonyOS and OpenHarmony, each with reproducible build notes and a release you can install.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Ports</h4>
+          <a href="/apps/opengmaps">OpenGMaps SDK</a>
+          <a href="/apps/opentwit">OpenTwit</a>
+          <a href="/apps/opentwit-web">OpenTwit Web</a>
+          <a href="/apps/ohemacs">OHEmacs</a>
+          <a href="/apps/whatisit">WhatIsIt</a>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <a href="/apps">All ports</a>
+          <a href="/architecture">Architecture</a>
+          <a href="/builders">Builders</a>
+          <a href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">Source on GitHub</a>
+        </div>
       </div>
-      <div class="footer-bottom"><p>© 2026 AppFactory · Apache-2.0</p><p>Builds checked on OpenHarmony 5.0.1 and HarmonyOS 6.1.</p></div>
+      <div class="footnotes">
+        <h4>Footnotes</h4>
+        <ol>
+          <li>OpenGMaps needs a Google Maps Platform key and follows Google’s terms. No GMS binary ships on-device.</li>
+          <li>GNU Emacs © Free Software Foundation (GPL). The HarmonyOS shell and NAPI bridge in OHEmacs are Apache-2.0.</li>
+          <li>OpenTwit and OpenTwit Web are unofficial. X and Twitter are trademarks of X Corp. The signed web HAP carries the OpenHarmony test identity; retail devices need an AppGallery certificate.</li>
+          <li>WhatIsIt is unofficial. WhatsApp is a Meta trademark; unofficial clients carry account risk — test on a spare number.</li>
+        </ol>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 AppFactory · Apache-2.0</p>
+        <p>Builds checked on OpenHarmony 5.0.1 and HarmonyOS 6.1.1.</p>
+      </div>
     </div>
   </footer>
 
-  <div class="modal-backdrop hidden" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-card" role="document">
-      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-      <div class="modal-header"><div class="modal-glyph-wrap" id="modalGlyph">M</div><div><div class="modal-status-badge" id="modalStatusBadge">Beta</div><h2 class="modal-title" id="modalTitle">OpenGMaps</h2><p class="modal-tagline" id="modalTagline"></p></div></div>
-      <div class="modal-spec-grid" id="modalSpecGrid"></div>
-      <div class="modal-section"><h3>About</h3><p class="modal-desc" id="modalDesc"></p></div>
-      <div class="modal-two-col"><div class="modal-col"><h3>What works</h3><ul class="feature-list" id="modalFeatures"></ul><h3 class="mt-4">Maintained by</h3><div class="modal-maintainers" id="modalMaintainers"></div></div><div class="modal-col"><h3>Porting notes</h3><ul class="porting-list" id="modalPorting"></ul><h3 class="mt-4">Install</h3><div class="modal-install-wrap"><pre><code id="modalInstall"></code></pre><button class="copy-install-btn" id="modalCopyInstallBtn">Copy</button></div></div></div>
-      <div class="modal-footer"><a class="btn-primary" id="modalRepoLink" href="#" target="_blank" rel="noopener"><span>Repository</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a><p class="modal-disclaimer" id="modalDisclaimer"></p></div>
+  <nav class="tabbar" aria-label="Sections">
+    <a href="/" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 10.6 12 3.6l8.4 7v9.2a1.2 1.2 0 0 1-1.2 1.2h-4.6v-6h-5.2v6H4.8a1.2 1.2 0 0 1-1.2-1.2z"/></svg>Home</a>
+    <a href="/apps"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7.4" height="7.4" rx="2"/><rect x="13.6" y="3" width="7.4" height="7.4" rx="2"/><rect x="3" y="13.6" width="7.4" height="7.4" rx="2"/><rect x="13.6" y="13.6" width="7.4" height="7.4" rx="2"/></svg>Ports</a>
+    <a href="/architecture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6 21.4 8 12 13.4 2.6 8z"/><path d="M4.6 12.4 12 16.6l7.4-4.2 2 1.1-9.4 5.3-9.4-5.3z"/></svg>Architecture</a>
+    <a href="/builders"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.4" r="3.8"/><path d="M2.6 20.4c0-3.4 2.9-5.6 6.4-5.6s6.4 2.2 6.4 5.6z"/><circle cx="17.4" cy="9.6" r="2.8"/><path d="M16.4 14.6c3 0 5.2 2 5.2 4.8h-4.4"/></svg>Builders</a>
+  </nav>
+
+  <div class="modal is-hidden" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose" aria-label="Close"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18"/></svg></button>
+      <div class="modal-head">
+        <span id="modalIcon"></span>
+        <div>
+          <span id="modalStatus"></span>
+          <h2 class="modal-title" id="modalTitle">Port</h2>
+          <p class="modal-tagline" id="modalTagline"></p>
+        </div>
+      </div>
+      <div class="modal-specs" id="modalSpecs"></div>
+      <div class="modal-section"><h3>About</h3><p class="section-sub" id="modalDesc"></p></div>
+      <div class="modal-cols">
+        <div class="modal-section"><h3>What works</h3><ul class="tick-list" id="modalFeatures"></ul></div>
+        <div class="modal-section"><h3>Porting notes</h3><ul class="dot-list" id="modalPorting"></ul></div>
+      </div>
+      <div class="modal-section"><h3>Install</h3><div class="code-block"><pre><code id="modalInstall"></code></pre><button class="copy-btn" id="modalCopy">Copy</button></div></div>
+      <div class="btn-row">
+        <a class="btn btn--primary" id="modalProject" href="#">Open project page</a>
+        <a class="btn btn--ghost" id="modalRepo" href="#" target="_blank" rel="noopener">Repository</a>
+      </div>
+      <p class="modal-disclaimer" id="modalDisclaimer"></p>
     </div>
   </div>
 
-  <div class="toast hidden" id="toast" role="status" aria-live="polite">Copied</div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/site.js" defer></script>
   <script src="/app.js" defer></script>
 </body>
 </html>

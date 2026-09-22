@@ -4,83 +4,218 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Port — AppFactory</title>
-  <meta name="description" content="A production-tested port for OpenHarmony and HarmonyOS NEXT with downloads, architecture notes and install guide." />
+  <meta name="description" content="A production-tested port for OpenHarmony and HarmonyOS with release assets, architecture notes and an install guide." />
+  <meta name="theme-color" content="#f4f5f7" />
   <link id="canonicalLink" rel="canonical" href="https://appfactoryhos.vercel.app/apps/" />
   <meta id="ogUrl" property="og:url" content="https://appfactoryhos.vercel.app/apps/" />
+  <meta id="ogTitle" property="og:title" content="Port — AppFactory" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='26' fill='%230A59F7'/><path d='M32 72 L50 28 L68 72 M38 58 L62 58' stroke='white' stroke-width='9' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
   <link rel="stylesheet" href="/styles.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%231d1d1f'/><path d='M32 72 L50 28 L68 72 M38 58 L62 58' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="navbar" id="navbar">
-    <div class="nav-container">
-      <a class="brand" href="/" aria-label="AppFactory home"><span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></span><span class="brand-text">AppFactory</span><span class="brand-tag">HarmonyOS</span></a>
-      <nav class="nav-menu" id="navMenu" aria-label="Primary"><a href="/apps" class="nav-item active">Ports</a><a href="/architecture" class="nav-item">Architecture</a><a href="/builders" class="nav-item">Builders</a><a href="/#developers" class="nav-item">Developers</a></nav>
-      <div class="nav-actions"><span class="status-pill"><span class="pulse-dot"></span><span class="status-text">Verified builds</span></span><a class="btn-ghost-sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg><span>GitHub</span></a><button class="menu-toggle" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="navMenu"><span></span><span></span></button></div>
+
+  <div class="announce">
+    <div class="announce-inner">
+      <span class="chip-dot" aria-hidden="true"></span>
+      <b>OpenTwit Web 1.0.0</b>
+      <span>— signed HAP, x.com in a native HarmonyOS shell.</span>
+      <a href="/apps/opentwit-web">Open the port
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+  </div>
+
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="/" aria-label="AppFactory home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 12 5l8 13"/><path d="M8.4 14.4h7.2"/></svg></span>
+        <span class="brand-name">AppFactory</span>
+        <span class="brand-chip">HarmonyOS</span>
+      </a>
+      <nav class="nav-links" id="navMenu" aria-label="Primary">
+        <a href="/apps" aria-current="page">Ports</a>
+        <a href="/architecture">Architecture</a>
+        <a href="/builders">Builders</a>
+        <a href="/#developers">Developers</a>
+      </nav>
+      <div class="nav-side">
+        <span class="nav-status"><span class="chip-dot" aria-hidden="true"></span>Verified builds</span>
+        <a class="btn btn--ghost btn--sm" href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.43 2.87 8.18 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.03a9.5 9.5 0 0 1 2.5-.34c.85 0 1.71.12 2.51.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.02 10.02 0 0 0 22 12c0-5.52-4.48-10-10-10z"/></svg>
+          <span>GitHub</span>
+        </a>
+        <button class="menu-btn" id="menuToggle" aria-label="Menu" aria-expanded="false" aria-controls="navMenu"><span></span><span></span></button>
+      </div>
     </div>
   </header>
-  <main class="project-main" id="main">
-    <div class="content-wrap">
-      <nav class="breadcrumb-nav" aria-label="Breadcrumb"><ol class="breadcrumb-list"><li><a href="/">Home</a></li><li class="sep">/</li><li><a href="/apps">Ports</a></li><li class="sep">/</li><li class="active" id="breadProjectName">Loading…</li></ol></nav>
-      <section class="project-hero-card" id="projectHeroCard">
-        <div class="project-hero-header">
-          <div class="project-glyph-box" id="projectGlyph">A</div>
-          <div class="project-hero-titles"><div class="project-badge-row"><span class="project-status-pill" id="projectStatus">Beta</span><span class="project-cat-pill" id="projectCategory">Category</span><span class="project-verified-pill">Verified build</span></div>
-            <h1 class="project-title" id="projectName">Loading…</h1>
-            <p class="project-tagline" id="projectTagline"></p>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="wrap">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a><span class="sep">/</span><a href="/apps">Ports</a><span class="sep">/</span>
+          <span id="breadName" aria-current="page">Loading…</span>
+        </nav>
+        <div class="project-head">
+          <div class="project-id">
+            <span id="projectIcon"></span>
+            <div style="min-width:0">
+              <div class="project-chips" id="projectChips"></div>
+              <h1 class="page-title" id="projectName">Loading…</h1>
+              <p class="page-sub" id="projectTagline"></p>
+            </div>
+          </div>
+          <p class="project-lead" id="projectDesc"></p>
+          <div class="spec-grid" id="projectSpecs"></div>
+          <div class="project-actions">
+            <a class="btn btn--primary" id="heroDownload" href="#downloads">
+              <span id="heroDownloadLabel">Download</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 4v11"/><polyline points="7 10 12 15 17 10"/><path d="M5 19h14"/></svg>
+            </a>
+            <a class="btn btn--ghost" id="heroRepo" href="#">Repository</a>
+            <button class="btn btn--text" id="heroCopyInstall" type="button">Copy install command</button>
           </div>
         </div>
-        <p class="project-lead-desc" id="projectDesc"></p>
-        <div class="project-specs-grid" id="projectSpecsGrid">
-          <div class="spec-tile"><span class="spec-key">Target</span><span class="spec-val" id="specTarget">—</span></div>
-          <div class="spec-tile"><span class="spec-key">Bundle</span><span class="spec-val font-mono" id="specBundle">—</span></div>
-          <div class="spec-tile"><span class="spec-key">License</span><span class="spec-val" id="specLicense">—</span></div>
-          <div class="spec-tile"><span class="spec-key">Stack</span><span class="spec-val" id="specStack">—</span></div>
+      </div>
+    </section>
+
+    <section class="band band--tight">
+      <div class="wrap">
+        <div class="tabnav" role="tablist" aria-label="Project sections">
+          <button class="active" id="tab-downloads" data-pane="downloads" role="tab" aria-selected="true" aria-controls="pane-downloads">Downloads</button>
+          <button id="tab-preview" data-pane="preview" role="tab" aria-selected="false" aria-controls="pane-preview">Preview</button>
+          <button id="tab-architecture" data-pane="architecture" role="tab" aria-selected="false" aria-controls="pane-architecture">Architecture</button>
+          <button id="tab-install" data-pane="install" role="tab" aria-selected="false" aria-controls="pane-install">Install</button>
         </div>
-        <div class="project-hero-actions">
-          <a class="btn-primary" href="#downloads" id="heroDownloadBtn"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span id="heroDownloadLabel">Download</span></a>
-          <a class="btn-secondary" id="heroRepoBtn" href="#" target="_blank" rel="noopener"><span>Repository</span></a>
-          <button class="btn-tertiary" id="heroCopyInstallBtn"><span>Copy install command</span></button>
-        </div>
-      </section>
-      <section class="project-tabs-section">
-        <div class="project-tab-nav" role="tablist" aria-label="Project sections">
-          <button class="project-tab-btn active" data-pane="downloads" role="tab" aria-selected="true" id="tabDownloads">Downloads</button>
-          <button class="project-tab-btn" data-pane="preview" role="tab" aria-selected="false" id="tabPreview">Preview</button>
-          <button class="project-tab-btn" data-pane="architecture" role="tab" aria-selected="false" id="tabArchitecture">Architecture</button>
-          <button class="project-tab-btn" data-pane="install" role="tab" aria-selected="false" id="tabInstall">Install</button>
-        </div>
-        <div class="project-tab-pane active" id="pane-downloads" role="tabpanel" aria-labelledby="tabDownloads">
-          <div class="downloads-container" id="downloads">
-            <div class="downloads-header-bar"><div><div class="kicker">GitHub releases</div><h2 class="pane-heading" id="relTitle">Downloads</h2><p class="pane-sub" id="relMeta">Fetching release assets…</p></div><div id="relTagWrap"><span class="tag-pill" id="relTag">…</span></div></div>
-            <div class="assets-grid" id="releaseAssetsGrid"></div>
-            <div class="release-notes-box"><div class="notes-header"><h3>Release notes</h3><a class="notes-gh-link" id="relGhLink" href="#" target="_blank" rel="noopener">View on GitHub</a></div><pre class="release-notes-content" id="relBody">Loading…</pre></div>
+
+        <div class="pane active" id="pane-downloads" role="tabpanel" aria-labelledby="tab-downloads">
+          <div class="panel" id="downloads">
+            <div class="panel-head">
+              <div><h2 id="relTitle">Downloads</h2><p id="relMeta">Fetching release assets…</p></div>
+              <span class="chip chip--mute" id="relTag">…</span>
+            </div>
+            <div class="asset-grid" id="assetGrid"></div>
+            <div class="notes">
+              <div class="notes-head"><h3>Release notes</h3><a class="link-arrow" id="relGhLink" href="#" target="_blank" rel="noopener">View on GitHub</a></div>
+              <pre id="relBody">Loading…</pre>
+            </div>
           </div>
         </div>
-        <div class="project-tab-pane" id="pane-preview" role="tabpanel" aria-labelledby="tabPreview">
-          <div class="preview-layout"><div class="preview-mockup-wrap" id="previewMockupSlot"></div>
-            <div class="preview-features-wrap"><h3>What works</h3><p class="section-subtext">Checked against the target runtime in the spec table. Anything experimental is labelled as such.</p><ul class="features-checklist" id="previewFeaturesList"></ul><div class="preview-maintainers-box"><h4>Maintainer</h4><div id="previewMaintainersList"></div></div></div>
+
+        <div class="pane" id="pane-preview" role="tabpanel" aria-labelledby="tab-preview">
+          <div class="panel">
+            <div class="preview-grid">
+              <div class="preview-stage" id="previewStage"></div>
+              <div>
+                <h2 class="section-title" style="font-size:1.4rem">What works</h2>
+                <p class="section-sub">Checked against the runtime named in the spec table. Anything experimental is labelled as such.</p>
+                <ul class="feature-list" id="featureList"></ul>
+                <h3 class="section-label">Maintainer</h3>
+                <div id="maintainerList"></div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="project-tab-pane" id="pane-architecture" role="tabpanel" aria-labelledby="tabArchitecture">
-          <div class="architecture-dossier-wrap"><div class="arch-header-box"><div class="kicker">Engineering notes</div><h2 class="pane-heading" id="archPatternTitle">Architecture</h2><p class="pane-sub" id="archPatternSub"></p></div><div class="arch-flow-box" id="archFlowDiagram"></div>
-            <div class="arch-notes-grid"><div class="arch-note-card"><h4>Integration points</h4><ul class="arch-points-list" id="archPointsList"></ul></div><div class="arch-note-card"><h4>Compatibility</h4><div class="compat-table-wrap"><table class="compat-table"><thead><tr><th>Target</th><th>Status</th><th>Checked on</th></tr></thead><tbody id="compatTableBody"><tr><td>OpenHarmony 5.0.1 · API 12</td><td><span class="pill-ok">Verified</span></td><td>Emulator</td></tr><tr><td>HarmonyOS NEXT 5.0</td><td><span class="pill-ok">Verified</span></td><td>Mate 60 / Pura 70</td></tr><tr><td>HarmonyOS 6.1 · API 24</td><td><span class="pill-ok">Stage 1</span></td><td>PC emulator</td></tr></tbody></table></div></div></div>
+
+        <div class="pane" id="pane-architecture" role="tabpanel" aria-labelledby="tab-architecture">
+          <div class="panel">
+            <div class="panel-head"><div><h2 id="archTitle">Architecture</h2><p id="archSub"></p></div></div>
+            <div class="arch-flow" id="archFlow"></div>
+            <div class="arch-columns">
+              <div class="side-card"><h3>Integration points</h3><ul id="archPoints"></ul></div>
+              <div class="side-card"><h3>Compatibility</h3><ul id="archCompat"></ul></div>
+            </div>
           </div>
         </div>
-        <div class="project-tab-pane" id="pane-install" role="tabpanel" aria-labelledby="tabInstall">
-          <div class="install-guide-wrap">
-            <div class="install-step-card"><div class="step-badge">Option A · .hap</div><h3>Install the prebuilt package</h3><p>Grab the <code>.hap</code> from Downloads, then push it to a connected device or emulator.</p><div class="cli-box"><pre><code id="installHdcCode">hdc install app.hap</code></pre><button class="copy-install-snippet-btn" data-target="installHdcCode">Copy</button></div></div>
-            <div class="install-step-card"><div class="step-badge">Option B · Source</div><h3>Build from source</h3><p>The exact commands from the maintainer’s repo.</p><div class="cli-box"><pre><code id="installBuildCode">Loading…</code></pre><button class="copy-install-snippet-btn" data-target="installBuildCode">Copy</button></div></div>
-            <div class="install-step-card"><div class="step-badge">Permissions</div><h3>Declared in module.json5</h3><p>Requested at install for hardware access.</p><div class="permissions-pill-list" id="permissionsList"><span class="perm-pill font-mono">ohos.permission.INTERNET</span><span class="perm-pill font-mono">ohos.permission.LOCATION</span><span class="perm-pill font-mono">ohos.permission.APPROXIMATELY_LOCATION</span></div></div>
+
+        <div class="pane" id="pane-install" role="tabpanel" aria-labelledby="tab-install">
+          <div class="install-steps">
+            <div class="step">
+              <span class="step-badge">Option A · prebuilt</span>
+              <h3>Install the release package</h3>
+              <p>Download the .hap from the Downloads tab, then push it to a connected device or emulator.</p>
+              <div class="code-block"><pre><code id="installHdc"></code></pre><button class="copy-btn" data-copy="installHdc" type="button">Copy</button></div>
+            </div>
+            <div class="step">
+              <span class="step-badge">Option B · source</span>
+              <h3>Build it from source</h3>
+              <p>The commands the maintainer uses, straight from the repository.</p>
+              <div class="code-block"><pre><code id="installBuild"></code></pre><button class="copy-btn" data-copy="installBuild" type="button">Copy</button></div>
+            </div>
+            <div class="step">
+              <span class="step-badge">Runtime</span>
+              <h3>Bundle, target and license</h3>
+              <p>What the package declares to the system.</p>
+              <div class="perm-row" id="permRow"></div>
+            </div>
           </div>
         </div>
-      </section>
-      <section class="other-projects-section"><div class="section-kicker">Keep reading</div><h3 class="other-title">The other ports</h3><div class="other-grid" id="otherPortsGrid"></div></section>
-      <div class="project-disclaimer-box"><strong>License note: </strong><span id="projectDisclaimerText"></span></div>
-    </div>
+      </div>
+    </section>
+
+    <section class="band band--alt">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-label">Keep reading</span>
+          <h2 class="section-title">The other ports.</h2>
+        </div>
+        <div class="other-grid" id="otherGrid"></div>
+      </div>
+    </section>
+
+    <section class="band band--tight band--white">
+      <div class="wrap">
+        <div class="notes">
+          <div class="notes-head"><h3>License and attribution</h3></div>
+          <p class="section-sub" id="disclaimer"></p>
+        </div>
+      </div>
+    </section>
   </main>
-  <footer class="site-footer"><div class="content-wrap"><div class="footer-nav-row"><div class="footer-col"><div class="footer-brand"><span class="brand-text">AppFactory</span><p>Ports of essential apps to HarmonyOS and OpenHarmony, with reproducible notes.</p></div></div><div class="footer-col"><h5>Ports</h5><a href="/apps/opengmaps">OpenGMaps</a><a href="/apps/opentwit">OpenTwit</a><a href="/apps/ohemacs">OHEmacs</a><a href="/apps/whatisit">WhatIsIt</a></div><div class="footer-col"><h5>Builders</h5><a href="https://github.com/Abhi-Flex1" target="_blank" rel="noopener">Abhi-Flex1</a><a href="https://x.com/Abhi_Flex" target="_blank" rel="noopener">@Abhi_Flex</a><a href="https://github.com/BA4893" target="_blank" rel="noopener">BA4893</a><a href="https://x.com/LivingInHarmony" target="_blank" rel="noopener">@LivingInHarmony</a></div><div class="footer-col"><h5>Site</h5><a href="/apps">All ports</a><a href="/architecture">Architecture</a><a href="/builders">Builders</a><a href="/#developers">API</a></div></div><div class="footer-bottom"><p>© 2026 AppFactory · Apache-2.0</p><p>Builds checked on OpenHarmony 5.0.1 and HarmonyOS 6.1.</p></div></div></footer>
-  <div class="toast hidden" id="toast" role="status" aria-live="polite">Copied</div>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-brand">
+            <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18 12 5l8 13"/><path d="M8.4 14.4h7.2"/></svg></span>
+            <span class="brand-name">AppFactory</span>
+          </div>
+          <p class="footer-about">Ports of essential apps to HarmonyOS and OpenHarmony, each with reproducible build notes and a release you can install.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Ports</h4>
+          <a href="/apps/opengmaps">OpenGMaps SDK</a>
+          <a href="/apps/opentwit">OpenTwit</a>
+          <a href="/apps/opentwit-web">OpenTwit Web</a>
+          <a href="/apps/ohemacs">OHEmacs</a>
+          <a href="/apps/whatisit">WhatIsIt</a>
+        </div>
+        <div class="footer-col">
+          <h4>Site</h4>
+          <a href="/apps">All ports</a>
+          <a href="/architecture">Architecture</a>
+          <a href="/builders">Builders</a>
+          <a href="https://github.com/Abhi-Flex1/AppFactory" target="_blank" rel="noopener">Source on GitHub</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 AppFactory · Apache-2.0</p>
+        <p>Builds checked on OpenHarmony 5.0.1 and HarmonyOS 6.1.1.</p>
+      </div>
+    </div>
+  </footer>
+
+  <nav class="tabbar" aria-label="Sections">
+    <a href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 10.6 12 3.6l8.4 7v9.2a1.2 1.2 0 0 1-1.2 1.2h-4.6v-6h-5.2v6H4.8a1.2 1.2 0 0 1-1.2-1.2z"/></svg>Home</a>
+    <a href="/apps" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7.4" height="7.4" rx="2"/><rect x="13.6" y="3" width="7.4" height="7.4" rx="2"/><rect x="3" y="13.6" width="7.4" height="7.4" rx="2"/><rect x="13.6" y="13.6" width="7.4" height="7.4" rx="2"/></svg>Ports</a>
+    <a href="/architecture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6 21.4 8 12 13.4 2.6 8z"/><path d="M4.6 12.4 12 16.6l7.4-4.2 2 1.1-9.4 5.3-9.4-5.3z"/></svg>Architecture</a>
+    <a href="/builders"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.4" r="3.8"/><path d="M2.6 20.4c0-3.4 2.9-5.6 6.4-5.6s6.4 2.2 6.4 5.6z"/><circle cx="17.4" cy="9.6" r="2.8"/><path d="M16.4 14.6c3 0 5.2 2 5.2 4.8h-4.4"/></svg>Builders</a>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/site.js" defer></script>
   <script src="/project.js" defer></script>
 </body>
 </html>
