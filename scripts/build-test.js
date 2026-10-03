@@ -2,11 +2,13 @@
 // they catch the things that actually break: a component that throws, a page
 // that renders nothing, a dead route, or a bundle that silently grew.
 //   node scripts/build-test.js
-const assert = require("node:assert/strict");
-const fs = require("node:fs");
-const path = require("node:path");
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import zlib from "node:zlib";
+import { fileURLToPath } from "node:url";
 
-const ROOT = path.join(__dirname, "..");
+const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const DIST = path.join(ROOT, "dist");
 
 let passed = 0;
@@ -45,7 +47,6 @@ function sourceBytes() {
 }
 
 function gzipSize(file) {
-  const zlib = require("node:zlib");
   return zlib.gzipSync(fs.readFileSync(file)).length;
 }
 
@@ -74,6 +75,31 @@ function gzipSize(file) {
   await test("every asset filename is content-hashed", () => {
     for (const file of [...js, ...cssFiles]) {
       assert.match(file, /-[A-Za-z0-9_-]{8,}\.(js|css)$/, `${file} is not hashed`);
+    }
+  });
+
+  await test("built chunks are ESM, never CommonJS", () => {
+    // A deployment that re-bundles dist/ under "type": "commonjs" rewrites these
+    // to require() calls and the page renders nothing at all. Cheap to assert.
+    for (const file of js) {
+      const code = fs.readFileSync(path.join(assets, file), "utf8");
+      assert.doesNotMatch(
+        code,
+        /(^|[^.\w])require\s*\(/,
+        `${file} contains require() — a browser cannot run it`
+      );
+    }
+  });
+
+  await test("the API never references the frontend build", () => {
+    // The invariant that stops a serverless bundler from tracing dist/ into the
+    // function and re-transpiling the chunks. See the comment in api/routes.js.
+    const routes = fs
+      .readFileSync(path.join(ROOT, "api", "routes.js"), "utf8")
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^\s*\/\/.*$/gm, "");
+    for (const ref of ["dist", "express.static", "sendFile", "index.html"]) {
+      assert.ok(!routes.includes(ref), `api/routes.js references ${ref} — it must stay build-agnostic`);
     }
   });
 

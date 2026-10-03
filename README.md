@@ -36,7 +36,10 @@ npm run build && npm start        # → http://localhost:3000
 ```
 index.html              Vite entry — theme resolved pre-paint, noscript port list
 vite.config.mjs         React + Tailwind v4, manual vendor chunks
-server.js               Express: JSON API + static host for dist/
+vercel.json             build + output directory + SPA rewrite
+api/routes.js           the JSON API as a bare router (no reference to dist/)
+api/[[...path]].js      Vercel serverless entry for /api/*
+server.js               single-process host: the API plus the static dist/
 src/
   index.css             the whole design system: HarmonyOS tokens, then components
   App.jsx               routes, ⌘K wiring, skip link, mobile search affordance
@@ -49,6 +52,14 @@ src/
 data/                   apps.json, contributors.json, releases.json, shots.json
 public/shots/           real captures pulled from each port repository
 ```
+
+**ESM throughout.** `package.json` is `"type": "module"` and there is no
+CommonJS anywhere. This is not tidiness: when `dist/` was deployed by a serverless
+function that traced it, `"type": "commonjs"` made the bundler reinterpret Vite's
+ESM chunks as CommonJS and rewrite them to `require()` calls, which blanked the
+page. The API is now a bare router in `api/` that never references `dist/`, so
+the frontend is served as static output and never passes through a bundler.
+`npm run test:build` asserts both halves of that.
 
 **Stack.** React 19, Tailwind v4, Vite, and shadcn-style components written by
 hand in `src/components/ui/` — `class-variance-authority` for variants,

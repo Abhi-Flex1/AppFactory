@@ -1,10 +1,12 @@
 // API contract tests. Starts the real server on an ephemeral port and checks
 // every route the frontend depends on.
 //   node scripts/api-test.js
-const assert = require("node:assert/strict");
-const path = require("node:path");
-const { spawn } = require("node:child_process");
+import assert from "node:assert/strict";
+import path from "node:path";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
+const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const PORT = 3000 + Math.floor(Math.random() * 900);
 const BASE = `http://127.0.0.1:${PORT}`;
 
@@ -41,7 +43,7 @@ async function waitForServer(attempts = 60) {
   throw new Error("server never became healthy");
 }
 
-const server = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], {
+const server = spawn(process.execPath, [path.join(ROOT, "server.js")], {
   env: { ...process.env, PORT: String(PORT) },
   stdio: "ignore"
 });
