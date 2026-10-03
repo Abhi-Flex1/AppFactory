@@ -287,5 +287,51 @@
     "ref": "main",
     "groups": [],
     "count": 0
+  },
+  "reel-edit": {
+    "repo": "Abhi-Flex1/Reel-Edit",
+    "ref": "main",
+    "groups": [
+      {
+        "id": "pc",
+        "title": "PC / 2in1",
+        "device": "3120 × 2080 · 2in1 emulator",
+        "capture": "Emulator captures from the Reel-Edit repository",
+        "frame": "wide",
+        "shots": [
+          {
+            "id": "pc-start-screen",
+            "label": "Start screen",
+            "src": "/shots/reel-edit/pc-start-screen.jpg",
+            "thumb": "/shots/reel-edit/thumbs/pc-start-screen.jpg",
+            "width": 900,
+            "height": 602,
+            "source": "https://github.com/Abhi-Flex1/Reel-Edit/blob/main/docs/images/start-screen.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/Reel-Edit/main/docs/images/start-screen.jpeg"
+          },
+          {
+            "id": "pc-editor",
+            "label": "Timeline editor",
+            "src": "/shots/reel-edit/pc-editor.jpg",
+            "thumb": "/shots/reel-edit/thumbs/pc-editor.jpg",
+            "width": 900,
+            "height": 602,
+            "source": "https://github.com/Abhi-Flex1/Reel-Edit/blob/main/docs/images/editor.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/Reel-Edit/main/docs/images/editor.jpeg"
+          },
+          {
+            "id": "pc-export-dialog",
+            "label": "Export presets",
+            "src": "/shots/reel-edit/pc-export-dialog.jpg",
+            "thumb": "/shots/reel-edit/thumbs/pc-export-dialog.jpg",
+            "width": 900,
+            "height": 602,
+            "source": "https://github.com/Abhi-Flex1/Reel-Edit/blob/main/docs/images/export-dialog.jpeg",
+            "raw": "https://raw.githubusercontent.com/Abhi-Flex1/Reel-Edit/main/docs/images/export-dialog.jpeg"
+          }
+        ]
+      }
+    ],
+    "count": 3
   }
 }

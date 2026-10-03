@@ -1,13 +1,19 @@
-// AppFactory server — Express multi-page host + JSON API with GitHub release integration.
-//   npm install && npm start  →  http://localhost:3000
+// AppFactory server — JSON API + static host for the built React frontend.
+//   npm run build && npm start   →  http://localhost:3000
+//   npm run dev                  →  Vite on :5173 proxying /api here
+//
+// Only the API needs a server. Everything the page renders comes from /api/*,
+// so the same build works behind any static host plus a handful of routes.
 const path = require("path");
 const fs = require("fs");
 const express = require("express");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DATA_DIR = path.join(__dirname, "data");
-const PUBLIC_DIR = path.join(__dirname, "public");
+const ROOT = __dirname;
+const DATA_DIR = path.join(ROOT, "data");
+const DIST_DIR = path.join(ROOT, "dist");
+const PUBLIC_DIR = path.join(ROOT, "public");
 
 function readJSON(file, fallback) {
   try {
@@ -18,15 +24,18 @@ function readJSON(file, fallback) {
 }
 
 function formatBytes(bytes) {
-  if (!bytes || bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+  if (!bytes) return "0 B";
+  const units = ["B", "KB", "MB", "GB"];
+  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  return `${parseFloat((bytes / 1024 ** i).toFixed(1))} ${units[i]}`;
 }
 
-// GitHub Releases Cache & Fetcher
+/* ------------------------------------------------------------------ *
+ * GitHub Releases — live, cached, with an offline fallback.
+ * ------------------------------------------------------------------ */
+
 const REPO_MAP = {
+  "reel-edit": "Abhi-Flex1/Reel-Edit",
   opengmaps: "Abhi-Flex1/OpenGMaps",
   opentwit: "Abhi-Flex1/OpenTwit",
   "opentwit-web": "Abhi-Flex1/OpenTwit-Web",
@@ -34,68 +43,56 @@ const REPO_MAP = {
   whatisit: "BA4893/WhatIsIt"
 };
 
+const CACHE_TTL_MS = 10 * 60 * 1000;
 const releaseCache = new Map();
-const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+
+function labelAsset(name) {
+  if (name.endsWith(".hap")) return { label: "OpenHarmony HAP package", type: "hap" };
+  if (name.endsWith(".app")) return { label: "HarmonyOS app bundle", type: "hap" };
+  if (name.endsWith(".zip")) return { label: "Bundle package", type: "bundle" };
+  return { label: "Native asset", type: "binary" };
+}
 
 async function getReleaseData(appId) {
   const cached = releaseCache.get(appId);
   const now = Date.now();
-  if (cached && now - cached.timestamp < CACHE_TTL_MS) {
-    return cached.data;
-  }
+  if (cached && now - cached.timestamp < CACHE_TTL_MS) return cached.data;
 
-  const fallbackAll = readJSON("releases.json", {});
-  const fallbackData = fallbackAll[appId] || null;
+  const fallback = readJSON("releases.json", {})[appId] ?? null;
   const repoSlug = REPO_MAP[appId];
-
-  if (!repoSlug) {
-    return fallbackData;
-  }
+  if (!repoSlug) return fallback;
 
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 4000);
     const res = await fetch(`https://api.github.com/repos/${repoSlug}/releases`, {
-      headers: {
-        "User-Agent": "AppFactory-Showcase-Server",
-        Accept: "application/vnd.github.v3+json"
-      },
+      headers: { "User-Agent": "AppFactory-Showcase-Server", Accept: "application/vnd.github.v3+json" },
       signal: controller.signal
     });
     clearTimeout(timeout);
 
     if (res.ok) {
       const releases = await res.json();
-      if (Array.isArray(releases) && releases.length > 0) {
+      if (Array.isArray(releases) && releases.length) {
         const latest = releases[0];
-        const formatted = {
-          repo: `https://github.com/${repoSlug}`,
-          hasRelease: true,
-          tagName: latest.tag_name,
-          name: latest.name || latest.tag_name,
-          publishedAt: latest.published_at,
-          htmlUrl: latest.html_url,
-          body: latest.body || "",
-          assets: (latest.assets || []).map((asset) => {
-            const isHap = asset.name.endsWith(".hap");
-            const isZip = asset.name.endsWith(".zip");
-            return {
-              name: asset.name,
-              label: isHap ? "OpenHarmony HAP Package" : (isZip ? "Bundle Package" : "Native Asset"),
-              type: isHap ? "hap" : (isZip ? "bundle" : "binary"),
-              size: asset.size,
-              formattedSize: formatBytes(asset.size),
-              downloadCount: asset.download_count,
-              downloadUrl: asset.browser_download_url,
-              installHint: isHap ? `hdc install ${asset.name}` : ""
-            };
-          })
-        };
+        const assets = (latest.assets ?? []).map((asset) => {
+          const { label, type } = labelAsset(asset.name);
+          return {
+            name: asset.name,
+            label,
+            type,
+            size: asset.size,
+            formattedSize: formatBytes(asset.size),
+            downloadCount: asset.download_count,
+            downloadUrl: asset.browser_download_url,
+            installHint: type === "hap" ? `hdc install ${asset.name}` : ""
+          };
+        });
 
         if (latest.zipball_url) {
-          formatted.assets.push({
-            name: "Source Code (zip)",
-            label: "Source Code Archive",
+          assets.push({
+            name: `Source code (${latest.tag_name})`,
+            label: "Source code archive",
             type: "archive",
             size: 0,
             formattedSize: "ZIP",
@@ -105,40 +102,50 @@ async function getReleaseData(appId) {
           });
         }
 
-        releaseCache.set(appId, { timestamp: now, data: formatted });
-        return formatted;
+        const data = {
+          repo: `https://github.com/${repoSlug}`,
+          hasRelease: true,
+          tagName: latest.tag_name,
+          name: latest.name || latest.tag_name,
+          publishedAt: latest.published_at,
+          htmlUrl: latest.html_url,
+          body: latest.body || "",
+          assets
+        };
+        releaseCache.set(appId, { timestamp: now, data });
+        return data;
       }
     }
-  } catch (err) {
-    // Network or rate-limit error, use fallback
+  } catch {
+    // Offline, rate-limited or slow — the recorded fallback is the honest answer.
   }
 
-  if (fallbackData) {
-    releaseCache.set(appId, { timestamp: now, data: fallbackData });
-    return fallbackData;
-  }
-  return null;
+  if (fallback) releaseCache.set(appId, { timestamp: now, data: fallback });
+  return fallback;
 }
 
-app.use(express.json());
-app.use(express.static(PUBLIC_DIR));
+/* ------------------------------------------------------------------ *
+ * API
+ * ------------------------------------------------------------------ */
 
-// Health Probe
-app.get("/health", (req, res) => res.json({ ok: true, app: "appfactory", pages: ["/", "/apps", "/architecture", "/builders"] }));
+app.disable("x-powered-by");
+app.use(express.json({ limit: "32kb" }));
 
-// REST APIs
-app.get("/api/contributors", (req, res) => {
-  res.json(readJSON("contributors.json", []));
+app.get("/health", (req, res) => {
+  res.json({
+    ok: true,
+    app: "appfactory",
+    pages: ["/", "/ports", "/ports/:id", "/architecture", "/builders"],
+    ports: Object.keys(REPO_MAP).length
+  });
 });
 
-// Screenshots pulled from each port repository by scripts/fetch-shots.py.
-app.get("/api/shots", (req, res) => {
-  res.json(readJSON("shots.json", {}));
-});
+app.get("/api/contributors", (req, res) => res.json(readJSON("contributors.json", [])));
+
+app.get("/api/shots", (req, res) => res.json(readJSON("shots.json", {})));
 
 app.get("/api/shots/:id", (req, res) => {
-  const shots = readJSON("shots.json", {});
-  const found = shots[req.params.id];
+  const found = readJSON("shots.json", {})[req.params.id];
   if (!found) return res.status(404).json({ error: "no screenshots for that port" });
   res.json(found);
 });
@@ -146,40 +153,47 @@ app.get("/api/shots/:id", (req, res) => {
 app.get("/api/apps", (req, res) => {
   let apps = readJSON("apps.json", []);
   const { q, stack } = req.query;
+
   if (stack) {
-    const s = String(stack).toLowerCase();
-    apps = apps.filter((a) =>
-      [...(a.stack || []), ...(a.filterTags || [])].some((t) => t.toLowerCase() === s)
+    const wanted = String(stack).toLowerCase();
+    apps = apps.filter((app) =>
+      [...(app.stack ?? []), ...(app.filterTags ?? [])].some(
+        (tag) => tag.toLowerCase() === wanted
+      )
     );
   }
+
   if (q) {
-    const terms = String(q).toLowerCase().split(/\s+/);
-    apps = apps.filter((a) => {
-      const hay = [a.name, a.tagline, a.category, a.description, (a.stack || []).join(" "), a.api, a.bundle]
+    const terms = String(q).toLowerCase().split(/\s+/).filter(Boolean);
+    apps = apps.filter((app) => {
+      const hay = [
+        app.name,
+        app.tagline,
+        app.category,
+        app.description,
+        app.api,
+        app.bundle,
+        (app.stack ?? []).join(" ")
+      ]
         .join(" ")
         .toLowerCase();
-      return terms.every((t) => hay.includes(t));
+      return terms.every((term) => hay.includes(term));
     });
   }
+
   res.json(apps);
 });
 
 app.get("/api/apps/:id", (req, res) => {
-  const apps = readJSON("apps.json", []);
-  const found = apps.find((a) => a.id === req.params.id);
+  const found = readJSON("apps.json", []).find((app) => app.id === req.params.id);
   if (!found) return res.status(404).json({ error: "app not found" });
   res.json(found);
 });
 
 app.get("/api/releases", async (req, res) => {
-  const keys = Object.keys(REPO_MAP);
-  const results = {};
-  await Promise.all(
-    keys.map(async (key) => {
-      results[key] = await getReleaseData(key);
-    })
-  );
-  res.json(results);
+  const ids = Object.keys(REPO_MAP);
+  const entries = await Promise.all(ids.map(async (id) => [id, await getReleaseData(id)]));
+  res.json(Object.fromEntries(entries));
 });
 
 app.get("/api/releases/:id", async (req, res) => {
@@ -190,14 +204,43 @@ app.get("/api/releases/:id", async (req, res) => {
 
 app.use("/api", (req, res) => res.status(404).json({ error: "unknown api route" }));
 
-// Multi-Page Routes
-app.get("/", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "index.html")));
-app.get("/apps", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "apps.html")));
-app.get("/apps/:id", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "project.html")));
-app.get("/architecture", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "architecture.html")));
-app.get("/builders", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "builders.html")));
+/* ------------------------------------------------------------------ *
+ * Static frontend
+ * ------------------------------------------------------------------ */
 
-// Catch-all fallback
-app.get("*", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "index.html")));
+// Hashed build output first (immutable), then public/shots (Vite copies these in).
+app.use(
+  "/assets",
+  express.static(path.join(DIST_DIR, "assets"), { immutable: true, maxAge: "1y" })
+);
 
-app.listen(PORT, () => console.log(`AppFactory listening on http://localhost:${PORT}`));
+if (fs.existsSync(DIST_DIR)) {
+  app.use(express.static(DIST_DIR, { index: false, maxAge: "1h" }));
+} else {
+  app.use(express.static(PUBLIC_DIR, { index: false }));
+}
+
+app.get(/^\/(?!api|health).*/, (req, res) => {
+  const index = path.join(DIST_DIR, "index.html");
+  if (!fs.existsSync(index)) {
+    return res
+      .status(503)
+      .type("text/plain")
+      .send("dist/ not found — run `npm run build` first, or use `npm run dev` for the Vite dev server.");
+  }
+  // The shell names the hashed chunks, so it must always be revalidated —
+  // otherwise a cached index.html points at a chunk that no longer exists.
+  res.set("Cache-Control", "no-cache");
+  res.sendFile(index);
+});
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "internal error" });
+});
+
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`AppFactory listening on http://localhost:${PORT}`));
+}
+
+module.exports = app;

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0A59F7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0D0E12" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>AppFactory — global apps ported to HarmonyOS</title>
+    <meta
+      name="description"
+      content="A working record of global apps ported to OpenHarmony and HarmonyOS: OpenReel Video, X, Google Maps, GNU Emacs and WhatsApp, each with its porting pattern and honest verification state."
+    />
+    <script>
+      // Resolve the scheme before first paint: no flash, no waiting on React.
+      try {
+        var t = localStorage.getItem("af-theme");
+        var d = t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.classList.toggle("dark", d);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <div style="max-width: 44rem; margin: 4rem auto; padding: 0 1.5rem; font: 16px/1.6 system-ui">
+        <h1>AppFactory</h1>
+        <p>Global apps ported to OpenHarmony and HarmonyOS:</p>
+        <ul>
+          <li><strong>Reel-Edit</strong> — OpenReel Video editor for HarmonyOS 2in1</li>
+          <li><strong>OpenGMaps SDK</strong> — Google Maps SDK over ArkWeb</li>
+          <li><strong>OpenTwit</strong> — native ArkTS X client</li>
+          <li><strong>OpenTwit Web</strong> — x.com in a native shell</li>
+          <li><strong>OHEmacs</strong> — GNU Emacs 30.1 via an NAPI bridge</li>
+          <li><strong>WhatIsIt</strong> — WhatsApp over a companion Go server</li>
+        </ul>
+        <p>The catalogue needs JavaScript. The data is plain JSON: <a href="/api/apps">/api/apps</a>.</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

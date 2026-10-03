@@ -1,5 +1,46 @@
 [
   {
+    "id": "reel-edit",
+    "glyph": "▤",
+    "accent": "#E8710A",
+    "accentDeep": "#9A3412",
+    "name": "Reel-Edit",
+    "tagline": "OpenReel Video — a professional video editor for HarmonyOS 2in1",
+    "category": "Creativity · Media",
+    "tag": "Native web host",
+    "status": "Beta · emulator verified",
+    "statusTone": "ok",
+    "statusClass": "is-beta",
+    "version": "—",
+    "stack": ["ArkTS", "ArkWeb", "React", "TypeScript", "NAPI"],
+    "filterTags": ["ArkTS", "ArkWeb", "React"],
+    "repo": "https://github.com/Abhi-Flex1/Reel-Edit",
+    "upstream": "https://github.com/Augani/openreel-video",
+    "upstreamNote": "OpenReel Video by Augani and contributors · 5.2k★ · MIT. The editor is upstream's work, used unmodified apart from three platform changes.",
+    "maintainers": ["abhi-flex1"],
+    "bundle": "com.reeledit.harmony",
+    "api": "HarmonyOS 6.1.1 · API 24 · 2in1",
+    "license": "MIT (upstream: MIT)",
+    "description": "A port of OpenReel Video — a browser-based, no-cloud, no-watermark video editor — to HarmonyOS PC. The upstream editor (timeline, engine, Media/Text/Graphics/Effects panels, Viewer, Inspector, export pipeline) runs unmodified inside an ArkWeb host. What this repo adds is the HarmonyOS half: an ArkTS module, a native H.264/AAC + MP4 muxer over the platform media framework, a JS bridge, and the build and release tooling.",
+    "features": [
+      "The full editor: start screen, project formats, panels, Viewer, Inspector, Timeline, undo/redo, clip selection",
+      "Project create and open, persisting across launches",
+      "Export end to end: DocumentViewPicker save dialog, renderer frame stream, native MP4 muxer with video + audio tracks",
+      "Light and dark themes that follow the device setting",
+      "863 upstream tests green; the web bundle is typechecked on every build"
+    ],
+    "porting": [
+      "Pattern: native web host — ArkWeb serves the upstream bundle over a virtual https://openreel.harmony.local origin, because ArkWeb blocks cross-origin sub-resource loads from file:// and resource://",
+      "Bridge: window.openreel reimplemented in ArkTS and registered with registerJavaScriptProxy — registered *synchronous*, because the async proxy does not marshal a returned Promise; replies arrive via window.__openreelResolve(id, payload)",
+      "Binary payloads cross the JSON proxy as base64, and export frames travel the same way — createWebMessagePorts + postMessage succeeds natively but never reaches the page",
+      "Native export: reel_export.c replaces the FFmpeg sidecar with OH_VideoEncoder (H.264) + OH_AudioEncoder (AAC) + OH_AVMuxer (MP4), reproducing its frame-credit backpressure so the renderer throttling loop is unchanged",
+      "Platform traps documented in the README: the API 24 buffer interface is index-based, and OH_AVCODEC_MIMETYPE_* are exported as functions rather than data — reading them through the pointer yields a code address and every call fails with AV_ERR_INVALID_VAL",
+      "Three upstream changes: no in-app window controls (HarmonyOS draws its own), theme blocks inside explicit prefers-color-scheme so the device wins, and OPENREEL_HARMONY=1 removing the WebCodecs export path that would bypass the native encoder"
+    ],
+    "install": "pnpm install\npnpm --filter @openreel/core build:wasm   # engine WASM, not checked in\n./scripts/build-harmony.sh              # typecheck + web bundle + HAP\nhdc install -r entry/build/default/outputs/default/entry-default-unsigned.hap",
+    "disclaimer": "Upstream OpenReel Video © Augani and contributors, MIT — all credit for the editor belongs to them. Debug builds are unsigned; a signed HAP needs a certificate, key and provisioning profile bound to com.reeledit.harmony that only Huawei issues. The 2in1 emulator image ships with no H.264 or AAC encoder, so MP4 export stops there and the app says so; on hardware the same pipeline is expected to finish. Desktop only — upstream blocks viewports under 768px."
+  },
+  {
     "id": "opengmaps",
     "glyph": "◈",
     "accent": "#0077B6",

@@ -1,0 +1,288 @@
+/* ============================================================================
+   AppFactory design system — HarmonyOS design language
+   System blue on a neutral surface ladder, HarmonyOS radius scale, capsule
+   controls, filled system symbols. One stylesheet, tokens first.
+   No entrance animations, no scroll reveals, no scroll-driven effects:
+   state feedback only (colour changes on hover, focus and press).
+   ========================================================================= */
+
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* --- Semantic tokens (light) --------------------------------------------- */
+:root {
+  --surface: #ffffff;
+  --surface-subtle: #f4f5f7;
+  --surface-sunken: #ebecf0;
+
+  --foreground: #0d0e12;
+  --foreground-muted: #54575f;
+  --foreground-faint: #6e727c;
+
+  --line: #e2e4ea;
+  --line-strong: #c8ccd6;
+
+  --brand: #0a59f7;
+  --brand-hover: #0a4ed4;
+  --brand-active: #093fb0;
+  --brand-foreground: #ffffff;
+  --brand-soft: #e9f0ff;
+  --brand-soft-foreground: #0a3a9e;
+  --brand-line: #c3d8ff;
+
+  --ok: #0f7b3d;
+  --ok-soft: #e4f5ea;
+  --ok-foreground: #0a5c2d;
+  --warn: #8a5300;
+  --warn-soft: #fdf0dc;
+  --warn-foreground: #7a4900;
+  --info: #0a59f7;
+  --info-soft: #e9f0ff;
+  --info-foreground: #0a3a9e;
+
+  --shadow-1: 0 1px 2px rgb(13 14 18 / 0.06), 0 1px 3px rgb(13 14 18 / 0.05);
+  --shadow-2: 0 2px 8px rgb(13 14 18 / 0.08), 0 8px 24px rgb(13 14 18 / 0.06);
+  --shadow-3: 0 8px 28px rgb(13 14 18 / 0.14), 0 24px 64px rgb(13 14 18 / 0.12);
+}
+
+/* --- The inverse band ----------------------------------------------------
+   Deliberately dark in *both* schemes rather than a theme inversion: this band
+   carries white overlays and a light accent, and flipping it per scheme is
+   exactly how those end up invisible. --brand-on-inverse keeps the accent on
+   this band above AA against the dark surface. ---------------------------- */
+:root,
+.dark {
+  --surface-inverse: #0d0e12;
+  --foreground-inverse: #f2f3f5;
+  --foreground-inverse-muted: #a8adb8;
+  --brand-on-inverse: #7aa8ff;
+}
+
+/* --- Semantic tokens (dark) ---------------------------------------------- */
+.dark {
+  --surface: #0d0e12;
+  --surface-subtle: #16181d;
+  --surface-sunken: #1f222a;
+  /* A hair lighter than the page surface, so the band still reads as a band. */
+  --surface-inverse: #14161b;
+
+  --foreground: #f2f3f5;
+  --foreground-muted: #a8adb8;
+  --foreground-faint: #838894;
+
+  --line: #272a32;
+  --line-strong: #3a3e49;
+
+  --brand: #4b86ff;
+  --brand-hover: #6b9bff;
+  --brand-active: #3a7aef;
+  --brand-foreground: #06070a;
+  --brand-soft: #16233d;
+  --brand-soft-foreground: #a9c7ff;
+  --brand-line: #26375c;
+
+  --ok: #4ec27f;
+  --ok-soft: #10281a;
+  --ok-foreground: #86e0ab;
+  --warn: #e8a33d;
+  --warn-soft: #2b2010;
+  --warn-foreground: #f2c47c;
+  --info: #4b86ff;
+  --info-soft: #16233d;
+  --info-foreground: #a9c7ff;
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-2: 0 2px 8px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.3);
+  --shadow-3: 0 8px 28px rgb(0 0 0 / 0.5), 0 24px 64px rgb(0 0 0 / 0.4);
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-inverse: var(--surface-inverse);
+
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-faint: var(--foreground-faint);
+  --color-foreground-inverse: var(--foreground-inverse);
+  --color-foreground-inverse-muted: var(--foreground-inverse-muted);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-active: var(--brand-active);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-soft-foreground: var(--brand-soft-foreground);
+  --color-brand-line: var(--brand-line);
+  --color-brand-on-inverse: var(--brand-on-inverse);
+
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-ok-foreground: var(--ok-foreground);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-foreground: var(--warn-foreground);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-info-foreground: var(--info-foreground);
+
+  /* HarmonyOS radius scale */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+
+  --shadow-h1: var(--shadow-1);
+  --shadow-h2: var(--shadow-2);
+  --shadow-h3: var(--shadow-3);
+
+  --font-sans: "HarmonyOS Sans", "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+}
+
+/* --- Base ----------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background-color: var(--surface);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    letter-spacing: 0;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* HarmonyOS hierarchy: letter spacing stays at 0 and hierarchy comes from size
+     and weight. The only exception is the uppercase eyebrow labels, which carry
+     tracking-[0.14em] so small caps stay legible. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  /* Links inside running text need a cue that is not colour alone (WCAG 1.4.1).
+     Card and navigation links opt out with `no-underline`, which wins on cascade
+     order — a card that is itself a link must not look like underlined text. */
+  p a,
+  li a,
+  .af-prose a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  }
+
+  ::selection {
+    background: var(--brand);
+    color: var(--brand-foreground);
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border: 3px solid var(--surface);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--foreground-faint);
+  }
+
+  /* State feedback only — colour, never movement. */
+  a,
+  button,
+  [role="tab"],
+  [role="button"] {
+    transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+}
+
+/* --- Components ----------------------------------------------------------- */
+@layer components {
+  /* App icon tile — a per-port two-tone gradient, HarmonyOS layered-icon style. */
+  .af-icon {
+    display: grid;
+    place-items: center;
+    border-radius: 22.37%;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0;
+    background-image: linear-gradient(150deg, var(--af-accent) 0%, var(--af-accent-deep) 100%);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+    user-select: none;
+  }
+
+  /* Hairline grid used behind dark bands and the hero. */
+  .af-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, currentColor 7%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, currentColor 7%, transparent) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  .af-prose > * + * {
+    margin-top: 0.875rem;
+  }
+  .af-prose {
+    line-height: 1.7;
+    color: var(--foreground-muted);
+  }
+
+  /* Numeric metadata set in the UI font rather than the mono face. */
+  .af-tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .af-scroll-x {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+}

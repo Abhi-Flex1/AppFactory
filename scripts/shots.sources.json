@@ -75,6 +75,24 @@
       }
     ]
   },
+  "reel-edit": {
+    "repo": "Abhi-Flex1/Reel-Edit",
+    "ref": "main",
+    "groups": [
+      {
+        "id": "pc",
+        "title": "PC / 2in1",
+        "device": "3120 × 2080 · 2in1 emulator",
+        "capture": "Emulator captures from the Reel-Edit repository",
+        "frame": "wide",
+        "shots": [
+          { "file": "docs/images/start-screen.jpeg", "slug": "pc-start-screen", "label": "Start screen" },
+          { "file": "docs/images/editor.jpeg", "slug": "pc-editor", "label": "Timeline editor" },
+          { "file": "docs/images/export-dialog.jpeg", "slug": "pc-export-dialog", "label": "Export presets" }
+        ]
+      }
+    ]
+  },
   "opengmaps": {
     "repo": "Abhi-Flex1/OpenGMaps",
     "ref": "main",
