@@ -1,6 +1,11 @@
 node_modules/
 dist/
 npm-debug.log*
-.env
 .vercel
+
+# Local env files. Vercel writes OIDC tokens into .env.local on `vercel link`.
+.env
+.env.local
+.env*.local
+
 scripts/.shots-cache/
