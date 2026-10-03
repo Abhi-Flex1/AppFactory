@@ -3,15 +3,16 @@
 //   npm run build && npm start   →  http://localhost:3000
 //   npm run dev                  →  Vite on :5173 proxying /api here
 //
-// This exists for local development and for deploying the whole thing to a VPS
-// or anywhere Node runs. On Vercel the API is split out into api/[[...path]].js
-// and this file is not deployed, so the client build is served as static output
-// and never passes through a serverless bundler.
+// This is the single entry point in every environment: local development, a VPS,
+// and the Vercel function. The API itself lives in server/routes.js so it stays a
+// separate module, but it is deliberately NOT placed in an api/ directory —
+// Vercel routes files there by its own convention, and a catch-all there only
+// matched one path segment, so /api/apps/:id fell through to Vercel's router.
 import path from "node:path";
 import fs from "node:fs";
 import { fileURLToPath } from "node:url";
 import express from "express";
-import api from "./api/routes.js";
+import api from "./server/routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;

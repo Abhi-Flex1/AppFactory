@@ -1,12 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
-  "outputDirectory": "dist",
+  "outputDirectory": null,
   "framework": null,
-  "rewrites": [
-    {
-      "source": "/((?!api/).*)",
-      "destination": "/index.html"
+  "functions": {
+    "server.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 10
     }
-  ]
+  }
 }

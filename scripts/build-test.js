@@ -91,15 +91,42 @@ function gzipSize(file) {
     }
   });
 
-  await test("the API never references the frontend build", () => {
-    // The invariant that stops a serverless bundler from tracing dist/ into the
-    // function and re-transpiling the chunks. See the comment in api/routes.js.
+  await test("the API router stays free of the frontend build", () => {
+    // The router is mounted by server.js and must not know how the frontend is
+    // served, so the two concerns can be reasoned about — and tested — apart.
     const routes = fs
-      .readFileSync(path.join(ROOT, "api", "routes.js"), "utf8")
+      .readFileSync(path.join(ROOT, "server", "routes.js"), "utf8")
       .replace(/\/\*[\s\S]*?\*\//g, "")
       .replace(/^\s*\/\/.*$/gm, "");
     for (const ref of ["dist", "express.static", "sendFile", "index.html"]) {
-      assert.ok(!routes.includes(ref), `api/routes.js references ${ref} — it must stay build-agnostic`);
+      assert.ok(!routes.includes(ref), `server/routes.js references ${ref} — it must stay build-agnostic`);
+    }
+  });
+
+  await test("no api/ directory reintroduces Vercel's file routing", () => {
+    // Files under api/ are routed by Vercel's own convention, where a catch-all
+    // matched only one path segment and /api/apps/:id never reached the handler.
+    assert.ok(!fs.existsSync(path.join(ROOT, "api")), "api/ exists — move it under server/");
+  });
+
+  await test("every /api route the pages call is registered", () => {
+    // These are the exact URLs the frontend fetches. A missing one shows up as a
+    // blank section on a deployed page, which is slow to notice otherwise.
+    const routes = fs.readFileSync(path.join(ROOT, "server", "routes.js"), "utf8");
+    for (const pattern of [
+      "/health",
+      "/api/apps",
+      "/api/apps/:id",
+      "/api/shots",
+      "/api/shots/:id",
+      "/api/contributors",
+      "/api/releases",
+      "/api/releases/:id"
+    ]) {
+      assert.ok(
+        routes.includes(`"${pattern}"`),
+        `server/routes.js does not register ${pattern}`
+      );
     }
   });
 

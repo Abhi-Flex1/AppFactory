@@ -36,10 +36,9 @@ npm run build && npm start        # → http://localhost:3000
 ```
 index.html              Vite entry — theme resolved pre-paint, noscript port list
 vite.config.mjs         React + Tailwind v4, manual vendor chunks
-vercel.json             build + output directory + SPA rewrite
-api/routes.js           the JSON API as a bare router (no reference to dist/)
-api/[[...path]].js      Vercel serverless entry for /api/*
-server.js               single-process host: the API plus the static dist/
+server.js               the single entry point: JSON API + static host for dist/
+server/routes.js        the API as a bare router, with no knowledge of the build
+vercel.json             build command and function runtime
 src/
   index.css             the whole design system: HarmonyOS tokens, then components
   App.jsx               routes, ⌘K wiring, skip link, mobile search affordance
@@ -54,12 +53,18 @@ public/shots/           real captures pulled from each port repository
 ```
 
 **ESM throughout.** `package.json` is `"type": "module"` and there is no
-CommonJS anywhere. This is not tidiness: when `dist/` was deployed by a serverless
-function that traced it, `"type": "commonjs"` made the bundler reinterpret Vite's
-ESM chunks as CommonJS and rewrite them to `require()` calls, which blanked the
-page. The API is now a bare router in `api/` that never references `dist/`, so
-the frontend is served as static output and never passes through a bundler.
-`npm run test:build` asserts both halves of that.
+CommonJS anywhere. This is not tidiness: when `dist/` was deployed inside a
+serverless function, `"type": "commonjs"` made the bundler reinterpret Vite's ESM
+chunks as CommonJS and rewrite them to `require()` calls, which blanked the page
+while every URL still returned 200. `npm run test:build` now asserts that no
+built chunk contains `require()`.
+
+**One entry point, no `api/` directory.** `server.js` serves the API and the
+static build. Routing the API through Vercel's `api/` file convention instead
+looks tidier but is a trap: a catch-all there matched only a single path
+segment, so `/api/apps` answered and `/api/apps/:id` fell through to Vercel's own
+router — every detail page silently lost its data. `npm run test:build` fails if
+an `api/` directory reappears.
 
 **Stack.** React 19, Tailwind v4, Vite, and shadcn-style components written by
 hand in `src/components/ui/` — `class-variance-authority` for variants,

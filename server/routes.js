@@ -1,16 +1,10 @@
 // The JSON API, as a bare Express router with no knowledge of the frontend.
 //
-// This module deliberately does not reference dist/ or public/. It is mounted by
-// two thin entry points:
+// This module does not reference dist/ or public/. Mounted by server.js, which
+// adds the static host and the SPA fallback on top of it.
 //
-//   server.js            local + single-process host (API, then static, then SPA)
-//   api/[[...path]].js   the Vercel serverless function
-//
-// Keeping dist/ out of the API's module graph is the point: when a serverless
-// bundler traces this router it has no reason to pull the built frontend into
-// the function, so the ESM chunks in dist/assets/ are served untouched by the
-// CDN instead of being re-bundled (and, under "type": "commonjs", rewritten to
-// require() calls a browser cannot execute).
+// Keeping the build out of the router keeps the HTTP surface in one reviewable
+// place, and means the API can be tested without a build having been run.
 import express from "express";
 import path from "node:path";
 import fs from "node:fs";
