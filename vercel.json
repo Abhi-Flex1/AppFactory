@@ -1,8 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
-  "outputDirectory": null,
-  "framework": null,
   "functions": {
     "server.js": {
       "runtime": "nodejs20.x",
