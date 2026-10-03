@@ -1,10 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build",
-  "functions": {
-    "server.js": {
-      "runtime": "nodejs20.x",
-      "maxDuration": 10
-    }
-  }
+  "buildCommand": "npm run build"
 }
